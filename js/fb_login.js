@@ -2,19 +2,10 @@ var ll;
 function LiveLinks(fbname) {
     var f = firebase.database();
 
-    //var fifaManagerUsers= f.child('fifaManager/users');
-    console.log(f);
     firebase.database().ref().on('value', function(snapshot) {
         console.log(snapshot.val());
     });
-    /*
-    this.fifaManagerUsers = fifaManagerUsers;
-    console.log("fifa users"+this.fifaManagerUsers);
-    var uid;
-    var instance = this;
-	*/
-
-    //overridable functions
+    
     this.onLogin = function(user) {};
     this.onLoginFailure = function() {};
     this.onLogout = function() {};
@@ -46,7 +37,6 @@ function LiveLinks(fbname) {
   		var token = result.credential.accessToken;
   		// The signed-in user info.
   		var user = result.user;
-  		console.log(user);
         var name = user.displayName;
         var email = user.email;
         var today = new Date();
@@ -100,7 +90,7 @@ function LiveLinks(fbname) {
 $(function(){
 	 ll = new LiveLinks("brunobraga");
 
-	$('#fb_login').on('click',function(e){
+	$('#fb-login').on('click',function(e){
 		 ll.loginFacebook();
 	});
 
