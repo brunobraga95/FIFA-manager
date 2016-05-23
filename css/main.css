@@ -103,7 +103,7 @@ textarea {
 .container{
     position: relative;
     overflow: hidden;
-    background: gray;
+    background: black;
     width: 100%;
     height: 100vh;
 }
