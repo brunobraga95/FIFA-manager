@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Place favicon.ico in the root directory -->
+        
+        <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/main.css">
+	<script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
+	<script>
+  		// Initialize Firebase
+  		var config = {
+			apiKey: "AIzaSyB4xqL2tNlKX8NqdgotIByclZ3ZDw7ctmU",
+  			authDomain: "fifa-manager.firebaseapp.com",
+    			databaseURL: "https://fifa-manager.firebaseio.com",
+    			storageBucket: "",
+  		};
+  		firebase.initializeApp(config);
+	</script>
+        <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <nav class="navbar navbar-default">
+		  <div class="container-fluid">
+
+		    <div class="navbar-header">
+		      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+		        <span class="sr-only">Toggle navigation</span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		      </button>
+		      <a class="navbar-brand" href="#">Fifa Manager</a>
+		    </div>
+
+		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		      <ul class="nav navbar-nav navbar-right">
+		       
+		        <li class="navlink"><a href="#">Criar Grupo</a></li>
+		        <li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown"><img class= "profile-pic" src="https://scontent-ord1-1.xx.fbcdn.net/v/t1.0-9/12240088_892902760799947_5285784193731176154_n.jpg?oh=9116832fb57c57a49fd7f01f958012c4&oe=57CB96BC"> Bruno de Jesus Braga <span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="#">Profile</a></li>
+						<li class="divider"></li>
+						<li><a href="#">Log Out</a></li>
+					</ul>
+		        </li>
+		        
+		      </ul>
+		     
+		    </div><!-- /.navbar-collapse -->
+		  </div><!-- /.container-fluid -->
+		</nav>
+
+		<div class="container">
+			<div class="left-sidebar col-sm-3">
+
+				<div class="list-group">
+					<a href="#" class="list-group-item active">Resumo</a>
+					<a href="#" class="list-group-item">Recente</a>
+				</div>
+
+				<ul class="list-group">
+					<li class="list-group-item">Groups <a href="#" class="small"> <i class="fa fa-plus" aria-hidden="true"></i> add</a></li>
+					<li class="list-group-item"><a href="#">Grupo 1</a></li>
+					<li class="list-group-item"><a href="#">Grupo 2</a></li>
+					<li class="list-group-item"><a href="#">Grupo 3</a></li>
+				</ul>
+				
+				<ul class="list-group">
+					<li class="list-group-item">Friends <a href="#" class="small"> <i class="fa fa-plus" aria-hidden="true"></i> add</a></li>
+					<li class="list-group-item"><a href="#">Andre</a></li>
+					<li class="list-group-item"><a href="#">Paulo</a></li>
+					<li class="list-group-item"><a href="#">Carlos</a></li>
+				</ul>
+
+			</div>
+			<div class="main clearfix col-xs-12 col-sm-9">
+				<div class="main-wrapper clearfix">
+					<div class="main-header">
+						<h2>Resumo</h2>
+						<button class="btn btn-primary">Adicionar uma partida</button>
+					</div>
+					<div class="main-sub-header clearfix">
+						<div class="col-sm-3">Jogou: 40</div>
+						<div class="col-sm-3">Perdeu: 10</div>
+						<div class="col-sm-3">Empatou: 10</div>
+						<div class="col-sm-3">Venceu: 20</div>
+					</div>
+				</div>
+				<div class="main-content clearfix">
+
+					<div class="col-sm-4">
+						<h4>Você Venceu</h4>
+						<div>
+							<h5>Andre</h5>
+							<h6>Manchester Utd. 3 x 1 Chelsea</h6>
+						</div>
+						<div>
+							<h5>Paulo</h5>
+							<h6>Manchester Utd. 3 x 2 Manchester City</h6>
+						</div>
+						<div>
+							<h5>Carlos</h5>
+							<h6>Barcelona 3 x 0 Atletico de Madri</h6>	
+						</div>
+					</div>
+
+					<div class="col-sm-4">
+						<h4>Você Empatou</h4>
+						<div>
+							<h5>Andre</h5>
+							<h6>Manchester Utd. 3 x 3 Chelsea</h6>
+						</div>
+						<div>
+							<h5>Paulo</h5>
+							<h6>Manchester Utd. 3 x 3 Manchester City</h6>
+						</div>
+						<div>
+							<h5>Carlos</h5>
+							<h6>Barcelona 1 x 1 Atletico de Madri</h6>	
+						</div>
+					</div>
+
+					<div class="col-sm-4">
+						<h4>Você Perdeu</h4>
+						<div>
+							<h5>Andre</h5>
+							<h6>Manchester Utd. 1 x 3 Chelsea</h6>
+						</div>
+						<div>
+							<h5>Paulo</h5>
+							<h6>Manchester Utd. 0 x 2 Manchester City</h6>
+						</div>
+						<div>
+							<h5>Carlos</h5>
+							<h6>Barcelona 0 x 1 Atletico de Madri</h6>	
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+
+        <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="js/vendor/bootstrap.min.js"></script>
+        <script src="js/plugins.js"></script>
+        <script src="js/main.js"></script>
+	<script src="js/fb_login.js"></script>
+    </body>
+</html>
+
