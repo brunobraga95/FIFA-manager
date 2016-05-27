@@ -275,6 +275,25 @@ textarea {
     border-bottom: 0;
 }
 
+/* ADD PARTIDA POPUP */
+.popup {
+  position: relative;
+  background: #FFF;
+  width: auto;
+  max-width: 500px;
+  margin: 20px auto;
+}
+
+.popup > div > h3{
+    padding: 7px;
+    margin: 0;
+    border-bottom: 1px solid black;
+}
+
+.popup > div:last-of-type{
+    padding: 10px;
+}
+
 
 
 

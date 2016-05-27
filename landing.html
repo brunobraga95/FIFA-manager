@@ -10,9 +10,10 @@
         <!-- Place favicon.ico in the root directory -->
         
         <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/magnific-popup.css">
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/main.css">
-	<script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
 	<script>
   		// Initialize Firebase
   		var config = {
@@ -87,7 +88,7 @@
 				<div class="main-wrapper clearfix">
 					<div class="main-header">
 						<h2>Resumo</h2>
-						<button class="btn btn-primary">Adicionar uma partida</button>
+						<button id="add_partida" class="btn btn-primary" data-mfp-src="#add_partida_popup">Adicionar uma partida</button>
 					</div>
 					<div class="main-sub-header clearfix">
 						<div class="col-sm-3">Jogou: 40</div>
@@ -150,11 +151,40 @@
 			</div>
 		</div>
 
+		<div id="add_partida_popup" class="popup mfp-hide">
+		  	<div>
+				<h3>Adicionar Partida</h3>
+			</div>
+			<div>
+				<form class="form-group">
+					<label for="amigo">Contra: </label>
+					<input class="form-control" type="text" name="amigo" placeholder="Entre o nome">
+					<label for="timeUsuario">Seu time:</label>
+					<input class="form-control" type="text" name="timeUsuario" placeholder="Opicional">
+					<label for="timeAmigo">Time do seu amigo:</label>
+					<input class="form-control" type="text" name="timeAmigo" placeholder="Opicional">
+					<label for="data">Quando?</label>
+					<input class="form-control" type="date" name="data">
+					<label for="grupo">Grupo:</label>
+					<select class="form-control">
+						<option>Nenhum</option>
+						<option>Grupo 1</option>
+						<option>Grupo 2</option>
+						<option>Grupo 3</option>
+					</select>
+					<br>
+					<button class="btn btn-default">Cancelar</button>
+					<button class="btn btn-success">Adicionar</button>
+				</form>
+		  	</div>
+		</div>
+
         <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+        <script src="js/vendor/jquery.magnific-popup.min.js"></script>
         <script type="text/javascript" src="js/vendor/bootstrap.min.js"></script>
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
-	<script src="js/fb_login.js"></script>
+		<script src="js/fb_login.js"></script>
     </body>
 </html>
 
