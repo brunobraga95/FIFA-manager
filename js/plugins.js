@@ -22,3 +22,7 @@
 }());
 
 // Place any jQuery/helper plugins in here.
+
+$('#add_partida').magnificPopup({
+  type: 'inline'
+});
