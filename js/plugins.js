@@ -23,6 +23,45 @@
 
 // Place any jQuery/helper plugins in here.
 
+// Magnific Popup
+
 $('#add_partida').magnificPopup({
   type: 'inline'
 });
+
+$('.criar_grupo').magnificPopup({
+  type: 'inline'
+});
+
+$('#convidar_amigo').magnificPopup({
+  type: 'inline'
+});
+
+//Chart.js
+
+var graficoContainer = $("#myChart");
+var graficoResumoGeral = new Chart(graficoContainer, {
+    type: 'pie',
+    data: {
+        labels: ["Venceu", "Empatou", "Perdeu"],
+        datasets: [{
+            label: 'numero de partidas',
+            data: [20, 10, 10],
+            backgroundColor: [
+                "green",
+                "blue",
+                "red"
+            ],
+            hoverBackgroundColor: [
+                "darkgreen",
+                "darkblue",
+                "darkred"
+            ]
+        }]
+    },
+    options: {
+        
+    }
+});
+
+
