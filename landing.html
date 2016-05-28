@@ -46,7 +46,7 @@
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 		      <ul class="nav navbar-nav navbar-right">
 		       
-		        <li class="navlink"><a href="#">Criar Grupo</a></li>
+		        <li class="navlink"><a href="#" data-mfp-src="#criar_grupo_popup" class="criar_grupo">Criar Grupo</a></li>
 		        <li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown"><img class= "profile-pic" src="https://scontent-ord1-1.xx.fbcdn.net/v/t1.0-9/12240088_892902760799947_5285784193731176154_n.jpg?oh=9116832fb57c57a49fd7f01f958012c4&oe=57CB96BC"> Bruno de Jesus Braga <span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="#">Profile</a></li>
@@ -65,19 +65,19 @@
 			<div class="left-sidebar col-sm-3">
 
 				<div class="list-group">
-					<a href="#" class="list-group-item active">Resumo</a>
-					<a href="#" class="list-group-item">Recente</a>
+					<a href="#" id="resumo" class="list-group-item active">Resumo</a>
+					<a href="#" id="recente" class="list-group-item">Recente</a>
 				</div>
 
 				<ul class="list-group">
-					<li class="list-group-item">Groups <a href="#" class="small"> <i class="fa fa-plus" aria-hidden="true"></i> add</a></li>
+					<li class="list-group-item">Groups <a href="#" data-mfp-src="#criar_grupo_popup" class="small criar_grupo"> <i class="fa fa-plus" aria-hidden="true"></i> add</a></li>
 					<li class="list-group-item"><a href="#">Grupo 1</a></li>
 					<li class="list-group-item"><a href="#">Grupo 2</a></li>
 					<li class="list-group-item"><a href="#">Grupo 3</a></li>
 				</ul>
 				
 				<ul class="list-group">
-					<li class="list-group-item">Friends <a href="#" class="small"> <i class="fa fa-plus" aria-hidden="true"></i> add</a></li>
+					<li class="list-group-item">Friends <a id="convidar_amigo" href="#" data-mfp-src="#convidar_amigos" class="small"> <i class="fa fa-plus" aria-hidden="true"></i> add</a></li>
 					<li class="list-group-item"><a href="#">Andre</a></li>
 					<li class="list-group-item"><a href="#">Paulo</a></li>
 					<li class="list-group-item"><a href="#">Carlos</a></li>
@@ -98,55 +98,58 @@
 					</div>
 				</div>
 				<div class="main-content clearfix">
+					<div class="recente-wrapper hidden">
+						<div class="col-sm-4">
+							<h4>Você Venceu</h4>
+							<div>
+								<h5>Andre</h5>
+								<h6>Manchester Utd. 3 x 1 Chelsea</h6>
+							</div>
+							<div>
+								<h5>Paulo</h5>
+								<h6>Manchester Utd. 3 x 2 Manchester City</h6>
+							</div>
+							<div>
+								<h5>Carlos</h5>
+								<h6>Barcelona 3 x 0 Atletico de Madri</h6>	
+							</div>
+						</div>
 
-					<div class="col-sm-4">
-						<h4>Você Venceu</h4>
-						<div>
-							<h5>Andre</h5>
-							<h6>Manchester Utd. 3 x 1 Chelsea</h6>
+						<div class="col-sm-4">
+							<h4>Você Empatou</h4>
+							<div>
+								<h5>Andre</h5>
+								<h6>Manchester Utd. 3 x 3 Chelsea</h6>
+							</div>
+							<div>
+								<h5>Paulo</h5>
+								<h6>Manchester Utd. 3 x 3 Manchester City</h6>
+							</div>
+							<div>
+								<h5>Carlos</h5>
+								<h6>Barcelona 1 x 1 Atletico de Madri</h6>	
+							</div>
 						</div>
-						<div>
-							<h5>Paulo</h5>
-							<h6>Manchester Utd. 3 x 2 Manchester City</h6>
-						</div>
-						<div>
-							<h5>Carlos</h5>
-							<h6>Barcelona 3 x 0 Atletico de Madri</h6>	
+
+						<div class="col-sm-4">
+							<h4>Você Perdeu</h4>
+							<div>
+								<h5>Andre</h5>
+								<h6>Manchester Utd. 1 x 3 Chelsea</h6>
+							</div>
+							<div>
+								<h5>Paulo</h5>
+								<h6>Manchester Utd. 0 x 2 Manchester City</h6>
+							</div>
+							<div>
+								<h5>Carlos</h5>
+								<h6>Barcelona 0 x 1 Atletico de Madri</h6>	
+							</div>
 						</div>
 					</div>
-
-					<div class="col-sm-4">
-						<h4>Você Empatou</h4>
-						<div>
-							<h5>Andre</h5>
-							<h6>Manchester Utd. 3 x 3 Chelsea</h6>
-						</div>
-						<div>
-							<h5>Paulo</h5>
-							<h6>Manchester Utd. 3 x 3 Manchester City</h6>
-						</div>
-						<div>
-							<h5>Carlos</h5>
-							<h6>Barcelona 1 x 1 Atletico de Madri</h6>	
-						</div>
+					<div class="canvas-container col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8">
+						<canvas id="myChart" width="100%" height="100%"></canvas>
 					</div>
-
-					<div class="col-sm-4">
-						<h4>Você Perdeu</h4>
-						<div>
-							<h5>Andre</h5>
-							<h6>Manchester Utd. 1 x 3 Chelsea</h6>
-						</div>
-						<div>
-							<h5>Paulo</h5>
-							<h6>Manchester Utd. 0 x 2 Manchester City</h6>
-						</div>
-						<div>
-							<h5>Carlos</h5>
-							<h6>Barcelona 0 x 1 Atletico de Madri</h6>	
-						</div>
-					</div>
-					
 				</div>
 			</div>
 		</div>
@@ -157,16 +160,16 @@
 			</div>
 			<div>
 				<form class="form-group">
-					<label for="amigo">Contra: </label>
-					<input class="form-control" type="text" name="amigo" placeholder="Entre o nome">
+					<label for="adversario">Contra: </label>
+					<input class="form-control" type="text" name="adversario" placeholder="Entre o nome">
 					<label for="timeUsuario">Seu time:</label>
 					<input class="form-control" type="text" name="timeUsuario" placeholder="Opicional">
 					<label for="timeUsuarioGols">Gols:</label>
 					<input class="form-control" type="text" name="timeUsuarioGols" placeholder="Opicional">
-					<label for="timeAmigo">Time do seu amigo:</label>
-					<input class="form-control" type="text" name="timeAmigoGols" placeholder="Opicional">
-					<label for="timeAmigoGols">Gols:</label>
-					<input class="form-control" type="text" name="timeAmigo" placeholder="Opicional">
+					<label for="timeAdversario">Time do seu amigo:</label>
+					<input class="form-control" type="text" name="timeAdversario" placeholder="Opicional">
+					<label for="timeAdversarioGols">Gols:</label>
+					<input class="form-control" type="text" name="timeAdversarioGols" placeholder="Opicional">
 					<label for="data">Quando?</label>
 					<input class="form-control" type="date" name="data">
 					<label for="grupo">Grupo:</label>
@@ -183,9 +186,59 @@
 		  	</div>
 		</div>
 
+		<div id="criar_grupo_popup" class="popup mfp-hide">
+		  	<div>
+				<h3>Criar Grupo</h3>
+			</div>
+			<div>
+				<form class="form-group">
+					<label for="grupoNome">Nome:</label>
+					<input class="form-control" type="text" name="grupoNome" placeholder="Entre o nome do seu grupo">
+					
+					<h4>Membros:</h4>
+
+					<p>Muita gente pra adicionar? Mande-os um <a href="#">link de convite</a></p>
+
+					<input class="form-control" type="text" name="amigo" placeholder="Nome">					
+					<input class="form-control" type="email" name="emailAmigo" placeholder="Email (opicional)">
+					
+					<a href="#"><i class="fa fa-plus" aria-hidden="true"></i> Uma pessoa</a>
+					
+					<br>
+					<br>
+
+					<button class="btn btn-default">Cancelar</button>
+					<button class="btn btn-success">Criar</button>
+				</form>
+		  	</div>
+		</div>
+
+		<div id="convidar_amigos" class="popup mfp-hide">
+		  	<div>
+				<h3>Convidar Amigo</h3>
+			</div>
+			<div>
+				<form class="form-group">
+
+					<label for="amigos">Para:</label>
+					<input class="form-control" type="text" name="amigos" placeholder="Entre os nomes de seus amigos">
+
+					<label for="mensagem"></label>
+					<textarea class="form-control" type="text" name="mensagem" placeholder="Escreva uma mensagem opicional"></textarea>
+
+					<br>
+					<br>
+
+					<button class="btn btn-default">Cancelar</button>
+					<button class="btn btn-success">Enviar</button>
+				</form>
+		  	</div>
+		</div>
+
         <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
         <script src="js/vendor/jquery.magnific-popup.min.js"></script>
         <script type="text/javascript" src="js/vendor/bootstrap.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
 		<script src="js/fb_login.js"></script>
