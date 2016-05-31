@@ -1,5 +1,5 @@
-var ll;
-function LiveLinks(fbname) {
+var facebookLogin;
+function facebook_login() {
     var f = firebase.database();
 
     firebase.database().ref().on('value', function(snapshot) {
@@ -30,7 +30,7 @@ function LiveLinks(fbname) {
 
     this.uid = function() {return uid;};
 
-    this.loginFacebook = function(email,password) {
+    this.loginFacebook = function() {
     	var provider = new firebase.auth.FacebookAuthProvider();
         firebase.auth().signInWithPopup(provider).then(function(result) {
   		// This gives you a Facebook Access Token. You can use it to access the Facebook API.
@@ -39,10 +39,12 @@ function LiveLinks(fbname) {
   		var user = result.user;
         var name = user.displayName;
         var email = user.email;
+        var profilePicture = user.photoURL;
         var today = new Date();
         var dd = today.getDate();
         var mm = today.getMonth()+1; //January is 0!
         var yyyy = today.getFullYear();
+        console.log(user);
 
         if(dd<10) {
             dd='0'+dd
@@ -53,16 +55,29 @@ function LiveLinks(fbname) {
         }
         today = mm+'/'+dd+'/'+yyyy;
         
-        firebase.database().ref('users/'+user.uid).on('value',function(snapshot){
+        firebase.database().ref('users/'+name).on('value',function(snapshot){
             if(!snapshot.exists()){
-                firebase.database().ref('users/' + user.uid).set({
-                    username: name,
-                    email: email,
-                    date:today
-                });
+                firebase.database().ref('users/' + name +'/'+user.uid).set({
+                        username: name,
+                        profilePicture: profilePicture,
+                        email: email,
+                        date:today
+                    });
+                console.log("user with this name still does not exist");    
             }
-            else console.log("user already exists");
+            else{
+                if(!snapshot.child(user.uid).exists()){
+                    firebase.database().ref('users/' + name +'/'+user.uid).set({
+                        username: name,
+                        profilePicture: profilePicture,
+                        email: email,
+                        date:today
+                    });    
+                }else console.log("user already exists");
+            }
         });
+        localStorage.setItem("user",""+name+'/'+user.uid);
+        window.location = 'landing.html'; 
        
   		// ...
 		}).catch(function(error) {
@@ -88,10 +103,10 @@ function LiveLinks(fbname) {
 
 
 $(function(){
-	 ll = new LiveLinks("brunobraga");
+	 facebookLogin = new facebook_login();
 
 	$('#fb-login').on('click',function(e){
-		 ll.loginFacebook();
+		 facebookLogin.loginFacebook();
 	});
 
 });

@@ -38,7 +38,10 @@ $('#convidar_amigo').magnificPopup({
 });
 
 //Chart.js
+
+// ==== Frontend way ==
 estatisticas = [0,0,0];
+// ====================
 
 var graficoContainer = $("#myChart");
 var graficoResumoGeral = new Chart(graficoContainer, {
@@ -47,7 +50,7 @@ var graficoResumoGeral = new Chart(graficoContainer, {
         labels: ["Venceu", "Empatou", "Perdeu"],
         datasets: [{
             label: 'numero de partidas',
-            data: estatisticas,
+            data: [localStorage.getItem("venceu"), localStorage.getItem("empatou"), localStorage.getItem("perdeu")],
             backgroundColor: [
                 "green",
                 "blue",
