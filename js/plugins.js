@@ -38,7 +38,6 @@ $('#convidar_amigo').magnificPopup({
 });
 
 //Chart.js
-
 var graficoContainer = $("#myChart");
 var graficoResumoGeral = new Chart(graficoContainer, {
     type: 'pie',
@@ -46,7 +45,7 @@ var graficoResumoGeral = new Chart(graficoContainer, {
         labels: ["Venceu", "Empatou", "Perdeu"],
         datasets: [{
             label: 'numero de partidas',
-            data: [20, 10, 10],
+            data: [localStorage.getItem("venceu"), localStorage.getItem("empatou"), localStorage.getItem("perdeu")],
             backgroundColor: [
                 "green",
                 "blue",

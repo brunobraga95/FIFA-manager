@@ -13,17 +13,17 @@
         <link rel="stylesheet" href="css/magnific-popup.css">
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/main.css">
-		<script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
 	<script>
-  		// Initialize Firebase
-  		var config = {
-			apiKey: "AIzaSyB4xqL2tNlKX8NqdgotIByclZ3ZDw7ctmU",
-  			authDomain: "fifa-manager.firebaseapp.com",
-    			databaseURL: "https://fifa-manager.firebaseio.com",
-    			storageBucket: "",
-  		};
-  		firebase.initializeApp(config);
-	</script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyBH8HTsYQBLPwnh9KfWVhDKxCW6fGgZVUM",
+    authDomain: "fifa-manager-4b146.firebaseapp.com",
+    databaseURL: "https://fifa-manager-4b146.firebaseio.com",
+    storageBucket: "",
+  };
+  firebase.initializeApp(config);
+</script>
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
     </head>
     <body>
@@ -47,7 +47,7 @@
 		      <ul class="nav navbar-nav navbar-right">
 		       
 		        <li class="navlink"><a href="#" data-mfp-src="#criar_grupo_popup" class="criar_grupo">Criar Grupo</a></li>
-		        <li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown"><img class= "profile-pic" src="https://scontent-ord1-1.xx.fbcdn.net/v/t1.0-9/12240088_892902760799947_5285784193731176154_n.jpg?oh=9116832fb57c57a49fd7f01f958012c4&oe=57CB96BC"> Bruno de Jesus Braga <span class="caret"></span></a>
+		        <li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown"><img class= "profile-pic">Bruno de Jesus Braga <span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="#">Profile</a></li>
 						<li class="divider"></li>
@@ -91,10 +91,10 @@
 						<button id="add_partida" class="btn btn-primary" data-mfp-src="#add_partida_popup">Adicionar uma partida</button>
 					</div>
 					<div class="main-sub-header clearfix">
-						<div class="col-sm-3">Jogou: 40</div>
-						<div class="col-sm-3">Perdeu: 10</div>
-						<div class="col-sm-3">Empatou: 10</div>
-						<div class="col-sm-3">Venceu: 20</div>
+						<div class="col-sm-3" id = "jogou"></div>
+						<div class="col-sm-3" id = "perdeu"></div>
+						<div class="col-sm-3" id = "empatou"></div>
+						<div class="col-sm-3" id = "venceu"></div>
 					</div>
 				</div>
 				<div class="main-content clearfix">
@@ -239,9 +239,8 @@
         <script src="js/vendor/jquery.magnific-popup.min.js"></script>
         <script type="text/javascript" src="js/vendor/bootstrap.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
-        <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
-		<script src="js/fb_login.js"></script>
-    </body>
+        <script src="js/plugins.js"></script>
+	</body>
 </html>
 
