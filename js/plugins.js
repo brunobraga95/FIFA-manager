@@ -38,6 +38,7 @@ $('#convidar_amigo').magnificPopup({
 });
 
 //Chart.js
+estatisticas = [0,0,0];
 
 var graficoContainer = $("#myChart");
 var graficoResumoGeral = new Chart(graficoContainer, {
@@ -46,7 +47,7 @@ var graficoResumoGeral = new Chart(graficoContainer, {
         labels: ["Venceu", "Empatou", "Perdeu"],
         datasets: [{
             label: 'numero de partidas',
-            data: [20, 10, 10],
+            data: estatisticas,
             backgroundColor: [
                 "green",
                 "blue",

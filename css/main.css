@@ -218,6 +218,10 @@ textarea {
     margin: 0;
 }
 
+.nenhuma-partida{
+    text-align: center;
+}
+
 .main-wrapper{
     background-color: #BEBEBE;
 }
@@ -267,22 +271,10 @@ textarea {
 }
 
 .recente-wrapper > div{
-    border-right: 1px solid lightgray;
     text-align: center;
-}
-
-.recente-wrapper > div h4{
-    margin-bottom: 5px;
-}
-
-.recente-wrapper > div div{
     padding-bottom: 12px;
     padding-top: 12px;
     border-bottom: 1px solid lightgray;
-}
-
-.recente-wrapper > div:last-of-type{
-    border-right: 0;
 }
 
 .recente-wrapper div:last-of-type{
