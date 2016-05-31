@@ -38,6 +38,11 @@ $('#convidar_amigo').magnificPopup({
 });
 
 //Chart.js
+
+// ==== Frontend way ==
+estatisticas = [0,0,0];
+// ====================
+
 var graficoContainer = $("#myChart");
 var graficoResumoGeral = new Chart(graficoContainer, {
     type: 'pie',
