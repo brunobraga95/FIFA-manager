@@ -93,63 +93,19 @@
 						<button id="add_partida" class="btn btn-primary btn-lg" data-mfp-src="#add_partida_popup">Adicionar uma partida</button>
 					</div>
 					<div class="main-sub-header clearfix">
-						<div class="col-sm-3">Jogou: 40</div>
-						<div class="col-sm-3">Perdeu: 10</div>
-						<div class="col-sm-3">Empatou: 10</div>
-						<div class="col-sm-3">Venceu: 20</div>
+						<div class="col-sm-3">Jogou: 0</div>
+						<div class="col-sm-3">Perdeu: 0</div>
+						<div class="col-sm-3">Empatou: 0</div>
+						<div class="col-sm-3">Venceu: 0</div>
 					</div>
 				</div>
 				<div class="main-content clearfix">
-					<div class="recente-wrapper hidden">
-						<div class="col-sm-4">
-							<h4>Você Venceu</h4>
-							<div>
-								<h5>Andre</h5>
-								<h6>Manchester Utd. 3 x 1 Chelsea</h6>
-							</div>
-							<div>
-								<h5>Paulo</h5>
-								<h6>Manchester Utd. 3 x 2 Manchester City</h6>
-							</div>
-							<div>
-								<h5>Carlos</h5>
-								<h6>Barcelona 3 x 0 Atletico de Madri</h6>	
-							</div>
-						</div>
-
-						<div class="col-sm-4">
-							<h4>Você Empatou</h4>
-							<div>
-								<h5>Andre</h5>
-								<h6>Manchester Utd. 3 x 3 Chelsea</h6>
-							</div>
-							<div>
-								<h5>Paulo</h5>
-								<h6>Manchester Utd. 3 x 3 Manchester City</h6>
-							</div>
-							<div>
-								<h5>Carlos</h5>
-								<h6>Barcelona 1 x 1 Atletico de Madri</h6>	
-							</div>
-						</div>
-
-						<div class="col-sm-4">
-							<h4>Você Perdeu</h4>
-							<div>
-								<h5>Andre</h5>
-								<h6>Manchester Utd. 1 x 3 Chelsea</h6>
-							</div>
-							<div>
-								<h5>Paulo</h5>
-								<h6>Manchester Utd. 0 x 2 Manchester City</h6>
-							</div>
-							<div>
-								<h5>Carlos</h5>
-								<h6>Barcelona 0 x 1 Atletico de Madri</h6>	
-							</div>
-						</div>
+					<div class="nenhuma-partida">
+						<h3>Você ainda nao jogou nenhuma partida!</h3>
 					</div>
-					<div class="canvas-container col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8">
+					<div class="recente-wrapper hidden col-sm-offset-3 col-sm-6">
+					</div>
+					<div class="canvas-container hidden col-md-offset-3 col-md-6 col-sm-offset-2 col-sm-8">
 						<canvas id="myChart" width="100%" height="100%"></canvas>
 					</div>
 					<div class="grupo-container">
@@ -166,17 +122,15 @@
 			<div>
 				<form class="form-group">
 					<label for="adversario">Contra: </label>
-					<input class="form-control" type="text" name="adversario" placeholder="Entre o nome">
+					<input class="form-control" type="text" name="adversario" id="adversario_nome" placeholder="Entre o nome">
 					<label for="timeUsuario">Seu time:</label>
-					<input class="form-control" type="text" name="timeUsuario" placeholder="Opicional">
+					<input class="form-control" type="text" name="timeUsuario" id="usuario_time" placeholder="Opicional">
 					<label for="timeUsuarioGols">Gols:</label>
-					<input class="form-control" type="text" name="timeUsuarioGols" placeholder="Opicional">
+					<input class="form-control" type="text" name="timeUsuarioGols" id="usuario_gols" placeholder="Opicional">
 					<label for="timeAdversario">Time do seu amigo:</label>
-					<input class="form-control" type="text" name="timeAdversario" placeholder="Opicional">
+					<input class="form-control" type="text" name="timeAdversario" id="adversario_time" placeholder="Opicional">
 					<label for="timeAdversarioGols">Gols:</label>
-					<input class="form-control" type="text" name="timeAdversarioGols" placeholder="Opicional">
-					<label for="data">Quando?</label>
-					<input class="form-control" type="date" name="data">
+					<input class="form-control" type="text" name="timeAdversarioGols" id="adversario_gols" placeholder="Opicional">
 					<label for="grupo">Grupo:</label>
 					<select class="form-control">
 						<option>Nenhum</option>
@@ -186,7 +140,7 @@
 					</select>
 					<br>
 					<button class="btn btn-default">Cancelar</button>
-					<button class="btn btn-success">Adicionar</button>
+					<button class="btn btn-success" id="add_nova_partida_btn">Adicionar</button>
 				</form>
 		  	</div>
 		</div>
@@ -198,7 +152,7 @@
 			<div>
 				<form class="form-group">
 					<label for="grupoNome">Nome:</label>
-					<input class="form-control" type="text" name="grupoNome" placeholder="Entre o nome do seu grupo">
+					<input class="form-control" id='novo_grupo_nome' type="text" name="grupoNome" placeholder="Entre o nome do seu grupo">
 					
 					<h4>Membros:</h4>
 
@@ -213,7 +167,7 @@
 					<br>
 
 					<button class="btn btn-default">Cancelar</button>
-					<button class="btn btn-success">Criar</button>
+					<button class="btn btn-success" id="add_novo_grupo_btn">Criar</button>
 				</form>
 		  	</div>
 		</div>
@@ -225,8 +179,8 @@
 			<div>
 				<form class="form-group">
 
-					<label for="amigos">Para:</label>
-					<input class="form-control" type="text" name="amigos" placeholder="Entre os nomes de seus amigos">
+					<label for="amigo">Para:</label>
+					<input class="form-control" type="text" name="amigo" id="amigo_nome" placeholder="Entre o nome de seu amigo">
 
 					<label for="mensagem"></label>
 					<textarea class="form-control" type="text" name="mensagem" placeholder="Escreva uma mensagem opicional"></textarea>
@@ -235,7 +189,7 @@
 					<br>
 
 					<button class="btn btn-default">Cancelar</button>
-					<button class="btn btn-success">Enviar</button>
+					<button class="btn btn-success" id="add_amigos_btn">Enviar</button>
 				</form>
 		  	</div>
 		</div>
