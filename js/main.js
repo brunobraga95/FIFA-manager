@@ -1,21 +1,27 @@
 $(function(){
 	var f = firebase.database();
-	/*
-    f.ref().on('value', function(snapshot) {
-        console.log(snapshot.val());
-    });
-	*/
+	var nick = null;
     var user = localStorage.getItem("user");
-    f.ref('users/'+user).on('value',function(snapshot){
+    f.ref('usersFacebook/'+user).on('value',function(snapshot){
       $('.profile-pic').attr("src",snapshot.val().profilePicture);
       $('.dropdown-toggle').html("<img class=\"profile-pic\" src=\""+snapshot.val().profilePicture+"\">"+snapshot.val().username+"<span class=\"caret\"></span>");
       
+       if(!snapshot.child("nickName").exists()){
+       	$.magnificPopup.open({
+  			items: {
+    			src: '#nome_usuario_popup',
+    			type: 'inline'
+  			}
+		});
+
+       }
+
       if(snapshot.child("venceu").exists()){
       	$("#venceu").html("Venceu: "+snapshot.val().venceu);
       	localStorage.setItem("venceu",snapshot.val().venceu);
 
       }else{
-      	firebase.database().ref('users/' + user).update({
+      	firebase.database().ref('usersFacebook/' + user).update({
             venceu: 0
         });
       	localStorage.setItem("venceu",0);
@@ -25,7 +31,7 @@ $(function(){
       	$("#perdeu").html("Perdeu: "+snapshot.val().perdeu);
       	localStorage.setItem("perdeu",snapshot.val().perdeu);	
       }else{
-      	firebase.database().ref('users/' + user).update({
+      	firebase.database().ref('usersFacebook/' + user).update({
             perdeu: 0
         });
         localStorage.setItem("perdeu",0);
@@ -36,7 +42,7 @@ $(function(){
       	localStorage.setItem("empatou",snapshot.val().empatou);
 
       }else{
-      	firebase.database().ref('users/' + user).update({
+      	firebase.database().ref('usersFacebook/' + user).update({
             empatou: 0
         });
         localStorage.setItem("empatou",snapshot.val().empatou);
@@ -47,27 +53,16 @@ $(function(){
       	localStorage.setItem("jogou",snapshot.val().jogou);
 
       }else{
-      	firebase.database().ref('users/' + user).update({
+      	firebase.database().ref('usersFacebook/' + user).update({
             jogou: 0
         });
         localStorage.setItem("jogou",snapshot.val().jogou);
-      }			
+      }
+
 
     });
 
-	/*
-    
-    f.ref('users/'+userId+'/venceu').transaction(function(venceu){
-        if (venceu) {
-            console.log("teste");
-            return +venceu+ 1;
-        }
-        else{
-        	console.log("deu n");
-        	return 10;	
-        }
-    });
-	*/
+
 
 	var partidas = 0;
 	$('#resumo').click(function(){
@@ -91,6 +86,27 @@ $(function(){
 		$('.main-header > h1 > small').html('Recente');
 		$('.main-sub-header').addClass('hidden');
 		
+	}); 	
+		
+	$('#add_nome_usuario').unbind().click(function(e){
+    	var flag = false;
+    	e.preventDefault();
+		var nickName = $("#nome_usuario").val();
+		if(nickName.indexOf(' ')>=0){
+			alert("Please do not enter white spaces");
+			return;
+		}
+		else{
+			f.ref('usersNickNames').on('value',function(snapshot){
+				if(!snapshot.child(nickName).exists()){
+					flag = true;
+					f.ref('usersFacebook/'+user).update({nickName:nickName});
+					f.ref('usersNickNames/'+nickName).set({facebookId:user});
+					$.magnificPopup.close();
+					return;
+				}else if(!flag)alert.log("User with this nickname already exists");
+			});
+		}
 	});
 	
 	$('#todos-grupos, #todos-amigos, #geral').on('click', 'li', function(event){
@@ -149,5 +165,26 @@ $(function(){
 		popupAux(event);
 		$('#todos-amigos').append("<li class='list-group-item' id=" + 'fifa-amigos-' + spacesToUnderline(amigo_nome.value) + ">" + amigo_nome.value + "</li>");
 		$('#todos-amigos li:last-child').trigger('click');
+	});
+	/*
+	$("#amigo_nome").on("change paste keyup", function() {
+   		var friend_name = $(this).val(); 
+   		f.ref('usersNickNames').on('value',function(snapshot){
+			if(!snapshot.child(friend_name).exists()){
+				console.log("nao achou");
+			}else console.log("achou");
+		});
+	});
+	*/
+	$("#add_amigos_btn").on('click',function(e){
+		e.preventDefault();
+		var friend_name = $("#amigo_nome").val();
+		f.ref('usersNickNames').on('value',function(snapshot){
+			if(snapshot.child(friend_name).exists()){
+				f.ref('usersNickNames/'+friend_name).once("value",function(snapshot){
+					friendId = snapshot.val()[Object.keys(snapshot.val())[0]];
+				});
+			}else alert("We could not find "+friend_name);
+		});
 	});
 });
