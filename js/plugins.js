@@ -37,12 +37,7 @@ $('#convidar_amigo').magnificPopup({
   type: 'inline'
 });
 
-$.magnificPopup.open({
-  items: {
-    src: '#nome_usuario_popup',
-    type: 'inline'
-  }
-});
+
 
 //Chart.js
 

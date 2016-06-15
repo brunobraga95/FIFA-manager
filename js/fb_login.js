@@ -54,29 +54,18 @@ function facebook_login() {
             mm='0'+mm
         }
         today = mm+'/'+dd+'/'+yyyy;
-        
-        firebase.database().ref('users/'+name).on('value',function(snapshot){
-            if(!snapshot.exists()){
-                firebase.database().ref('users/' + name +'/'+user.uid).set({
-                        username: name,
-                        profilePicture: profilePicture,
-                        email: email,
-                        date:today
-                    });
-                console.log("user with this name still does not exist");    
-            }
-            else{
-                if(!snapshot.child(user.uid).exists()){
-                    firebase.database().ref('users/' + name +'/'+user.uid).set({
-                        username: name,
-                        profilePicture: profilePicture,
-                        email: email,
-                        date:today
-                    });    
-                }else console.log("user already exists");
-            }
+        console.log(user.uid);
+        firebase.database().ref('usersFacebook').on('value',function(snapshot){
+            if(!snapshot.child(user.uid).exists()){
+                firebase.database().ref('usersFacebook/'+user.uid).set({
+                    userName: name,
+                    profilePicture: profilePicture,
+                    email: email,
+                    date:today,
+                });    
+            }else console.log("user already exists");
         });
-        localStorage.setItem("user",""+name+'/'+user.uid);
+        localStorage.setItem("user",user.uid);
         window.location = 'landing.html'; 
        
   		// ...
