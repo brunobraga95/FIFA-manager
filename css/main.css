@@ -13,7 +13,7 @@
 html {
     color: #222;
     font-size: 1em;
-    line-height: 1.4;
+    line-height: 1.3;
 }
 
 /*
@@ -96,9 +96,15 @@ textarea {
    ========================================================================== */
 /* colors: */
 /* Facebook Blue: rgba(59, 89, 152,1) */
+/* Background: #F5F5F5;
+
 
 /* images: */
 /* Login-page Background: http://wallpaperswide.com/soccer_fans-wallpapers.html */
+
+body{
+    background-color: #F5F5F5;
+}
 
 .login_page{
     position: relative;
@@ -164,6 +170,14 @@ textarea {
     margin: 0;
 }
 
+.navbar-nav > li > a{
+    padding: 5px 15px 5px 15px;
+}
+
+.navbar-brand{
+    padding: 5px 15px;
+}
+
 .profile-pic{
     width: 48px;
     height: 48px;
@@ -185,7 +199,7 @@ textarea {
 
 /* SIDEBAR */
 .left-sidebar{
-    background-color: #999999;
+    background-color: #6991AC;
     height: 100%;
     margin: 0;
 }
@@ -209,6 +223,9 @@ textarea {
     color: #777777;
 }
 
+.list-group-item{
+    padding: 5px 10px;
+}
 
 /* MAIN */
 
@@ -223,17 +240,23 @@ textarea {
 }
 
 .main-wrapper{
-    background-color: #BEBEBE;
 }
 
 .main-header{
-    padding: 25px;
-    border-bottom: 1px solid lightgray;
+    padding: 10px 15px;
+    background-color: #C3D7DF;
+}
+
+.active{
+    background-color: #D65C37 !important;
+    border-color: #D65C37 !important;
 }
 
 .main-header .btn{
     float: right;
     display: inline-block;
+    background-color: #6991AC;
+    color: #F5F5F5;
 }
 
 .main-header h1{
@@ -246,15 +269,13 @@ textarea {
 }
 
 .main-sub-header{
-    margin-top: 5px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid lightgray;
+    padding: 5px;
+    background-color: lightgray;
 }
 
 .main-sub-header div{
-    padding: 10px;
-    border-right: 1px solid lightgray;
-    text-align: center;
+    padding: 5px;
+   text-align: center;
 }
 
 .main-sub-header > div:last-of-type{
@@ -274,7 +295,7 @@ textarea {
     text-align: center;
     padding-bottom: 12px;
     padding-top: 12px;
-    border-bottom: 1px solid lightgray;
+    border-bottom: 1px solid #F5F5F5;
 }
 
 .recente-wrapper div:last-of-type{
