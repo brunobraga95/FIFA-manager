@@ -1,7 +1,7 @@
 $(function(){
 	var f = firebase.database();
-	var nick = null;
     var user = localStorage.getItem("user");
+    var userNickName = null;
     f.ref('usersFacebook/'+user).on('value',function(snapshot){
       $('.profile-pic').attr("src",snapshot.val().profilePicture);
       $('.dropdown-toggle').html("<img class=\"profile-pic\" src=\""+snapshot.val().profilePicture+"\">"+snapshot.val().username+"<span class=\"caret\"></span>");
@@ -14,7 +14,7 @@ $(function(){
   			}
 		});
 
-       }
+       }else userNickName = snapshot.val().nickName;
 
       if(snapshot.child("venceu").exists()){
       	$("#venceu").html("Venceu: "+snapshot.val().venceu);
@@ -62,8 +62,6 @@ $(function(){
 
     });
 
-
-
 	var partidas = 0;
 	$('#resumo').click(function(){
 		$(this).addClass('active');
@@ -99,6 +97,7 @@ $(function(){
 		else{
 			f.ref('usersNickNames').on('value',function(snapshot){
 				if(!snapshot.child(nickName).exists()){
+					userNickName = nickname;
 					flag = true;
 					f.ref('usersFacebook/'+user).update({nickName:nickName});
 					f.ref('usersNickNames/'+nickName).set({facebookId:user});
@@ -183,6 +182,15 @@ $(function(){
 			if(snapshot.child(friend_name).exists()){
 				f.ref('usersNickNames/'+friend_name).once("value",function(snapshot){
 					friendId = snapshot.val()[Object.keys(snapshot.val())[0]];
+					f.ref('usersFacebook/'+user+'/friendRequestSent').update({
+						nickName:friend_name,
+						accepted:false
+					});
+					f.ref('usersFacebook/'+friendId+'/friendRequestReceived').update({
+						nickName:userNickName,
+						accepted:false
+					});
+
 				});
 			}else alert("We could not find "+friend_name);
 		});
