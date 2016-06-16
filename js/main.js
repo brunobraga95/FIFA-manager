@@ -4,7 +4,7 @@ $(function(){
     var userNickName = null;
     f.ref('usersFacebook/'+user).on('value',function(snapshot){
       $('.profile-pic').attr("src",snapshot.val().profilePicture);
-      $('.dropdown-toggle').html("<img class=\"profile-pic\" src=\""+snapshot.val().profilePicture+"\">"+snapshot.val().username+"<span class=\"caret\"></span>");
+      $('.dropdown-toggle').html("<img class=\"profile-pic\" src=\""+snapshot.val().profilePicture+"\">"+snapshot.val().userName+"<span class=\"caret\"></span>");
       
        if(!snapshot.child("nickName").exists()){
        	$.magnificPopup.open({
@@ -233,19 +233,29 @@ $(function(){
 	$("#add_amigos_btn").on('click',function(e){
 		e.preventDefault();
 		var friend_name = $("#amigo_nome").val();
-		f.ref('usersNickNames').on('value',function(snapshot){
+		f.ref('usersNickNames').once('value',function(snapshot){
 			if(snapshot.child(friend_name).exists()){
-				f.ref('usersNickNames/'+friend_name).once("value",function(snapshot){
-					friendId = snapshot.val()[Object.keys(snapshot.val())[0]];
-					var foo = {};
-					foo[friend_name] = friendId;
-					var bar = {};
-					bar[userNickName] = user;
-					f.ref('usersFacebook/'+user+'/friendRequestSent').update(foo);
-					f.ref('usersFacebook/'+friendId+'/friendRequestReceived').update(bar);
-
+				f.ref('usersFacebook/'+user+'/friends').once('value',function(snapshot){
+					if(!snapshot.child(friend_name).exists()){			
+						f.ref('usersNickNames/'+friend_name).once("value",function(snapshot){
+						friendId = snapshot.val()[Object.keys(snapshot.val())[0]];
+						var foo = {};
+						foo[friend_name] = friendId;
+						var bar = {};
+						bar[userNickName] = user;
+						f.ref('usersFacebook/'+user+'/friendRequestSent').update(foo);
+						f.ref('usersFacebook/'+friendId+'/friendRequestReceived').update(bar);						
+				});				
+					}else alert("user "+friend_name+" already is your friend");
 				});
+
+				
 			}else alert("We could not find "+friend_name);
 		});
+	});
+
+	$(".log-out-button").on('click',function(e){
+		var fb_login = new facebook_login();
+		fb_login.logout();
 	});
 });

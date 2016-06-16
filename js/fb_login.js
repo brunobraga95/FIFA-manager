@@ -1,74 +1,40 @@
-var facebookLogin;
 function facebook_login() {
-    var f = firebase.database();
-
-    firebase.database().ref().on('value', function(snapshot) {
-        console.log(snapshot.val());
-    });
-    
-    this.onLogin = function(user) {};
-    this.onLoginFailure = function() {};
-    this.onLogout = function() {};
-    this.onError = function(error) {};
-
-    // long running firebase listener
-    this.start = function() {
-        firebase.onAuth(function (authResponse) {
-            if (authResponse) {
-                console.log("user is logged in");
-                kamonaUsers.child(authResponse.uid).once('value', function(snapshot) {
-                    instance.userData = authResponse;
-                    localStorage.setItem("uid",authResponse.uid);
-                    instance.onLogin(snapshot.val());
-                });
-            } else {
-                console.log("user is logged out");
-                instance.onLogout();
-            }
-        });
-    };
-
-    this.uid = function() {return uid;};
+    this.f = firebase.database();
+    this.provider = new firebase.auth.FacebookAuthProvider();
+    that = this;
 
     this.loginFacebook = function() {
-    	var provider = new firebase.auth.FacebookAuthProvider();
-        firebase.auth().signInWithPopup(provider).then(function(result) {
-  		// This gives you a Facebook Access Token. You can use it to access the Facebook API.
-  		var token = result.credential.accessToken;
-  		// The signed-in user info.
-  		var user = result.user;
-        var name = user.displayName;
-        var email = user.email;
-        var profilePicture = user.photoURL;
-        var today = new Date();
-        var dd = today.getDate();
-        var mm = today.getMonth()+1; //January is 0!
-        var yyyy = today.getFullYear();
-        console.log(user);
+        firebase.auth().signInWithPopup(that.provider).then(function(result) {
+  		    that.token = result.credential.accessToken;
+  		    that.user = result.user;
+            that.name = that.user.displayName;
+            that.email = that.user.email;
+            that.profilePicture = that.user.photoURL;
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth()+1;
+            var yyyy = today.getFullYear();
+            if(dd<10) {
+                dd='0'+dd;
+            }
 
-        if(dd<10) {
-            dd='0'+dd
-        }
+            if(mm<10) {
+                mm='0'+mm;
+             }
+            today = mm+'/'+dd+'/'+yyyy;
+            firebase.database().ref('usersFacebook').on('value',function(snapshot){
+                if(!snapshot.child(that.user.uid).exists()){
+                    firebase.database().ref('usersFacebook/'+that.user.uid).set({
+                        userName: that.name,
+                        profilePicture: that.profilePicture,
+                        email: that.email,
+                        date:that.today,
+                    });    
+                }else console.log("user already exists");
+            });
+            localStorage.setItem("user",that.user.uid);
+            window.location = 'landing.html'; 
 
-        if(mm<10) {
-            mm='0'+mm
-        }
-        today = mm+'/'+dd+'/'+yyyy;
-        console.log(user.uid);
-        firebase.database().ref('usersFacebook').on('value',function(snapshot){
-            if(!snapshot.child(user.uid).exists()){
-                firebase.database().ref('usersFacebook/'+user.uid).set({
-                    userName: name,
-                    profilePicture: profilePicture,
-                    email: email,
-                    date:today,
-                });    
-            }else console.log("user already exists");
-        });
-        localStorage.setItem("user",user.uid);
-        window.location = 'landing.html'; 
-       
-  		// ...
 		}).catch(function(error) {
 			// Handle Errors here.
  			var errorCode = error.code;
@@ -83,16 +49,18 @@ function facebook_login() {
     };
     // logout
     this.logout = function() {
-        this.firebase.unauth();
-        localStorage.clear();
-        instance.auth=null;
-        location.reload();
+        firebase.auth().signOut().then(function() {
+            localStorage.clear();
+            window.location = "index.html";
+        }, function(error) {
+            console.log(error);
+        });
     };
 }
 
 
 $(function(){
-	 facebookLogin = new facebook_login();
+	 var facebookLogin = new facebook_login();
 
 	$('#fb-login').on('click',function(e){
 		 facebookLogin.loginFacebook();
