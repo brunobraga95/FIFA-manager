@@ -48,7 +48,7 @@
 		        <li class="navlink"><a href="#" data-mfp-src="#criar_grupo_popup" class="criar_grupo">Criar Grupo</a></li>
 		        <li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown"><img class= "profile-pic">Bruno de Jesus Braga <span class="caret"></span></a>
 					<ul class="dropdown-menu">
-						<li><a href="#">Log Out</a></li>
+						<li><a href="#" class = "log-out-button" >Log Out</a></li>
 					</ul>
 		        </li>
 		        
@@ -79,9 +79,6 @@
 				
 				<ul class="list-group" id="todos-amigos">
 					<li class="list-group-item">Amigos <a id="convidar_amigo" href="#" data-mfp-src="#convidar_amigos_popup" class="small"> <i class="fa fa-plus" aria-hidden="true"></i> add</a></li>
-					<li class="list-group-item" id="fifa-amigos-Andre">Andre</li>
-					<li class="list-group-item" id="fifa-amigos-Paulo">Paulo</li>
-					<li class="list-group-item" id="fifa-amigos-Carlos">Carlos</li>
 				</ul>
 
 			</div>
@@ -213,7 +210,7 @@
 				<form class="form-group">
 
 					<p>Você recebeu um novo convite de:</p>
-					<ul class="list-group">
+					<ul id = "friend-request-list" class="list-group">
 
 						<li class="list-group-item" style="display:flex;justify-content: space-between">
 							<p style="margin:0;"><b>Bruno Braga</b></p>
@@ -233,7 +230,8 @@
         <script src="js/vendor/jquery.magnific-popup.min.js"></script>
         <script type="text/javascript" src="js/vendor/bootstrap.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
-        <script src="js/main.js"></script>
+        <script src="js/fb_login.js"></script>
+         <script src="js/main.js"></script>
         <script src="js/plugins.js"></script>
 	</body>
 </html>

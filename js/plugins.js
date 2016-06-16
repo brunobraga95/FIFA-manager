@@ -33,17 +33,19 @@ $('.criar_grupo').magnificPopup({
   type: 'inline'
 });
 
+
 $('#convidar_amigo').magnificPopup({
   type: 'inline'
 });
 
+/*
 $.magnificPopup.open({
     items: {
         src: '#convite_amizade_popup',
         type: 'inline'
     }
 });
-
+*/
 
 //Chart.js
 
