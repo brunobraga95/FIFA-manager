@@ -16,6 +16,25 @@ $(function(){
 
        }else userNickName = snapshot.val().nickName;
 
+       if(snapshot.child("friendRequestReceived").exists()){
+       	$.magnificPopup.open({
+    		items: {
+        	src: '#convite_amizade_popup',
+        	type: 'inline'
+    		}
+		});
+		f.ref('usersFacebook/'+user+'/friendRequestReceived').on("value",function(snapshot){
+			var requestArray = snapshot.val();
+			for(var key in requestArray){
+				var friendRequestInvitation = "<li class=\"list-group-item \" style=\"display:flex;justify-content: space-between\">"+
+							"<p style=\"margin:0;\"><b>"+key+"</b></p><div><button class=\"btn btn-success accept-friend-request\" id = \"friendRequestAccept"+key+"\">Aceitar</button>"+
+							"<button class=\"btn btn-danger reject-friend-request\" id = \"friendRequestReject"+key+"\">Rejeitar</button></div></li>"
+				$("#friend-request-list").append(friendRequestInvitation);
+			}
+		});
+
+       }
+
       if(snapshot.child("venceu").exists()){
       	$("#venceu").html("Venceu: "+snapshot.val().venceu);
       	localStorage.setItem("venceu",snapshot.val().venceu);
@@ -175,6 +194,41 @@ $(function(){
 		});
 	});
 	*/
+
+	$("#convite_amizade_popup").on('click','button.accept-friend-request',function(e){
+		var id = e.target.id.substring(19,e.target.id.length);
+		f.ref('usersNickNames/'+id).once("value",function(snapshot){
+			var friendRequestFbUrl = snapshot.val()[Object.keys(snapshot.val())[0]];
+			f.ref('usersFacebook/'+user+'/friendRequestReceived/'+id).remove();
+			f.ref('usersFacebook/'+friendRequestFbUrl+'/friendRequestSent/'+userNickName).remove();
+
+			f.ref('usersFacebook/'+user+'/friends/'+id).update({
+				jogos:0,
+				venceu:0,
+				perdeu:0,
+				empatou:0	
+			});
+
+			f.ref('usersFacebook/'+friendRequestFbUrl+'/friends/'+userNickName).update({
+				jogos:0,
+				venceu:0,
+				perdeu:0,
+				empatou:0	
+			});
+		});
+		
+	});
+
+	$("#convite_amizade_popup").on('click','button.reject-friend-request',function(e){
+		var id = e.target.id.substring(19,e.target.id.length);
+		var id = e.target.id.substring(19,e.target.id.length);
+		f.ref('usersNickNames/'+id).once("value",function(snapshot){
+			var friendRequestFbUrl = snapshot.val()[Object.keys(snapshot.val())[0]];
+			f.ref('usersFacebook/'+user+'/friendRequestReceived/'+id).remove();
+			f.ref('usersFacebook/'+friendRequestFbUrl+'/friendRequestSent/'+userNickName).remove();
+		});
+	});
+
 	$("#add_amigos_btn").on('click',function(e){
 		e.preventDefault();
 		var friend_name = $("#amigo_nome").val();
@@ -182,14 +236,12 @@ $(function(){
 			if(snapshot.child(friend_name).exists()){
 				f.ref('usersNickNames/'+friend_name).once("value",function(snapshot){
 					friendId = snapshot.val()[Object.keys(snapshot.val())[0]];
-					f.ref('usersFacebook/'+user+'/friendRequestSent').update({
-						nickName:friend_name,
-						accepted:false
-					});
-					f.ref('usersFacebook/'+friendId+'/friendRequestReceived').update({
-						nickName:userNickName,
-						accepted:false
-					});
+					var foo = {};
+					foo[friend_name] = friendId;
+					var bar = {};
+					bar[userNickName] = user;
+					f.ref('usersFacebook/'+user+'/friendRequestSent').update(foo);
+					f.ref('usersFacebook/'+friendId+'/friendRequestReceived').update(bar);
 
 				});
 			}else alert("We could not find "+friend_name);
