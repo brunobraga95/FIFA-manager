@@ -114,9 +114,10 @@ $(function(){
 			return;
 		}
 		else{
+			userNickName = nickName;
 			f.ref('usersNickNames').on('value',function(snapshot){
 				if(!snapshot.child(nickName).exists()){
-					userNickName = nickname;
+					userNickName = nickName;
 					flag = true;
 					f.ref('usersFacebook/'+user).update({nickName:nickName});
 					f.ref('usersNickNames/'+nickName).set({facebookId:user});
