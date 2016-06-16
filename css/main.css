@@ -302,7 +302,7 @@ body{
     border-bottom: 0;
 }
 
-/* ADD PARTIDA POPUP */
+/* POPUP */
 .popup {
   position: relative;
   background: #FFF;
@@ -320,6 +320,8 @@ body{
 .popup > div:last-of-type{
     padding: 10px;
 }
+
+
 
 /* ============= PROFILE PAGE ======================== */
 
