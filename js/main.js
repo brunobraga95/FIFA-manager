@@ -1,8 +1,9 @@
 $(function(){
-	var f = firebase.database();
-    var user = localStorage.getItem("user");
-    var userNickName = null;
-    f.ref('usersFacebook/'+user).on('value',function(snapshot){
+	var f = this.f = firebase.database();
+    this.user = localStorage.getItem("user");
+    this.userNickName = null;
+    that = this;
+    f.ref('usersFacebook/'+that.user).on('value',function(snapshot){
       $('.profile-pic').attr("src",snapshot.val().profilePicture);
       $('.dropdown-toggle').html("<img class=\"profile-pic\" src=\""+snapshot.val().profilePicture+"\">"+snapshot.val().userName+"<span class=\"caret\"></span>");
       
@@ -14,7 +15,7 @@ $(function(){
   			}
 		});
 
-       }else userNickName = snapshot.val().nickName;
+       }else that.userNickName = snapshot.val().nickName;
 
        if(snapshot.child("friendRequestReceived").exists()){
        	$.magnificPopup.open({
@@ -23,7 +24,7 @@ $(function(){
         	type: 'inline'
     		}
 		});
-		f.ref('usersFacebook/'+user+'/friendRequestReceived').on("value",function(snapshot){
+		f.ref('usersFacebook/'+that.user+'/friendRequestReceived').on("value",function(snapshot){
 			var requestArray = snapshot.val();
 			for(var key in requestArray){
 				var friendRequestInvitation = "<li class=\"list-group-item \" style=\"display:flex;justify-content: space-between\">"+
@@ -35,12 +36,20 @@ $(function(){
 
        }
 
+       var friends = snapshot.val().friends;
+       if(friends){
+       		for(key in friends){
+       			var userFriend = "<li class=\"list-group-item\" id=\"fifa-amigos-"+key+"\">"+key+"</li>";
+       			$("#todos-amigos").append(userFriend);
+       		}
+       }
+
       if(snapshot.child("venceu").exists()){
       	$("#venceu").html("Venceu: "+snapshot.val().venceu);
       	localStorage.setItem("venceu",snapshot.val().venceu);
 
       }else{
-      	firebase.database().ref('usersFacebook/' + user).update({
+      	firebase.database().ref('usersFacebook/' + that.user).update({
             venceu: 0
         });
       	localStorage.setItem("venceu",0);
@@ -50,7 +59,7 @@ $(function(){
       	$("#perdeu").html("Perdeu: "+snapshot.val().perdeu);
       	localStorage.setItem("perdeu",snapshot.val().perdeu);	
       }else{
-      	firebase.database().ref('usersFacebook/' + user).update({
+      	firebase.database().ref('usersFacebook/' + that.user).update({
             perdeu: 0
         });
         localStorage.setItem("perdeu",0);
@@ -61,7 +70,7 @@ $(function(){
       	localStorage.setItem("empatou",snapshot.val().empatou);
 
       }else{
-      	firebase.database().ref('usersFacebook/' + user).update({
+      	firebase.database().ref('usersFacebook/' + that.user).update({
             empatou: 0
         });
         localStorage.setItem("empatou",snapshot.val().empatou);
@@ -72,7 +81,7 @@ $(function(){
       	localStorage.setItem("jogou",snapshot.val().jogou);
 
       }else{
-      	firebase.database().ref('usersFacebook/' + user).update({
+      	firebase.database().ref('usersFacebook/' + that.user).update({
             jogou: 0
         });
         localStorage.setItem("jogou",snapshot.val().jogou);
@@ -114,13 +123,12 @@ $(function(){
 			return;
 		}
 		else{
-			userNickName = nickName;
 			f.ref('usersNickNames').on('value',function(snapshot){
 				if(!snapshot.child(nickName).exists()){
-					userNickName = nickName;
+					that.userNickName = nickName;
 					flag = true;
 					f.ref('usersFacebook/'+user).update({nickName:nickName});
-					f.ref('usersNickNames/'+nickName).set({facebookId:user});
+					f.ref('usersNickNames/'+nickName).set({facebookId:that.user});
 					$.magnificPopup.close();
 					return;
 				}else if(!flag)alert.log("User with this nickname already exists");
@@ -200,17 +208,17 @@ $(function(){
 		var id = e.target.id.substring(19,e.target.id.length);
 		f.ref('usersNickNames/'+id).once("value",function(snapshot){
 			var friendRequestFbUrl = snapshot.val()[Object.keys(snapshot.val())[0]];
-			f.ref('usersFacebook/'+user+'/friendRequestReceived/'+id).remove();
-			f.ref('usersFacebook/'+friendRequestFbUrl+'/friendRequestSent/'+userNickName).remove();
+			f.ref('usersFacebook/'+that.user+'/friendRequestReceived/'+id).remove();
+			f.ref('usersFacebook/'+friendRequestFbUrl+'/friendRequestSent/'+that.userNickName).remove();
 
-			f.ref('usersFacebook/'+user+'/friends/'+id).update({
+			f.ref('usersFacebook/'+that.user+'/friends/'+id).update({
 				jogos:0,
 				venceu:0,
 				perdeu:0,
 				empatou:0	
 			});
 
-			f.ref('usersFacebook/'+friendRequestFbUrl+'/friends/'+userNickName).update({
+			f.ref('usersFacebook/'+friendRequestFbUrl+'/friends/'+that.userNickName).update({
 				jogos:0,
 				venceu:0,
 				perdeu:0,
@@ -222,11 +230,10 @@ $(function(){
 
 	$("#convite_amizade_popup").on('click','button.reject-friend-request',function(e){
 		var id = e.target.id.substring(19,e.target.id.length);
-		var id = e.target.id.substring(19,e.target.id.length);
 		f.ref('usersNickNames/'+id).once("value",function(snapshot){
 			var friendRequestFbUrl = snapshot.val()[Object.keys(snapshot.val())[0]];
-			f.ref('usersFacebook/'+user+'/friendRequestReceived/'+id).remove();
-			f.ref('usersFacebook/'+friendRequestFbUrl+'/friendRequestSent/'+userNickName).remove();
+			f.ref('usersFacebook/'+that.user+'/friendRequestReceived/'+id).remove();
+			f.ref('usersFacebook/'+friendRequestFbUrl+'/friendRequestSent/'+that.userNickName).remove();
 		});
 	});
 
@@ -235,15 +242,15 @@ $(function(){
 		var friend_name = $("#amigo_nome").val();
 		f.ref('usersNickNames').once('value',function(snapshot){
 			if(snapshot.child(friend_name).exists()){
-				f.ref('usersFacebook/'+user+'/friends').once('value',function(snapshot){
+				f.ref('usersFacebook/'+that.user+'/friends').once('value',function(snapshot){
 					if(!snapshot.child(friend_name).exists()){			
 						f.ref('usersNickNames/'+friend_name).once("value",function(snapshot){
 						friendId = snapshot.val()[Object.keys(snapshot.val())[0]];
 						var foo = {};
 						foo[friend_name] = friendId;
 						var bar = {};
-						bar[userNickName] = user;
-						f.ref('usersFacebook/'+user+'/friendRequestSent').update(foo);
+						bar[userNickName] = this.user;
+						f.ref('usersFacebook/'+that.user+'/friendRequestSent').update(foo);
 						f.ref('usersFacebook/'+friendId+'/friendRequestReceived').update(bar);						
 				});				
 					}else alert("user "+friend_name+" already is your friend");
