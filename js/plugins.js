@@ -34,7 +34,6 @@ $('.criar_grupo').magnificPopup({
   callbacks: {
             open: function () {
                 $.magnificPopup.instance.close = function () {
-                    console.log('here');
                     $('.adicionado-dinamicamente').remove();
                     $.magnificPopup.proto.close.call(this);
                 };
