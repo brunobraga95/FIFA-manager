@@ -309,18 +309,27 @@ body{
   width: auto;
   max-width: 500px;
   margin: 20px auto;
+  border-radius: 10px;
 }
 
 .popup > div > h3{
-    padding: 7px;
+    padding: 10px;
     margin: 0;
     border-bottom: 1px solid black;
 }
 
 .popup > div:last-of-type{
-    padding: 10px;
+    padding: 15px 15px 5px 15px;
 }
 
+.botao-wrapper{
+    margin-top:20px;
+    text-align:right;
+}
+
+.botao-wrapper button:last-child{
+    margin-left: 5px;
+}
 
 
 /* ============= PROFILE PAGE ======================== */

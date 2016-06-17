@@ -90,6 +90,9 @@ $(function(){
 
     });
 
+
+    /* FRONTEND JS */
+
 	var partidas = 0;
 	$('#resumo').click(function(){
 		$(this).addClass('active');
@@ -137,7 +140,7 @@ $(function(){
 	});
 	
 	$('#todos-grupos, #todos-amigos, #geral').on('click', 'li', function(event){
-		/* TRATA O CLICK EM ELEMENTOS DA SIDEBAR*/
+		/* TRATA O CLICK EM ELEMENTOS DA SIDEBAR */
 		var elemId = $(this).attr('id');
 		if(elemId != undefined){
 			if($('#resumo').hasClass('active')){
@@ -149,6 +152,17 @@ $(function(){
 			$('#todos-amigos li, #todos-grupos li, #geral li').removeClass('active');
 			$(this).addClass('active');
 		}
+	});
+
+
+	$('#add_pessoa').click(function(){
+		$('#integrantes_grupo').append("<li class='list-group-item adicionado-dinamicamente'><input class='form-control' type='text' name='amigo' placeholder='Nome'></li>");
+	});
+
+
+	/* BOTAO CANCELAR PARA TODAS AS POPUPS */
+	$('.cancelar').click(function(e){
+		popupAux(e);
 	});
 
 	function popupAux(event){

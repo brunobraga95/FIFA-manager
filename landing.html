@@ -14,16 +14,16 @@
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/main.css">
         <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script>
-	<script>
+		<script>
   // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyBH8HTsYQBLPwnh9KfWVhDKxCW6fGgZVUM",
-    authDomain: "fifa-manager-4b146.firebaseapp.com",
-    databaseURL: "https://fifa-manager-4b146.firebaseio.com",
-    storageBucket: "",
-  };
-  firebase.initializeApp(config);
-</script>
+		var config = {
+		    apiKey: "AIzaSyBH8HTsYQBLPwnh9KfWVhDKxCW6fGgZVUM",
+		    authDomain: "fifa-manager-4b146.firebaseapp.com",
+		    databaseURL: "https://fifa-manager-4b146.firebaseio.com",
+		    storageBucket: "",
+		  };
+		  firebase.initializeApp(config);
+		</script>
         <script src="js/vendor/modernizr-2.8.3.min.js"></script>
     </head>
     <body>
@@ -46,7 +46,7 @@
 		      <ul class="nav navbar-nav navbar-right">
 		       
 		        <li class="navlink"><a href="#" data-mfp-src="#criar_grupo_popup" class="criar_grupo">Criar Grupo</a></li>
-		        <li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown"><img class= "profile-pic">Bruno de Jesus Braga <span class="caret"></span></a>
+		        <li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown"><img class= "profile-pic">Nome<span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="#" class = "log-out-button" >Log Out</a></li>
 					</ul>
@@ -83,6 +83,7 @@
 
 			</div>
 			<div class="main clearfix col-xs-12 col-sm-9">
+
 				<div class="main-wrapper clearfix">
 					<div class="main-header">
 						<h1>Geral<small>Resumo</small></h1>
@@ -94,7 +95,9 @@
 						<div class="col-sm-4" id = "empatou">Empatou: 0</div>
 					</div>
 				</div>
+
 				<div class="main-content clearfix">
+
 					<div class="nenhuma-partida">
 						<h3>Você ainda nao jogou nenhuma partida!</h3>
 					</div>
@@ -116,6 +119,7 @@
 			</div>
 			<div>
 				<form class="form-group">
+
 					<label for="adversario">Contra: </label>
 					<input class="form-control" type="text" name="adversario" id="adversario_nome" placeholder="Entre o nome">
 					<label for="timeUsuario">Seu time:</label>
@@ -133,9 +137,12 @@
 						<option>Grupo 2</option>
 						<option>Grupo 3</option>
 					</select>
-					<br>
-					<button class="btn btn-default">Cancelar</button>
-					<button class="btn btn-success" id="add_nova_partida_btn">Adicionar</button>
+					
+					<div class="botao-wrapper">
+						<button class="btn btn-default cancelar">Cancelar</button>
+						<button class="btn btn-success" id="add_nova_partida_btn">Adicionar</button>
+					</div>
+
 				</form>
 		  	</div>
 		</div>
@@ -146,23 +153,25 @@
 			</div>
 			<div>
 				<form class="form-group">
-					<label for="grupoNome">Nome:</label>
+
+					<h4 style="margin-top:0">Nome:</h4>
 					<input class="form-control" id='novo_grupo_nome' type="text" name="grupoNome" placeholder="Entre o nome do seu grupo">
 					
 					<h4>Membros:</h4>
-
 					<p>Muita gente pra adicionar? Mande-os um <a href="#">link de convite</a></p>
-
-					<input class="form-control" type="text" name="amigo" placeholder="Nome">					
-					<input class="form-control" type="email" name="emailAmigo" placeholder="Email (opicional)">
+					<ul class="list-group" id="integrantes_grupo" style="margin-bottom:5px">
+						<li class="list-group-item"><input class="form-control" type="text" name="amigo" placeholder="Nome"></li>
+						<li class="list-group-item"><input class="form-control" type="text" name="amigo" placeholder="Nome"></li>
+						<li class="list-group-item"><input class="form-control" type="text" name="amigo" placeholder="Nome"></li>
+					</ul>
 					
-					<a href="#"><i class="fa fa-plus" aria-hidden="true"></i> Uma pessoa</a>
+					<a href="#" id="add_pessoa"><i class="fa fa-plus" aria-hidden="true"></i> Uma pessoa</a>
 					
-					<br>
-					<br>
+					<div class="botao-wrapper">
+						<button class="btn btn-default cancelar">Cancelar</button>
+						<button class="btn btn-success" id="add_novo_grupo_btn">Criar</button>
+					</div>
 
-					<button class="btn btn-default">Cancelar</button>
-					<button class="btn btn-success" id="add_novo_grupo_btn">Criar</button>
 				</form>
 		  	</div>
 		</div>
@@ -174,12 +183,13 @@
 			<div>
 				<form class="form-group">
 
-					<label for="amigo">Para:</label>
-					<input class="form-control" type="text" name="amigo" id="amigo_nome" placeholder="Entre o nome de seu amigo">
-					<br>
-					<br>
-					<button class="btn btn-default">Cancelar</button>
-					<button class="btn btn-success" id="add_amigos_btn">Enviar</button>
+					<input style="margin-top:20px;" class="form-control" type="text" name="amigo" id="amigo_nome" placeholder="Entre o nome de seu amigo">
+
+					<div class="botao-wrapper">
+						<button class="btn btn-default cancelar">Cancelar</button>
+						<button class="btn btn-success" id="add_amigos_btn">Enviar</button>
+					</div>
+
 				</form>
 		  	</div>
 		</div>
@@ -194,10 +204,10 @@
 					<p>Insira um nome de usuario para o FIFA manager!</p>
 					<input class="form-control" type="text" name="usuario" id="nome_usuario">
 
-					<br>
-					<br>
-
-					<button class="btn btn-success" id="add_nome_usuario">Salvar</button>
+					<div class="botao-wrapper">
+						<button class="btn btn-success" id="add_nome_usuario">Salvar</button>
+					</div>
+				
 				</form>
 		  	</div>
 		</div>
@@ -211,7 +221,6 @@
 
 					<p>Você recebeu um novo convite de:</p>
 					<ul id = "friend-request-list" class="list-group">
-
 						<li class="list-group-item" style="display:flex;justify-content: space-between">
 							<p style="margin:0;"><b>Bruno Braga</b></p>
 							<div>
@@ -219,7 +228,6 @@
 								<button class="btn btn-danger" id="add_nome_usuario">Rejeitar</button>
 							</div>
 						</li>
-
 					</ul>
 
 				</form>
@@ -231,7 +239,7 @@
         <script type="text/javascript" src="js/vendor/bootstrap.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.min.js"></script>
         <script src="js/fb_login.js"></script>
-         <script src="js/main.js"></script>
+        <script src="js/main.js"></script>
         <script src="js/plugins.js"></script>
 	</body>
 </html>

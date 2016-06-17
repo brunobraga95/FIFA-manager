@@ -30,7 +30,16 @@ $('#add_partida').magnificPopup({
 });
 
 $('.criar_grupo').magnificPopup({
-  type: 'inline'
+  type: 'inline',
+  callbacks: {
+            open: function () {
+                $.magnificPopup.instance.close = function () {
+                    console.log('here');
+                    $('.adicionado-dinamicamente').remove();
+                    $.magnificPopup.proto.close.call(this);
+                };
+            }
+        }
 });
 
 
