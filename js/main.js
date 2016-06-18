@@ -154,14 +154,14 @@ $(function(){
 		}
 	});
 
-	var membrosGrupoCont=0;
+	var membrosGrupoCont=3;
 	$('#add_pessoa').click(function(){
 		$(this).prev().append("<li class='list-group-item adicionado-dinamicamente'><input class='form-control' type='text' name='amigo' id='membro_nome" + membrosGrupoCont + "' placeholder='Nome'></li>");
 		membrosGrupoCont++;
 	});
 
 	var convidarAmigos = [];
-	var amigosCont=0;
+	var amigosCont=1;
 	$('#add_mais_amigos').click(function(){
 		var amigo_index = 'amigo_nome' + amigosCont;
 		$(this).prev().append("<li class='list-group-item adicionado-dinamicamente'><input class='form-control' type='text' name='amigo' id='" + amigo_index + "' placeholder='Nome'></li>");
@@ -190,13 +190,13 @@ $(function(){
 
 	$('#add_novo_grupo_btn').click(function(event){
 		/* CODIGO PARA ADICIONAR GRUPO */
-		popupAux(event);
 		$('#todos-grupos').append("<li class='list-group-item' id=" + 'fifa-grupos-' + spacesToUnderline(novo_grupo_nome.value) + ">" + novo_grupo_nome.value + "</li>");
 		$('#todos-grupos li:last-child').trigger('click');
+		popupAux(event);
+
 	});
 	$('#add_nova_partida_btn').click(function(event){
 		/* CODIGO PARA ADICIONAR PARTIDA */
-		popupAux(event);
 		$('.recente-wrapper').append("<div><h5>" + adversario_nome.value + "</h5><h6>" + usuario_time.value +" " + usuario_gols.value + " x "+ adversario_gols.value + "  "+ adversario_time.value + " </h6></div>");
 		if (usuario_gols.value > adversario_gols.value) {estatisticas[0]++;}
 		if (usuario_gols.value == adversario_gols.value) {estatisticas[1]++;}
@@ -210,17 +210,21 @@ $(function(){
 		}
 		graficoResumoGeral.data.datasets[0].data = estatisticas;
 		graficoResumoGeral.update();
+		popupAux(event);
+
 	});
 	$('#add_amigos_btn').click(function(event){
 		/* CODIGO PARA ADICIONAR AMIGOS */
-		popupAux(event);
-		$('#todos-amigos').append("<li class='list-group-item' id=" + 'fifa-amigos-' + spacesToUnderline($('#amigo_nome').val()) + ">" + $('#amigo_nome').val() + "</li>");
+		$('#todos-amigos').append("<li class='list-group-item' id=" + 'fifa-amigos-' + spacesToUnderline($('#amigo_nome0').val()) + ">" + $('#amigo_nome0').val() + "</li>");
 		for(var i=0; i<convidarAmigos.length; i++){
+			console.log(convidarAmigos[i]);
 			$('#todos-amigos').append("<li class='list-group-item' id=" + 'fifa-amigos-' + spacesToUnderline($('#' + convidarAmigos[i]).val()) + ">" + $('#' + convidarAmigos[i]).val() + "</li>");
 		}
 		$('#todos-amigos li:last-child').trigger('click');
 		amigosCont = 0;
 		convidarAmigos = [];
+		popupAux(event);
+
 	});
 	/*
 	$("#amigo_nome").on("change paste keyup", function() {
@@ -268,7 +272,7 @@ $(function(){
 
 	$("#add_amigos_btn").on('click',function(e){
 		e.preventDefault();
-		var friend_name = $("#amigo_nome").val();
+		var friend_name = $("#amigo_nome0").val();
 		f.ref('usersNickNames').once('value',function(snapshot){
 			if(snapshot.child(friend_name).exists()){
 				f.ref('usersFacebook/'+that.user+'/friends').once('value',function(snapshot){
@@ -281,7 +285,7 @@ $(function(){
 						bar[userNickName] = this.user;
 						f.ref('usersFacebook/'+that.user+'/friendRequestSent').update(foo);
 						f.ref('usersFacebook/'+friendId+'/friendRequestReceived').update(bar);
-												
+
 				});				
 					}else alert("user "+friend_name+" already is your friend");
 				});

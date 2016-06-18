@@ -25,6 +25,10 @@
 
 // Magnific Popup
 
+$('').magnificPopup({
+  type: 'inline'
+});
+
 $('.criar_grupo, #convidar_amigo, #add_partida').magnificPopup({
   type: 'inline',
   callbacks: {
@@ -37,6 +41,19 @@ $('.criar_grupo, #convidar_amigo, #add_partida').magnificPopup({
         }
 });
 
+
+$('').magnificPopup({
+  type: 'inline'
+});
+
+/*
+$.magnificPopup.open({
+    items: {
+        src: '#convite_amizade_popup',
+        type: 'inline'
+    }
+});
+*/
 
 //Chart.js
 
