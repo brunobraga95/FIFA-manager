@@ -154,9 +154,19 @@ $(function(){
 		}
 	});
 
-
+	var membrosGrupoCont=0;
 	$('#add_pessoa').click(function(){
-		$('#integrantes_grupo').append("<li class='list-group-item adicionado-dinamicamente'><input class='form-control' type='text' name='amigo' placeholder='Nome'></li>");
+		$(this).prev().append("<li class='list-group-item adicionado-dinamicamente'><input class='form-control' type='text' name='amigo' id='membro_nome" + membrosGrupoCont + "' placeholder='Nome'></li>");
+		membrosGrupoCont++;
+	});
+
+	var convidarAmigos = [];
+	var amigosCont=0;
+	$('#add_mais_amigos').click(function(){
+		var amigo_index = 'amigo_nome' + amigosCont;
+		$(this).prev().append("<li class='list-group-item adicionado-dinamicamente'><input class='form-control' type='text' name='amigo' id='" + amigo_index + "' placeholder='Nome'></li>");
+		convidarAmigos.push(amigo_index);
+		amigosCont++;
 	});
 
 
@@ -204,8 +214,13 @@ $(function(){
 	$('#add_amigos_btn').click(function(event){
 		/* CODIGO PARA ADICIONAR AMIGOS */
 		popupAux(event);
-		$('#todos-amigos').append("<li class='list-group-item' id=" + 'fifa-amigos-' + spacesToUnderline(amigo_nome.value) + ">" + amigo_nome.value + "</li>");
+		$('#todos-amigos').append("<li class='list-group-item' id=" + 'fifa-amigos-' + spacesToUnderline($('#amigo_nome').val()) + ">" + $('#amigo_nome').val() + "</li>");
+		for(var i=0; i<convidarAmigos.length; i++){
+			$('#todos-amigos').append("<li class='list-group-item' id=" + 'fifa-amigos-' + spacesToUnderline($('#' + convidarAmigos[i]).val()) + ">" + $('#' + convidarAmigos[i]).val() + "</li>");
+		}
 		$('#todos-amigos li:last-child').trigger('click');
+		amigosCont = 0;
+		convidarAmigos = [];
 	});
 	/*
 	$("#amigo_nome").on("change paste keyup", function() {
@@ -265,7 +280,8 @@ $(function(){
 						var bar = {};
 						bar[userNickName] = this.user;
 						f.ref('usersFacebook/'+that.user+'/friendRequestSent').update(foo);
-						f.ref('usersFacebook/'+friendId+'/friendRequestReceived').update(bar);						
+						f.ref('usersFacebook/'+friendId+'/friendRequestReceived').update(bar);
+												
 				});				
 					}else alert("user "+friend_name+" already is your friend");
 				});
