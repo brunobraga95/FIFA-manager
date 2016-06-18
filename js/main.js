@@ -1,3 +1,7 @@
+var amigosCont = 1;
+var convidarAmigos = [];
+var membrosGrupoCont = 3;
+
 $(function(){
 	var f = this.f = firebase.database();
     this.user = localStorage.getItem("user");
@@ -153,15 +157,12 @@ $(function(){
 			$(this).addClass('active');
 		}
 	});
-
-	var membrosGrupoCont=3;
+	
 	$('#add_pessoa').click(function(){
 		$(this).prev().append("<li class='list-group-item adicionado-dinamicamente'><input class='form-control' type='text' name='amigo' id='membro_nome" + membrosGrupoCont + "' placeholder='Nome'></li>");
 		membrosGrupoCont++;
 	});
 
-	var convidarAmigos = [];
-	var amigosCont=1;
 	$('#add_mais_amigos').click(function(){
 		var amigo_index = 'amigo_nome' + amigosCont;
 		$(this).prev().append("<li class='list-group-item adicionado-dinamicamente'><input class='form-control' type='text' name='amigo' id='" + amigo_index + "' placeholder='Nome'></li>");
@@ -178,6 +179,9 @@ $(function(){
 	function popupAux(event){
 		event.preventDefault();
 		$.magnificPopup.close();
+		amigosCont = 1;
+		convidarAmigos = [];
+		membrosGrupoCont = 3;
 	}
 
 	function spacesToUnderline(val){
@@ -221,8 +225,6 @@ $(function(){
 			$('#todos-amigos').append("<li class='list-group-item' id=" + 'fifa-amigos-' + spacesToUnderline($('#' + convidarAmigos[i]).val()) + ">" + $('#' + convidarAmigos[i]).val() + "</li>");
 		}
 		$('#todos-amigos li:last-child').trigger('click');
-		amigosCont = 0;
-		convidarAmigos = [];
 		popupAux(event);
 
 	});

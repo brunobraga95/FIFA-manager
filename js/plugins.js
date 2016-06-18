@@ -25,35 +25,21 @@
 
 // Magnific Popup
 
-$('').magnificPopup({
-  type: 'inline'
-});
-
 $('.criar_grupo, #convidar_amigo, #add_partida').magnificPopup({
   type: 'inline',
   callbacks: {
             open: function () {
                 $.magnificPopup.instance.close = function () {
                     $('.adicionado-dinamicamente').remove();
+                    console.log(membrosGrupoCont);
+                    amigosCont = 1;
+                    convidarAmigos = [];
+                    membrosGrupoCont = 3;
                     $.magnificPopup.proto.close.call(this);
                 };
             }
         }
 });
-
-
-$('').magnificPopup({
-  type: 'inline'
-});
-
-/*
-$.magnificPopup.open({
-    items: {
-        src: '#convite_amizade_popup',
-        type: 'inline'
-    }
-});
-*/
 
 //Chart.js
 
