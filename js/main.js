@@ -46,7 +46,12 @@ $(function(){
        			var userFriend = "<li class=\"list-group-item\" id=\"fifa-amigos-"+key+"\">"+key+"</li>";
        			$("#todos-amigos").append(userFriend);
        		}
-       }
+        }
+        var groups = snapshot.val().groups;
+		for(group in groups){
+			appendGroup = '<li class=\"list-group-item\" id=\"fifaGrupos-'+group+'\">'+group+'</li>'
+			$('div #todos-grupos').append(appendGroup);
+		}
 
       if(snapshot.child("venceu").exists()){
       	$("#venceu").html("Venceu: "+snapshot.val().venceu);
@@ -194,8 +199,45 @@ $(function(){
 
 	$('#add_novo_grupo_btn').click(function(event){
 		/* CODIGO PARA ADICIONAR GRUPO */
+		var listItems = $("#integrantes_grupo li input");
+		that.f.ref('groups').once('value',function(snapshot){
+			var group_name = $("#novo_grupo_nome")[0].value
+			if(!snapshot.child(group_name).exists()){
+				var group_creator = {};
+				group_creator[that.userNickName] = that.user;
+				that.f.ref('groups/'+group_name+'/membros').set(group_creator);
+				var group_name_obj = {};
+				group_name_obj[group_name] = group_name;
+				that.f.ref('usersFacebook/'+that.user+'/groups').update(group_name_obj);
+				listItems.each(function(idx, input){
+					var input = $(input);
+    				var friend_name = input[0].value
+    				if(friend_name != ''){
+    					f.ref('usersNickNames').once('value',function(snapshot){		
+    						if(snapshot.child(friend_name).exists()){
+								f.ref('usersNickNames/'+friend_name).once("value",function(snapshot){
+									friendId = snapshot.val()[Object.keys(snapshot.val())[0]];
+									var foo = {};
+									foo[friend_name] = friendId;
+									f.ref('groups/'+group_name+'/membros').update(foo);
+									f.ref('usersFacebook/'+friendId+'/groups').update(group_name_obj);
+								});	
+
+    						}
+    						else alert("We could not find "+friend_name);
+						});	
+    				}else alert("Please do not enter an empty name")	
+				});
+			}
+			else{
+				alert('Group: '+group_name+' already exists');	
+			}
+		});
+
+		/*
 		$('#todos-grupos').append("<li class='list-group-item' id=" + 'fifa-grupos-' + spacesToUnderline(novo_grupo_nome.value) + ">" + novo_grupo_nome.value + "</li>");
 		$('#todos-grupos li:last-child').trigger('click');
+		*/
 		popupAux(event);
 
 	});
@@ -217,27 +259,6 @@ $(function(){
 		popupAux(event);
 
 	});
-	$('#add_amigos_btn').click(function(event){
-		/* CODIGO PARA ADICIONAR AMIGOS */
-		$('#todos-amigos').append("<li class='list-group-item' id=" + 'fifa-amigos-' + spacesToUnderline($('#amigo_nome0').val()) + ">" + $('#amigo_nome0').val() + "</li>");
-		for(var i=0; i<convidarAmigos.length; i++){
-			console.log(convidarAmigos[i]);
-			$('#todos-amigos').append("<li class='list-group-item' id=" + 'fifa-amigos-' + spacesToUnderline($('#' + convidarAmigos[i]).val()) + ">" + $('#' + convidarAmigos[i]).val() + "</li>");
-		}
-		$('#todos-amigos li:last-child').trigger('click');
-		popupAux(event);
-
-	});
-	/*
-	$("#amigo_nome").on("change paste keyup", function() {
-   		var friend_name = $(this).val(); 
-   		f.ref('usersNickNames').on('value',function(snapshot){
-			if(!snapshot.child(friend_name).exists()){
-				console.log("nao achou");
-			}else console.log("achou");
-		});
-	});
-	*/
 
 	$("#convite_amizade_popup").on('click','button.accept-friend-request',function(e){
 		var id = e.target.id.substring(19,e.target.id.length);
@@ -262,7 +283,7 @@ $(function(){
 		});
 		
 	});
-
+	/*
 	$("#convite_amizade_popup").on('click','button.reject-friend-request',function(e){
 		var id = e.target.id.substring(19,e.target.id.length);
 		f.ref('usersNickNames/'+id).once("value",function(snapshot){
@@ -271,7 +292,7 @@ $(function(){
 			f.ref('usersFacebook/'+friendRequestFbUrl+'/friendRequestSent/'+that.userNickName).remove();
 		});
 	});
-
+	*/
 	$("#add_amigos_btn").on('click',function(e){
 		e.preventDefault();
 		var friend_name = $("#amigo_nome0").val();
@@ -280,15 +301,14 @@ $(function(){
 				f.ref('usersFacebook/'+that.user+'/friends').once('value',function(snapshot){
 					if(!snapshot.child(friend_name).exists()){			
 						f.ref('usersNickNames/'+friend_name).once("value",function(snapshot){
-						friendId = snapshot.val()[Object.keys(snapshot.val())[0]];
-						var foo = {};
-						foo[friend_name] = friendId;
-						var bar = {};
-						bar[userNickName] = this.user;
-						f.ref('usersFacebook/'+that.user+'/friendRequestSent').update(foo);
-						f.ref('usersFacebook/'+friendId+'/friendRequestReceived').update(bar);
-
-				});				
+							friendId = snapshot.val()[Object.keys(snapshot.val())[0]];
+							var foo = {};
+							foo[friend_name] = friendId;
+							var bar = {};
+							bar[userNickName] = this.user;
+							f.ref('usersFacebook/'+that.user+'/friendRequestSent').update(foo);
+							f.ref('usersFacebook/'+friendId+'/friendRequestReceived').update(bar);
+						});				
 					}else alert("user "+friend_name+" already is your friend");
 				});
 
