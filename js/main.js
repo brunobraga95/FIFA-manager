@@ -7,12 +7,6 @@ $(function(){
     this.user = localStorage.getItem("user");
     this.userNickName = null;
     that = this;
-    /*
-    that.f.ref('usersFacebook/'+that.user+'/venceu').transaction(function(venceu){
-		console.log(venceu)
-	    return (+venceu+1);
-	})
-	*/
     f.ref('usersFacebook/'+that.user).on('value',function(snapshot){
       $('.profile-pic').attr("src",snapshot.val().profilePicture);
       $('.dropdown-toggle').html("<img class=\"profile-pic\" src=\""+snapshot.val().profilePicture+"\">"+snapshot.val().userName+"<span class=\"caret\"></span>");
@@ -51,9 +45,13 @@ $(function(){
        		for(key in friends){
        			var userFriend = "<li class=\"list-group-item\" id=\"fifa-amigos-"+key+"\">"+key+"</li>";
        			$("#todos-amigos").append(userFriend);
+       			$('form #adversario_nome').append('<option>'+userFriend+'</option>');
        		}
         }
         var groups = snapshot.val().groups;
+		$('div #todos-grupos').not(':first').empty();
+		groupLabel = '<li class=\"list-group-item\">Grupos <a href=\"#\" data-mfp-src=\"#criar_grupo_popup\" class=\"small criar_grupo\"> <i class=\"fa fa-plus\" aria-hidden=\"true\"></i> add</a></li>'
+		//$('div #todos-grupos').append(groupLabel);
 		for(group in groups){
 			appendGroup = '<li class=\"list-group-item\" id=\"fifaGrupos-'+group+'\">'+group+'</li>'
 			
@@ -241,17 +239,12 @@ $(function(){
 				alert('Group: '+group_name+' already exists');	
 			}
 		});
-
-		/*
-		$('#todos-grupos').append("<li class='list-group-item' id=" + 'fifa-grupos-' + spacesToUnderline(novo_grupo_nome.value) + ">" + novo_grupo_nome.value + "</li>");
-		$('#todos-grupos li:last-child').trigger('click');
-		*/
 		popupAux(event);
 
 	});
 	$('#add_nova_partida_btn').click(function(event){
 		/* CODIGO PARA ADICIONAR PARTIDA */
-		var adversario_nome = $('#adversario_nome')[0].value
+		var adversario_nome = $("#adversario_nome option:selected").text();
 		var usuario_time = $('#usuario_time')[0].value
 		var usuario_gols = $('#usuario_gols')[0].value
 		var adversario_time = $('#adversario_time')[0].value
@@ -396,7 +389,6 @@ $(function(){
 						});				
 					}else alert("user "+friend_name+" already is your friend");
 				});
-
 				
 			}else alert("We could not find "+friend_name);
 		});

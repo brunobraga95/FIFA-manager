@@ -4,7 +4,7 @@
 # TEAM
 
     Tiago Alves Dulce -- Frontend Developer
-    Bruno de Jesus Braga -- Backend Developer
+    Bruno Braga -- Backend Developer
 
 # TECHNOLOGY COLOPHON
 
