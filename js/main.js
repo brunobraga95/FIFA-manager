@@ -324,7 +324,7 @@ $(function(){
 							that.f.ref('usersFacebook/'+friendId+'/friends/'+that.userNickName+'/venceu').set(adversario_venceu+1);		
 						}else{
 							that.f.ref('usersFacebook/'+that.user+'/empatou').transaction(function(empatou){
-	    						return (+venceu+1);
+	    						return (+empatou+1);
 							});
 							that.f.ref('usersFacebook/'+friendId+'/empatou').transaction(function(empatou){
 	    						return (+empatou+1);
