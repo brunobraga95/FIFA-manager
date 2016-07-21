@@ -7,6 +7,12 @@ $(function(){
     this.user = localStorage.getItem("user");
     this.userNickName = null;
     that = this;
+    /*
+    that.f.ref('usersFacebook/'+that.user+'/venceu').transaction(function(venceu){
+		console.log(venceu)
+	    return (+venceu+1);
+	})
+	*/
     f.ref('usersFacebook/'+that.user).on('value',function(snapshot){
       $('.profile-pic').attr("src",snapshot.val().profilePicture);
       $('.dropdown-toggle').html("<img class=\"profile-pic\" src=\""+snapshot.val().profilePicture+"\">"+snapshot.val().userName+"<span class=\"caret\"></span>");
@@ -50,7 +56,9 @@ $(function(){
         var groups = snapshot.val().groups;
 		for(group in groups){
 			appendGroup = '<li class=\"list-group-item\" id=\"fifaGrupos-'+group+'\">'+group+'</li>'
+			
 			$('div #todos-grupos').append(appendGroup);
+			$('form #add_nova_partida_group').append('<option>'+group+'</option>');
 		}
 
       if(snapshot.child("venceu").exists()){
@@ -243,6 +251,94 @@ $(function(){
 	});
 	$('#add_nova_partida_btn').click(function(event){
 		/* CODIGO PARA ADICIONAR PARTIDA */
+		var adversario_nome = $('#adversario_nome')[0].value
+		var usuario_time = $('#usuario_time')[0].value
+		var usuario_gols = $('#usuario_gols')[0].value
+		var adversario_time = $('#adversario_time')[0].value
+		var adversario_gols = $('#adversario_gols')[0].value
+		var add_nova_partida_group = $("#add_nova_partida_group option:selected").text();
+		that.f.ref('usersFacebook/'+that.user+'/friends').once('value',function(snapshot){
+			if(snapshot.child(adversario_nome).exists()){
+				var usuario_empatou = snapshot.val()[adversario_nome].empatou;
+				var usuario_venceu = snapshot.val()[adversario_nome].venceu;
+				var usuario_perdeu = snapshot.val()[adversario_nome].perdeu;
+				f.ref('usersNickNames/'+adversario_nome).once("value",function(snapshot){
+					friendId = snapshot.val()[Object.keys(snapshot.val())[0]];
+					if(usuario_time==''){
+						alert('Please enter your team');
+						return;	
+					}
+					if(adversario_time==''){
+						alert('Please enter your friend\'s team');
+						return;
+					}
+					/*
+					if( /^\d+$/.test(usuario_gols)){
+						alert('Please enter a number for your number of goals');	
+						return;
+					}
+					if( /^\d+$/.test(adversario_gols)){
+						alert('Please enter a number for your friend\'s number of goals');
+						return	
+					}
+					*/
+					that.f.ref('usersFacebook/'+friendId+'/friends/'+that.userNickName).once('value',function(adversario_snapshot){
+						var adversario_empatou = adversario_snapshot.val().empatou;
+						var adversario_venceu = adversario_snapshot.val().venceu;
+						var adversario_perdeu = adversario_snapshot.val().perdeu;
+						var nova_partida = {}
+    	        		partida_obj = {
+    	 	   	    		'player1':that.userNickName,	
+		  	          		'player2':adversario_nome,
+   		 	        		'player1Goals':usuario_gols,
+    	    	    		'player2Goals':adversario_gols,
+	    	        		'player1Team':usuario_time,
+ 	  	    	     		'player2Team':adversario_time
+ 	  	  		       	}	   		         	
+		            	var time_stamp = Math.floor(Date.now() / 1000); 
+   			         	nova_partida[time_stamp] = partida_obj;	
+						if(add_nova_partida_group!='Nenhum'){			
+							that.f.ref('groups/'+add_nova_partida_group+'/jogos').update(nova_partida);
+						}
+						nova_partida[time_stamp].group = add_nova_partida_group;
+						that.f.ref('usersFacebook/'+that.user+'/friends/'+adversario_nome+'/jogos').update(nova_partida);
+						that.f.ref('usersFacebook/'+friendId+'/friends/'+that.userNickName+'/jogos').update(nova_partida);
+						if(usuario_gols > adversario_gols){
+							that.f.ref('usersFacebook/'+that.user+'/venceu').transaction(function(venceu){
+	    						return (+venceu+1);
+							});
+							that.f.ref('usersFacebook/'+friendId+'/perdeu').transaction(function(perdeu){
+	    						return (+perdeu+1);
+							});
+							that.f.ref('usersFacebook/'+that.user+'/friends/'+adversario_nome+'/venceu').set(usuario_venceu+1);
+							that.f.ref('usersFacebook/'+friendId+'/friends/'+that.userNickName+'/perdeu').set(adversario_perdeu+1);
+						}
+						else if(usuario_gols < adversario_gols){
+							that.f.ref('usersFacebook/'+that.user+'/perdeu').transaction(function(perdeu){
+	    						return (+perdeu+1);
+							});
+							that.f.ref('usersFacebook/'+friendId+'/venceu').transaction(function(venceu){
+	    						return (+venceu+1);
+							});
+							that.f.ref('usersFacebook/'+that.user+'/friends/'+adversario_nome+'/perdeu').set(usuario_perdeu+1);
+							that.f.ref('usersFacebook/'+friendId+'/friends/'+that.userNickName+'/venceu').set(adversario_venceu+1);		
+						}else{
+							that.f.ref('usersFacebook/'+that.user+'/empatou').transaction(function(empatou){
+	    						return (+venceu+1);
+							});
+							that.f.ref('usersFacebook/'+friendId+'/empatou').transaction(function(empatou){
+	    						return (+empatou+1);
+							});
+							that.f.ref('usersFacebook/'+that.user+'/friends/'+adversario_nome+'/empatou').set(usuario_empatou+1);
+							that.f.ref('usersFacebook/'+friendId+'/friends/'+that.userNickName+'/empatou').set(adversario_empatou+1);		
+						}
+					});
+				
+
+				});	
+				
+			}else alert("We could not find "+adversario_nome);
+		});	
 		$('.recente-wrapper').append("<div><h5>" + adversario_nome.value + "</h5><h6>" + usuario_time.value +" " + usuario_gols.value + " x "+ adversario_gols.value + "  "+ adversario_time.value + " </h6></div>");
 		if (usuario_gols.value > adversario_gols.value) {estatisticas[0]++;}
 		if (usuario_gols.value == adversario_gols.value) {estatisticas[1]++;}
@@ -268,14 +364,12 @@ $(function(){
 			f.ref('usersFacebook/'+friendRequestFbUrl+'/friendRequestSent/'+that.userNickName).remove();
 
 			f.ref('usersFacebook/'+that.user+'/friends/'+id).update({
-				jogos:0,
 				venceu:0,
 				perdeu:0,
 				empatou:0	
 			});
 
 			f.ref('usersFacebook/'+friendRequestFbUrl+'/friends/'+that.userNickName).update({
-				jogos:0,
 				venceu:0,
 				perdeu:0,
 				empatou:0	
@@ -283,16 +377,7 @@ $(function(){
 		});
 		
 	});
-	/*
-	$("#convite_amizade_popup").on('click','button.reject-friend-request',function(e){
-		var id = e.target.id.substring(19,e.target.id.length);
-		f.ref('usersNickNames/'+id).once("value",function(snapshot){
-			var friendRequestFbUrl = snapshot.val()[Object.keys(snapshot.val())[0]];
-			f.ref('usersFacebook/'+that.user+'/friendRequestReceived/'+id).remove();
-			f.ref('usersFacebook/'+friendRequestFbUrl+'/friendRequestSent/'+that.userNickName).remove();
-		});
-	});
-	*/
+
 	$("#add_amigos_btn").on('click',function(e){
 		e.preventDefault();
 		var friend_name = $("#amigo_nome0").val();

@@ -31,7 +31,6 @@ $('.criar_grupo, #convidar_amigo, #add_partida').magnificPopup({
             open: function () {
                 $.magnificPopup.instance.close = function () {
                     $('.adicionado-dinamicamente').remove();
-                    //console.log(membrosGrupoCont);
                     amigosCont = 1;
                     convidarAmigos = [];
                     membrosGrupoCont = 3;
