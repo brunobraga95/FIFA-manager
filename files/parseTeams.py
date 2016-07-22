@@ -33,6 +33,7 @@ for i in lines:
 		teams.append(time)
 res.append(teams)
 string = '[['
+
 for x in res:
 	for j in x:
 		string = string + j + ','
