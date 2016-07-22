@@ -3,9 +3,10 @@
 
 # TEAM
 
-    Tiago Alves Dulce -- Frontend Developer
     Bruno Braga -- Backend Developer
-
+    Tiago Alves Dulce -- Frontend Developer
+    Fernando Abolafio -- Full Stack
+    
 # TECHNOLOGY COLOPHON
 
     CSS3, HTML5
