@@ -7,4 +7,4 @@
 3. bower install;
 4. gulp serve;
 
-Uma nova aba deverá abrir no navegador apontando para o *localhost:9000*. Caso isso nao aconteça, vá até o seu navegador e entre em: *http://localhost:9000*
+Uma nova aba deverá abrir no navegador apontando para o <http://localhost:9000>.
