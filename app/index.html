@@ -19,14 +19,14 @@
     <!-- build:css styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
+
+    <script src="bower_components/firebase/firebase.js"></script>
     
     <!-- build:js scripts/vendor/modernizr.js -->
     <script src="/bower_components/modernizr/modernizr.js"></script>
     <!-- endbuild -->
   
     <script src="bower_components/handlebars/handlebars.runtime.js"></script>
-
-    <script src="bower_components/firebase/firebase.js"></script>
     
     <script src="templates/home.js"></script>
     <script src="templates/recente.js" async></script>
@@ -36,23 +36,12 @@
     <script src="templates/groupslist.js" async></script>
     <script src="templates/friendslist.js" async></script>
 
-    <script src="templates/popups/addPartidaPopup.js"></script>
-    <script src="templates/popups/convidarAmigosPopup.js"></script>
-    <script src="templates/popups/conviteAmizadePopup.js"></script>
-    <script src="templates/popups/criarGrupoPopup.js"></script>
-    <script src="templates/popups/nomeUsuarioPopup.js"></script>
+    <script src="templates/popups/addPartidaPopup.js" defer></script>
+    <script src="templates/popups/convidarAmigosPopup.js" defer></script>
+    <script src="templates/popups/conviteAmizadePopup.js" defer ></script>
+    <script src="templates/popups/criarGrupoPopup.js" defer></script>
+    <script src="templates/popups/nomeUsuarioPopup.js" defer></script>
     <script src="templates/main.js" defer></script>
-    
-    <script>
-    // Initialize Firebase
-    var config = {
-      apiKey: "AIzaSyBH8HTsYQBLPwnh9KfWVhDKxCW6fGgZVUM",
-      authDomain: "fifa-manager-4b146.firebaseapp.com",
-      databaseURL: "https://fifa-manager-4b146.firebaseio.com",
-      storageBucket: ""
-    };
-    firebase.initializeApp(config);
-  </script>
 
   </head>
   <body>
@@ -74,6 +63,8 @@
     <!-- bower:js -->
     <script src="/bower_components/jquery/dist/jquery.js"></script>
     <script src="/bower_components/handlebars/handlebars.js"></script>
+    <script src="/bower_components/magnific-popup/dist/jquery.magnific-popup.js"></script>
+    <script src="/bower_components/firebase/firebase.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
     

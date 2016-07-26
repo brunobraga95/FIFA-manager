@@ -1,6 +1,15 @@
+// Initialize Firebase
+firebase.initializeApp({
+  apiKey: "AIzaSyBH8HTsYQBLPwnh9KfWVhDKxCW6fGgZVUM",
+  authDomain: "fifa-manager-4b146.firebaseapp.com",
+  databaseURL: "https://fifa-manager-4b146.firebaseio.com",
+  storageBucket: ""
+});
+
 // ==================== GLOBAL VARIABLES =============================
 let graficoResumo;
 // ===================================================================
+
 
 // ===================== HANDLEBARS HELPERS ==========================
 Handlebars.registerHelper('equal', function(lvalue, rvalue, options) {
@@ -238,12 +247,14 @@ $(function(){
 
 		resumo = MyApp.templates.resumo({obj:userInfo});
 		Handlebars.registerPartial("resumo", resumo);
+
+		render_main(userInfo);
 		// ==========================================================
 
 	});
 
-	let home = MyApp.templates.home();
-	$(document.body).html(home);
+	// let home = MyApp.templates.home();
+	// $(document.body).html(home);
 
 
 	// ================ Login and Logout FB =========================
@@ -267,7 +278,7 @@ $(function(){
 		open_popup(this.id, userInfo);
 
 		//ADD one more member input on criar grupo popup
-		$('#add_membro_input').click(function(){
+		$('#add_membros_input').click(function(){
 			let newmemberinput = "<li class='list-group-item'><input class='form-control' type='text' placeholder='Nome'></li>"
 			$('#integrantes_grupo').append(newmemberinput);
 		});
