@@ -248,13 +248,12 @@ $(function(){
 		resumo = MyApp.templates.resumo({obj:userInfo});
 		Handlebars.registerPartial("resumo", resumo);
 
-		render_main(userInfo);
 		// ==========================================================
 
 	});
 
-	// let home = MyApp.templates.home();
-	// $(document.body).html(home);
+	let home = MyApp.templates.home();
+	$(document.body).html(home);
 
 
 	// ================ Login and Logout FB =========================
