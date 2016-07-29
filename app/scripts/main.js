@@ -23,6 +23,7 @@ Handlebars.registerHelper('equal', function(lvalue, rvalue, options) {
 });
 
 
+
 // ===================================================================
 // ======== Function to interact with Facebook, both =================
 // ======== login and logout =========================================
@@ -49,7 +50,7 @@ function facebook_login(f, userInfo) {
             if(mm<10) {
                 mm='0'+mm;
              }
-            today = mm+'/'+dd+'/'+yyyy;
+            that.today = mm+'/'+dd+'/'+yyyy;
             firebase.database().ref('usersFacebook').on('value',function(snapshot){
                 if(!snapshot.child(that.user.uid).exists()){
                     firebase.database().ref('usersFacebook/'+that.user.uid).set({
@@ -124,6 +125,17 @@ function open_popup(popup, obj){
 		items: {
     		src: '#' + popup,
     		type: 'inline'
+		},
+		callbacks: {
+		    open: function() {
+		      $.magnificPopup.instance.close = function() {
+        		$('#integrantes_grupo li:not(:first)').remove();
+				$('#lista_adicionar_amigos li:not(:first)').remove();
+				console.log('aq');
+		        $.magnificPopup.proto.close.call(this);
+		        $("#"+popup).remove();
+		      };
+		    }
 		}
 	});
 }
@@ -166,13 +178,20 @@ function criar_grafico(userInfo){
 // ==================================================
 function render_main(obj){
 	let navbar = MyApp.templates.navbar({name:obj.name, pic:obj.picture});
-	let main = MyApp.templates.main({obj:obj});
+	let main;
+	let isMobile = window.matchMedia("only screen and (max-width: 760px)");
+    if (isMobile.matches) {
+    	main = MyApp.templates.mainMobile({obj:obj});
+    }else{
+    	main = MyApp.templates.main({obj:obj});
+    }
 	$(document.body).html(navbar).append(main);
 	criar_grafico(obj);
 }
 
 
 $(function(){
+	console.log('oi');
 	let applicationInfo = {};
 	let userInfo = {};
 	userInfo.pageInfo = {};
@@ -186,7 +205,9 @@ $(function(){
 	this.userNickName = null;
 	const that = this;
 	
+	console.log('oi');
 	f.ref('usersFacebook/'+that.user).once('value',function(snapshot){
+		console.log('oi');
 		// NICKNAME
 		if(!snapshot.child("nickName").exists()){
 			console.log('doesnt have nickName');
@@ -249,11 +270,15 @@ $(function(){
 		Handlebars.registerPartial("resumo", resumo);
 
 		// ==========================================================
+		
+		render_main(userInfo);
+		console.log('oi');
+
 
 	});
 
-	let home = MyApp.templates.home();
-	$(document.body).html(home);
+	// let home = MyApp.templates.home();
+	// $(document.body).html(home);
 
 
 	// ================ Login and Logout FB =========================
@@ -278,6 +303,7 @@ $(function(){
 
 		//ADD one more member input on criar grupo popup
 		$('#add_membros_input').click(function(){
+			console.log('oi');
 			let newmemberinput = "<li class='list-group-item'><input class='form-control' type='text' placeholder='Nome'></li>"
 			$('#integrantes_grupo').append(newmemberinput);
 		});
@@ -293,6 +319,8 @@ $(function(){
 
 	//Cancelar
 	$(document).on('click', '.cancelar',  function(e){
+		$('#integrantes_grupo li:not(:first)').remove();
+		$('#lista_adicionar_amigos li:not(:first)').remove();
 		e.preventDefault();
 		$.magnificPopup.close();
 	});	
@@ -324,7 +352,7 @@ $(function(){
 	});
 
 	//Geral Click
-	$(document).on('click', '#geral', function(){
+	$(document).on('click', '#geral>a', function(){
 		$('#friends_list a').removeClass('active');
 		$('#groups_list a').removeClass('active');
 		$(this).addClass('active');

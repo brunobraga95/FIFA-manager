@@ -1,24 +1,26 @@
 <div class="container-fluid">
+	
 	<div class="left-sidebar col-sm-3">
 		<div class="list-group">
 			<a href="#" id="resumo" class="list-group-item active">Resumo</a>
 			<a href="#" id="recente" class="list-group-item">Recente</a>
 		</div>
 		
-		<ul class="list-group">
-			<li class="list-group-item active" id="geral">Geral</li>
+		<ul class="list-group" id="geral">
+			<a class="list-group-item active">Geral</a>
 		</ul>
 		
 		<ul class="list-group" id="groups_list">
-		{{>groupslist}}
+			<li class="list-group-item">Grupos <a href="#" id="criar_grupo" class="small"> <i class="fa fa-plus" aria-hidden="true"></i> add</a></li>
+			{{>groupslist}}
 		</ul>
 		
 		<ul class="list-group" id="friends_list">
-		{{>friendslist}}
+			<li class="list-group-item">Amigos <a id="convidar_amigos" href="#" class="small"> <i class="fa fa-plus" aria-hidden="true"></i> add</a></li>
+			{{>friendslist}}
 		</ul>
-
 	</div>
-	<div class="clearfix col-xs-12 col-sm-9">
+	<div class="clearfix main col-xs-12 col-sm-9">
 		<div class="main-header-wrapper clearfix">
 			{{>mainHeader}}
 		</div>
@@ -26,4 +28,5 @@
 			{{>resumo}}
 		</div>
 	</div>
+	
 </div>

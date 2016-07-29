@@ -1,0 +1,35 @@
+<div>
+    <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+        <li class="active col-xs-4"><a href="#geral_tab" data-toggle="tab">Historico</a></li>
+        <li class="col-xs-4"><a href="#grupos_tab" data-toggle="tab">Grupos</a></li>
+        <li class="col-xs-4"><a href="#amigos_tab" data-toggle="tab">Amigos</a></li>
+    </ul>
+    <div id="my_tab_content" class="tab-content">
+        <div class="tab-pane active" id="geral_tab">
+			<div>
+				<div class="display-jogos">
+					<div class="col-xs-4">Venceu: {{obj.venceu}}</div>
+					<div class="col-xs-4">Perdeu: {{obj.perdeu}}</div>
+					<div class="col-xs-4">Empatou: {{obj.empatou}}</div>
+				</div>
+				<button class="btn btn-default col-xs-offset-3 col-xs-6">Adicionar nova partida</button>
+			</div>
+		</div>
+
+        <div class="tab-pane" id="grupos_tab">
+			<ul class="list-group" id="groups_list">
+				{{>groupslist}}
+			</ul>
+			<button class="btn btn-default col-xs-offset-3 col-xs-6">Criar novo grupo</button>
+		</div>
+
+        <div class="tab-pane" id="amigos_tab">
+			<ul class="list-group" id="friends_list">
+				{{>friendslist}}
+			</ul>
+			<button class="btn btn-default col-xs-offset-3 col-xs-6">Adicionar Amigo</button>
+		</div>
+    </div>
+</div>
+
+<button class="btn btn-warning" style="position:absolute; right:24px; bottom:24px; border-radius:50%; border:0; width:50px; height:50px;">+</button>
