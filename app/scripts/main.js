@@ -62,6 +62,7 @@ function facebook_login(f, userInfo) {
                 }else console.log("user already exists");
             });
             localStorage.setItem("user",that.user.uid);
+            userInfo.uid = user.uid
             userInfo.name = that.name;
             userInfo.picture = that.profilePicture;
             render_main(userInfo);
@@ -115,7 +116,6 @@ function open_popup(popup, obj){
 		case 'navbar_convite_amizade_popup':
 			let conviteAmizadePopup = MyApp.templates.conviteAmizadePopup({obj:obj});
 			$(document.body).append(conviteAmizadePopup); 
-			console.log('aq');  	
 			break;
 
 	}
@@ -131,7 +131,6 @@ function open_popup(popup, obj){
 		      $.magnificPopup.instance.close = function() {
         		$('#integrantes_grupo li:not(:first)').remove();
 				$('#lista_adicionar_amigos li:not(:first)').remove();
-				console.log('aq');
 		        $.magnificPopup.proto.close.call(this);
 		        $("#"+popup).remove();
 		      };
@@ -147,6 +146,7 @@ function open_popup(popup, obj){
 // ===================================================================
 function criar_grafico(userInfo){
 	let graficoContainer = $("#myChart");
+	
 	graficoResumo = new Chart(graficoContainer, {
 	    type: 'pie',
 	    data: {
@@ -170,49 +170,20 @@ function criar_grafico(userInfo){
 	        
 	    }
 	});
-
+	
 }
 
 // ==================================================
 // ======== Render Main View after login ============
 // ==================================================
-function render_main(obj){
-	let navbar = MyApp.templates.navbar({name:obj.name, pic:obj.picture});
-	let main;
-	let isMobile = window.matchMedia("only screen and (max-width: 760px)");
-    if (isMobile.matches) {
-    	main = MyApp.templates.mainMobile({obj:obj});
-    }else{
-    	main = MyApp.templates.main({obj:obj});
-    }
-	$(document.body).html(navbar).append(main);
-	criar_grafico(obj);
-}
+function render_main(userInfo,that){
+	f = firebase.database();
 
-
-$(function(){
-	console.log('oi');
-	let applicationInfo = {};
-	let userInfo = {};
-	userInfo.pageInfo = {};
-	userInfo.pageInfo.context = 'Resumo';
-	userInfo.pageInfo.mode = 'Geral';
-	let mainHeader, resumo, groupslist, friendslist;
-
-
-	let f = this.f = firebase.database();
-	this.user = localStorage.getItem('user');
-	this.userNickName = null;
-	const that = this;
-	
-	console.log('oi');
-	f.ref('usersFacebook/'+that.user).once('value',function(snapshot){
-		console.log('oi');
+	f.ref('usersFacebook/'+userInfo.uid).once('value',function(snapshot){
 		// NICKNAME
 		if(!snapshot.child("nickName").exists()){
 			console.log('doesnt have nickName');
 		}else that.userNickName = snapshot.val().nickName;
-		console.log(snapshot.val().nickName);
 
 		f.ref('usersFacebook/'+that.user+'/friendRequestReceived').on("value",function(snapshot){
 			var requestArray = snapshot.val();
@@ -255,7 +226,114 @@ $(function(){
 		}
 
 		userInfo.total = userInfo.perdeu + userInfo.empatou + userInfo.venceu;
+		// ==================== DINAMIC PARTIALS ====================
+		mainHeader = MyApp.templates.mainHeader({userInfo:userInfo});
+		Handlebars.registerPartial("mainHeader", mainHeader)
+
+		groupslist = MyApp.templates.groupslist({userInfo:userInfo});
+		Handlebars.registerPartial("groupslist", groupslist)
+
+		friendslist = MyApp.templates.friendslist({userInfo:userInfo});
+		Handlebars.registerPartial("friendslist", friendslist)
+
+		resumo = MyApp.templates.resumo({userInfo:userInfo});
+		Handlebars.registerPartial("resumo", resumo);
+		let navbar = MyApp.templates.navbar({name:userInfo.name, pic:userInfo.picture});
+		let main;
+		let isMobile = window.matchMedia("only screen and (max-width: 760px)");
+		if (isMobile.matches) {
+    		main = MyApp.templates.mainMobile({userInfo:userInfo});
+    	}else{
+    		main = MyApp.templates.main({userInfo:userInfo});
+    	}
+		$(document.body).html(navbar).append(main);
+
+		//criar_grafico(userInfo);
+		// ==========================================================
 		
+
+	});	
+	
+}
+
+
+$(function(){
+	let applicationInfo = {};
+	let userInfo = {};
+	userInfo.pageInfo = {};
+	userInfo.pageInfo.context = 'Resumo';
+	userInfo.pageInfo.mode = 'Geral';
+	let mainHeader, resumo, groupslist, friendslist;
+
+
+	let f = this.f = firebase.database();
+	this.user = localStorage.getItem('user');
+	this.userNickName = null;
+	const that = this;
+	
+	firebase.auth().onAuthStateChanged(function(user) {
+  		if (user) {
+    	// User is signed in.
+    		localStorage.setItem("user",user.uid);
+            userInfo.uid = user.uid
+            userInfo.name = user.displayName;
+            userInfo.picture = user.photoURL;
+            render_main(userInfo,that);
+
+  		} else {
+    	// No user is signed in
+    		let home = MyApp.templates.home();
+			$(document.body).html(home);
+  		}
+	});
+	/*
+	f.ref('usersFacebook/'+that.user).once('value',function(snapshot){
+		// NICKNAME
+		if(!snapshot.child("nickName").exists()){
+			console.log('doesnt have nickName');
+		}else that.userNickName = snapshot.val().nickName;
+
+		f.ref('usersFacebook/'+that.user+'/friendRequestReceived').on("value",function(snapshot){
+			var requestArray = snapshot.val();
+			userInfo.friendRequests = requestArray;
+		});
+
+		// POPULATE FRIENDS
+		userInfo.friends = snapshot.val().friends;
+
+		// POPULATE GROUPS 
+		userInfo.groups = snapshot.val().groups;
+		
+		// POPULATE THE USER INFORMATION ABOUT GAMES PLAYED
+		if(snapshot.child("venceu").exists()){
+			userInfo.venceu = snapshot.val().venceu;
+		}else{
+			firebase.database().ref('usersFacebook/' + that.user).update({
+		    venceu: 0
+		});
+			userInfo.venceu = 0;
+		}	
+
+		if(snapshot.child("perdeu").exists()){
+			userInfo.perdeu = snapshot.val().perdeu;	
+		}else{
+			firebase.database().ref('usersFacebook/' + that.user).update({
+		    perdeu: 0
+		});
+			userInfo.perdeu = 0;
+		}
+
+		if(snapshot.child("empatou").exists()){
+			userInfo.empatou = snapshot.val().empatou;
+
+		}else{
+			firebase.database().ref('usersFacebook/' + that.user).update({
+		    empatou: 0
+		});
+			userInfo.empatou = 0;
+		}
+
+		userInfo.total = userInfo.perdeu + userInfo.empatou + userInfo.venceu;
 		// ==================== DINAMIC PARTIALS ====================
 		mainHeader = MyApp.templates.mainHeader({obj:userInfo});
 		Handlebars.registerPartial("mainHeader", mainHeader)
@@ -268,19 +346,14 @@ $(function(){
 
 		resumo = MyApp.templates.resumo({obj:userInfo});
 		Handlebars.registerPartial("resumo", resumo);
-
+		console.log('fim');
 		// ==========================================================
 		
-		render_main(userInfo);
-		console.log('oi');
-
 
 	});
-
-	// let home = MyApp.templates.home();
-	// $(document.body).html(home);
-
-
+	*/
+	//let home = MyApp.templates.home();
+	//$(document.body).html(home);
 	// ================ Login and Logout FB =========================
 	$(document).on('click','#fb_login', function(e){
 		let facebookLogin = new facebook_login(f, userInfo);
@@ -303,7 +376,6 @@ $(function(){
 
 		//ADD one more member input on criar grupo popup
 		$('#add_membros_input').click(function(){
-			console.log('oi');
 			let newmemberinput = "<li class='list-group-item'><input class='form-control' type='text' placeholder='Nome'></li>"
 			$('#integrantes_grupo').append(newmemberinput);
 		});
@@ -410,7 +482,6 @@ $(function(){
 		$('.main-header-wrapper').html(mainHeader);
 
 		//change resumo
-		console.log(friendObj);
 		graficoResumo.data.datasets[0].data = [userInfo.venceu, userInfo.empatou, userInfo.perdeu];
 		graficoResumo.update();
 		
@@ -496,10 +567,7 @@ $(function(){
 							that.f.ref('usersFacebook/'+friendId+'/friends/'+that.userNickName+'/empatou').set(adversario_empatou+1);		
 
 						}
-						userInfo.total = userInfo.venceu + userInfo.empatou + userInfo.perdeu;
-
-						console.log(userInfo);
-						
+						userInfo.total = userInfo.venceu + userInfo.empatou + userInfo.perdeu;						
 
 						graficoResumo.data.datasets[0].data = [userInfo.venceu, userInfo.empatou, userInfo.perdeu];
 						graficoResumo.update();
