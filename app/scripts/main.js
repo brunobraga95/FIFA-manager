@@ -193,17 +193,18 @@ function render_main(userInfo,that){
 			userInfo.friendRequests = requestArray;
 		});
 
-		// POPULATE FRIENDS
-		userInfo.friends = snapshot.val().friends;
-
-		// POPULATE GROUPS 
-		userInfo.groups = snapshot.val().groups;
+		if(snapshot.val()){
+			// POPULATE FRIENDS
+			userInfo.friends = snapshot.val().friends;
+			// POPULATE GROUPS 
+			userInfo.groups = snapshot.val().groups;		
+		}
 		
 		// POPULATE THE USER INFORMATION ABOUT GAMES PLAYED
 		if(snapshot.child("venceu").exists()){
 			userInfo.venceu = snapshot.val().venceu;
 		}else{
-			firebase.database().ref('usersFacebook/' + that.user).update({
+			firebase.database().ref('usersFacebook/' + userInfo.uid).update({
 		    venceu: 0
 		});
 			userInfo.venceu = 0;
@@ -212,7 +213,7 @@ function render_main(userInfo,that){
 		if(snapshot.child("perdeu").exists()){
 			userInfo.perdeu = snapshot.val().perdeu;	
 		}else{
-			firebase.database().ref('usersFacebook/' + that.user).update({
+			firebase.database().ref('usersFacebook/' + userInfo.uid).update({
 		    perdeu: 0
 		});
 			userInfo.perdeu = 0;
@@ -222,7 +223,7 @@ function render_main(userInfo,that){
 			userInfo.empatou = snapshot.val().empatou;
 
 		}else{
-			firebase.database().ref('usersFacebook/' + that.user).update({
+			firebase.database().ref('usersFacebook/' + userInfo.uid).update({
 		    empatou: 0
 		});
 			userInfo.empatou = 0;
