@@ -177,10 +177,6 @@ function criar_grafico(userInfo){
 // ==================================================
 function render_main(userInfo,that){
 	f = firebase.database();
-
-	console.log(userInfo);
-
-
 	f.ref('usersFacebook/'+userInfo.uid).once('value',function(snapshot){
 		console.log('aqui dentro');
 		// NICKNAME
@@ -188,7 +184,7 @@ function render_main(userInfo,that){
 			//se entrou aqui, usuario ainda nao tem nick name
 			console.log('doesnt have nickName');
 			open_popup("nomeUsuario", userInfo);
-		}else that.userNickName = snapshot.val().nickName;
+		}else userInfo.userNickName = snapshot.val().nickName;
 
 		f.ref('usersFacebook/'+that.user+'/friendRequestReceived').on("value",function(snapshot){
 			var requestArray = snapshot.val();
@@ -432,6 +428,21 @@ $(function(){
 	$(document).on('click', "#add_nome_usuario", function(e){
 		e.preventDefault();
 		//Code here
+		var nickName = $('#nome_usuario')[0].value
+		var nameValidation = /^[a-zA-Z0-9.\-_$@*!]{3,30}$/.test(nickName)
+		if(nameValidation){
+			f.ref('usersNickNames').once('value',function(snapshot){
+				if(!snapshot.child(nickName).exists()){
+					f.ref('usersFacebook/'+userInfo.uid).update({nickName:nickName});
+					f.ref('usersNickNames/'+nickName).set(userInfo.uid);
+					userInfo.userNickName = nickName;
+					$.magnificPopup.close();
+					return;
+				}else alert("User with this nickname already exists");
+			});
+		}else{
+			alert("Name does not match");
+		}
 		$.magnificPopup.close();
 	})
 
