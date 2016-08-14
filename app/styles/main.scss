@@ -232,6 +232,8 @@ textarea {
   text-align: center;
 }
 
+//Popup
+
 .popup{
   position: relative;
   padding: 10px 15px 5px 15px;
@@ -250,6 +252,14 @@ textarea {
     button{
       margin-left: 5px;
     }
+  }
+}
+
+//Convite Amizade
+#friend_request_list{
+  li{
+    display: flex;
+    justify-content: space-between;
   }
 }
 

@@ -619,8 +619,11 @@ $(function(){
 	});
 
 	//Request amizade
-	$(document).on('click','aceitar_convite_amizade',function(e){
-		var id = e.target.id.substring(19,e.target.id.length);
+
+	//Aceitar
+	$(document).on('click','#friend_request_list>li>div>.btn:first-of-type',function(e){
+		var id = this.id.substring(24,e.target.id.length);
+		console.log(id);
 		f.ref('usersNickNames/'+id).once("value",function(snapshot){
 			var friendRequestFbUrl = snapshot.val()[Object.keys(snapshot.val())[0]];
 			f.ref('usersFacebook/'+that.user+'/friendRequestReceived/'+id).remove();
@@ -638,6 +641,29 @@ $(function(){
 				empatou:0	
 			});
 		});
+	});
+
+	//Rejeitar
+	$(document).on('click','#friend_request_list>li>div>.btn:last-of-type',function(e){
+		var id = this.id.substring(25,e.target.id.length);
+		console.log(id);
+		// f.ref('usersNickNames/'+id).once("value",function(snapshot){
+		// 	var friendRequestFbUrl = snapshot.val()[Object.keys(snapshot.val())[0]];
+		// 	f.ref('usersFacebook/'+that.user+'/friendRequestReceived/'+id).remove();
+		// 	f.ref('usersFacebook/'+friendRequestFbUrl+'/friendRequestSent/'+that.userNickName).remove();
+
+		// 	f.ref('usersFacebook/'+that.user+'/friends/'+id).update({
+		// 		venceu:0,
+		// 		perdeu:0,
+		// 		empatou:0	
+		// 	});
+
+		// 	f.ref('usersFacebook/'+friendRequestFbUrl+'/friends/'+that.userNickName).update({
+		// 		venceu:0,
+		// 		perdeu:0,
+		// 		empatou:0	
+		// 	});
+		// });
 	});
 
 });
