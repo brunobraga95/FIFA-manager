@@ -95,6 +95,7 @@ function facebook_login(f, userInfo) {
 // ===================================================================
 function open_popup(popup, obj){
 	if (popup == 'navbar_criar_grupo') popup='criar_grupo';
+	if (popup == 'add_partida_circle') popup='add_partida';
 	popup = popup + '_popup';
 	switch (popup){
 		case 'criar_grupo_popup':
@@ -253,9 +254,9 @@ function render_main(userInfo,that){
 		let main;
 		let isMobile = window.matchMedia("only screen and (max-width: 760px)");
 		if (isMobile.matches) {
-    		main = MyApp.templates.mainMobile({userInfo:userInfo});
+    		main = MyApp.templates.mainMobile({obj:userInfo});
     	}else{
-    		main = MyApp.templates.main({userInfo:userInfo});
+    		main = MyApp.templates.main({obj:userInfo});
     	}
 		console.log('fimteste');
 		$('.conteudo').html(navbar).append(main);
@@ -311,7 +312,7 @@ $(function(){
 	// =================== FRONTEND LISTENERS =======================
 
 	// Popups
-	$(document).on('click', '#criar_grupo, #convidar_amigos, #add_partida, #navbar_criar_grupo, #navbar_convite_amizade', function(e){
+	$(document).on('click', '#criar_grupo, #convidar_amigos, #add_partida, #navbar_criar_grupo, #navbar_convite_amizade, #add_partida_circle', function(e){
 		open_popup(this.id, userInfo);
 
 		//ADD one more member input on criar grupo popup

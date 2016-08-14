@@ -111,7 +111,7 @@ textarea {
 // Navbar
 .navbar-default{
   margin:0;
-  #navbar_criar_grupo, #navbar_convite_amizade, .navbar-brand{
+  #navbar_criar_grupo, #navbar_convite_amizade{
     margin-top: 15px;
   }
 }
@@ -123,10 +123,12 @@ textarea {
 }
 
 .navbar-brand {
+  margin-top: 15px;
   @media screen and (max-width: $screen-sm){
     transform: translateX(-50%);
     left: 50%;
     position: absolute;
+    margin-top: 0px;
   }
 }
 

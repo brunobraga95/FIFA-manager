@@ -12,7 +12,7 @@
 					<div class="col-xs-4">Perdeu: {{obj.perdeu}}</div>
 					<div class="col-xs-4">Empatou: {{obj.empatou}}</div>
 				</div>
-				<button class="btn btn-default col-xs-offset-3 col-xs-6">Adicionar nova partida</button>
+				<button class="btn btn-default col-xs-offset-3 col-xs-6" id="add_partida">Adicionar nova partida</button>
 			</div>
 		</div>
 
@@ -20,16 +20,16 @@
 			<ul class="list-group" id="groups_list">
 				{{>groupslist}}
 			</ul>
-			<button class="btn btn-default col-xs-offset-3 col-xs-6">Criar novo grupo</button>
+			<button class="btn btn-default col-xs-offset-3 col-xs-6" id="criar_grupo">Criar novo grupo</button>
 		</div>
 
         <div class="tab-pane" id="amigos_tab">
 			<ul class="list-group" id="friends_list">
 				{{>friendslist}}
 			</ul>
-			<button class="btn btn-default col-xs-offset-3 col-xs-6">Adicionar Amigo</button>
+			<button class="btn btn-default col-xs-offset-3 col-xs-6" id="convidar_amigos">Adicionar Amigo</button>
 		</div>
     </div>
 </div>
 
-<button class="btn btn-warning" style="position:absolute; right:24px; bottom:24px; border-radius:50%; border:0; width:50px; height:50px;">+</button>
+<button class="btn btn-warning" style="position:absolute; right:24px; bottom:24px; border-radius:50%; border:0; width:50px; height:50px;" id="add_partida_circle">+</button>
