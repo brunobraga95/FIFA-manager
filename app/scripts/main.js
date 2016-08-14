@@ -65,7 +65,6 @@ function facebook_login(f, userInfo) {
             userInfo.name = that.name;
             userInfo.picture = that.profilePicture;
             render_main(userInfo);
-
 		}).catch(function(error) {
 			// Handle Errors here.
  			var errorCode = error.code;
