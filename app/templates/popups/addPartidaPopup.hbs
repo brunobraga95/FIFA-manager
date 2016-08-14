@@ -1,37 +1,35 @@
-<div class="popup mfp-hide" id='add_partida_popup' style="background-color:white;">
-	<div>
-		<h3>Adicionar Partida</h3>
-	</div>
-	<div>
-		<form class="form-group">
+<div>
+	<h3>Adicionar Partida</h3>
+</div>
+<div>
+	<form class="form-group">
 
-			<label for="adversario">Contra: </label>
-			<select class="form-control" id = "adversario_nome">
-			{{#each obj.friends}}
-				<option>{{@key}}</option>	
+		<label for="adversario">Contra: </label>
+		<select class="form-control" id = "adversario_nome">
+		{{#each obj.friends}}
+			<option>{{@key}}</option>	
+		{{/each}}
+		</select>
+		<label for="timeUsuario">Seu time:</label>
+		<input class="form-control" type="text" name="timeUsuario" id="usuario_time" placeholder="Opcional">
+		<label for="timeUsuarioGols">Gols:</label>
+		<input class="form-control" type="text" name="timeUsuarioGols" id="usuario_gols" placeholder="Opcional">
+		<label for="timeAdversario">Time do seu amigo:</label>
+		<input class="form-control" type="text" name="timeAdversario" id="adversario_time" placeholder="Opcional">
+		<label for="timeAdversarioGols">Gols:</label>
+		<input class="form-control" type="text" name="timeAdversarioGols" id="adversario_gols" placeholder="Opicional">
+		<label for="grupo">Grupo:</label>
+		<select class="form-control" id = "add_nova_partida_group">
+			<option>Nenhum</option>
+			{{#each obj.groups}}
+				<option>{{this}}</option>
 			{{/each}}
-			</select>
-			<label for="timeUsuario">Seu time:</label>
-			<input class="form-control" type="text" name="timeUsuario" id="usuario_time" placeholder="Opcional">
-			<label for="timeUsuarioGols">Gols:</label>
-			<input class="form-control" type="text" name="timeUsuarioGols" id="usuario_gols" placeholder="Opcional">
-			<label for="timeAdversario">Time do seu amigo:</label>
-			<input class="form-control" type="text" name="timeAdversario" id="adversario_time" placeholder="Opcional">
-			<label for="timeAdversarioGols">Gols:</label>
-			<input class="form-control" type="text" name="timeAdversarioGols" id="adversario_gols" placeholder="Opicional">
-			<label for="grupo">Grupo:</label>
-			<select class="form-control" id = "add_nova_partida_group">
-				<option>Nenhum</option>
-				{{#each obj.groups}}
-					<option>{{this}}</option>
-				{{/each}}
-			</select>
-			
-			<div class="botao-wrapper">
-				<button class="btn btn-default cancelar">Cancelar</button>
-				<button class="btn btn-success" id="add_nova_partida_btn">Adicionar</button>
-			</div>
+		</select>
+		
+		<div class="botao-wrapper">
+			<button class="btn btn-default cancelar">Cancelar</button>
+			<button class="btn btn-success" id="add_nova_partida_btn">Adicionar</button>
+		</div>
 
-		</form>
-	</div>
+	</form>
 </div>

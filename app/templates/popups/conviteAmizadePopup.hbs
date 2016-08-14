@@ -1,23 +1,21 @@
-<div class="popup mfp-hide" id='navbar_convite_amizade_popup' style="background-color:white;">
-	<div>
-		<h3>Convite de Amizade</h3>
-	</div>
-	<div>
-		<form class="form-group">
+<div>
+	<h3>Convite de Amizade</h3>
+</div>
+<div>
+	<form class="form-group">
 
-			<p>Você recebeu um novo convite de:</p>
-			<ul id="friend-request-list" class="list-group">
-				{{#each obj.friendRequests}}
-					<li class="list-group-item">
-						<p><b>{{@key}}</b></p>
-						<div>
-							<buton class="btn btn-success" id="aceitar_convite_amizade_{{@key}}">Aceitar</buton>
-							<buton class="btn btn-danger" id="rejeitar_convite_amizade_{{@key}}" >Rejeitar</buton>
-						</div>
-					</li>
-				{{/each}}
-			</ul>
+		<p>Você recebeu um novo convite de:</p>
+		<ul id="friend-request-list" class="list-group">
+			{{#each obj.friendRequests}}
+				<li class="list-group-item">
+					<p><b>{{@key}}</b></p>
+					<div>
+						<buton class="btn btn-success" id="aceitar_convite_amizade_{{@key}}">Aceitar</buton>
+						<buton class="btn btn-danger" id="rejeitar_convite_amizade_{{@key}}" >Rejeitar</buton>
+					</div>
+				</li>
+			{{/each}}
+		</ul>
 
-		</form>
-	</div>
+	</form>
 </div>

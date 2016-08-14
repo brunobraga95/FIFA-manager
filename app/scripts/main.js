@@ -99,32 +99,32 @@ function open_popup(popup, obj){
 	switch (popup){
 		case 'criar_grupo_popup':
 			let criarGrupoPopup = MyApp.templates.criarGrupoPopup();
-			$(document.body).append(criarGrupoPopup);
+			$('.popup').html(criarGrupoPopup);
 			break;
 		case 'convidar_amigos_popup':
 			let convidarAmigosPopup = MyApp.templates.convidarAmigosPopup();
-			$(document.body).append(convidarAmigosPopup);
+			$('.popup').html(convidarAmigosPopup);
 			break;
 		case 'add_partida_popup':
 			let addPartidaPopup = MyApp.templates.addPartidaPopup({obj:obj});
-			$(document.body).append(addPartidaPopup);
+			$('.popup').html(addPartidaPopup);
+			console.log(addPartidaPopup);
 			break;
 		case 'nomeUsuario_popup':
 			let addnomeUsuariopup = MyApp.templates.nomeUsuarioPopup({obj:obj});
-			$(document.body).append(addnomeUsuariopup);
+			$('.popup').html(addnomeUsuariopup);
 			break;
 		case 'navbar_convite_amizade_popup':
 			let conviteAmizadePopup = MyApp.templates.conviteAmizadePopup({obj:obj});
-			$(document.body).append(conviteAmizadePopup); 
+			$('.popup').html(conviteAmizadePopup); 
 			break;
 
 	}
 
-
 	$.magnificPopup.open({
 		items: {
-    		src: '#' + popup,
-    		type: 'inline'
+			src: '.popup',
+			type: 'inline'
 		},
 		callbacks: {
 		    open: function() {
@@ -132,7 +132,6 @@ function open_popup(popup, obj){
         		$('#integrantes_grupo li:not(:first)').remove();
 				$('#lista_adicionar_amigos li:not(:first)').remove();
 		        $.magnificPopup.proto.close.call(this);
-		        $("#"+popup).remove();
 		      };
 		    }
 		}
@@ -179,8 +178,11 @@ function criar_grafico(userInfo){
 function render_main(userInfo,that){
 	f = firebase.database();
 
+	console.log(userInfo);
+
+
 	f.ref('usersFacebook/'+userInfo.uid).once('value',function(snapshot){
-				console.log('aqui dentro');
+		console.log('aqui dentro');
 		// NICKNAME
 		if(!snapshot.child("nickName").exists()){
 			//se entrou aqui, usuario ainda nao tem nick name
@@ -231,17 +233,22 @@ function render_main(userInfo,that){
 
 		userInfo.total = userInfo.perdeu + userInfo.empatou + userInfo.venceu;
 		// ==================== DINAMIC PARTIALS ====================
-		mainHeader = MyApp.templates.mainHeader({userInfo:userInfo});
+		
+		mainHeader = MyApp.templates.mainHeader({obj:userInfo});
 		Handlebars.registerPartial("mainHeader", mainHeader)
 
-		groupslist = MyApp.templates.groupslist({userInfo:userInfo});
+		groupslist = MyApp.templates.groupslist({obj:userInfo});
 		Handlebars.registerPartial("groupslist", groupslist)
 
-		friendslist = MyApp.templates.friendslist({userInfo:userInfo});
+		friendslist = MyApp.templates.friendslist({obj:userInfo});
 		Handlebars.registerPartial("friendslist", friendslist)
 
-		resumo = MyApp.templates.resumo({userInfo:userInfo});
+		resumo = MyApp.templates.resumo({obj:userInfo});
 		Handlebars.registerPartial("resumo", resumo);
+
+		//criar_grafico(userInfo);
+		// ==========================================================
+
 		let navbar = MyApp.templates.navbar({name:userInfo.name, pic:userInfo.picture});
 		let main;
 		let isMobile = window.matchMedia("only screen and (max-width: 760px)");
@@ -250,12 +257,8 @@ function render_main(userInfo,that){
     	}else{
     		main = MyApp.templates.main({userInfo:userInfo});
     	}
-    	console.log('fimteste');
-		$(document.body).html(navbar).append(main);
-
-		//criar_grafico(userInfo);
-		// ==========================================================
-		
+		console.log('fimteste');
+		$('.conteudo').html(navbar).append(main);
 
 	});	
 	
@@ -278,7 +281,7 @@ $(function(){
 	
 	firebase.auth().onAuthStateChanged(function(user) {
   		if (user) {
-    	// User is signed in.
+    		// User is signed in.
             userInfo.uid = user.uid
             userInfo.name = user.displayName;
             userInfo.picture = user.photoURL;
@@ -287,7 +290,7 @@ $(function(){
   		} else {
     	    // No user is signed in
     		let home = MyApp.templates.home();
-			$(document.body).html(home);
+			$('.conteudo').html(home);
   		}
 	});
 
@@ -424,6 +427,12 @@ $(function(){
 		
 
 	});
+
+	//ADD Nickname
+	$(document).on('click', "#add_nome_usuario", function(e){
+		e.preventDefault();
+		$.magnificPopup.close();
+	})
 
 	//ADD Partida
 	$(document).on('click', '#add_nova_partida_btn', function(e){
