@@ -178,7 +178,6 @@ function criar_grafico(userInfo){
 function render_main(userInfo,that){
 	f = firebase.database();
 	f.ref('usersFacebook/'+userInfo.uid).once('value',function(snapshot){
-		console.log('aqui dentro');
 		// NICKNAME
 		if(!snapshot.child("nickName").exists()){
 			//se entrou aqui, usuario ainda nao tem nick name
@@ -253,7 +252,6 @@ function render_main(userInfo,that){
     	}else{
     		main = MyApp.templates.main({obj:userInfo});
     	}
-		console.log('fimteste');
 		$('.conteudo').html(navbar).append(main);
 
 	});	
@@ -449,6 +447,7 @@ $(function(){
 		$.magnificPopup.close();
 	})
 
+
 	//ADD Partida
 	$(document).on('click', '#add_nova_partida_btn', function(e){
 		e.preventDefault();
@@ -592,29 +591,31 @@ $(function(){
 	//ADD New friend
 	$(document).on('click','#add_amigos_btn',function(e){
 		e.preventDefault();
-		var friend_name = $("lista_adicionar_amigos li input").val();
-		f.ref('usersNickNames').once('value',function(snapshot){
-			if(snapshot.child(friend_name).exists()){
-				f.ref('usersFacebook/'+that.user+'/friends').once('value',function(snapshot){
-					if(!snapshot.child(friend_name).exists()){			
-						f.ref('usersNickNames/'+friend_name).once("value",function(snapshot){
-							friendId = snapshot.val()[Object.keys(snapshot.val())[0]];
-							var foo = {};
-							foo[friend_name] = friendId;
-							var bar = {};
-							bar[userNickName] = this.user;
-							f.ref('usersFacebook/'+that.user+'/friendRequestSent').update(foo);
-							f.ref('usersFacebook/'+friendId+'/friendRequestReceived').update(bar);
-						});
-						userInfo.groups.group_name = group_name;
-						groupslist = MyApp.templates.groupslist({obj:userInfo});
-						$('#groups_list').html(groupslist);	
-
-					}else alert("user "+friend_name+" already is your friend");
-				});
+		var friend_name = $("list-group-item li input").val();
+		$('#lista_adicionar_amigos li input').each(function(i)
+		{
+   			$(this).attr('rel'); // This is your rel value
+			var friend_name = $(this)[0].value;					
+			f.ref('usersNickNames').once('value',function(snapshot){
+				if(snapshot.child(friend_name).exists()){
+					f.ref('usersFacebook/'+userInfo.uid+'/friends').once('value',function(snapshot){
+						if(!snapshot.child(friend_name).exists()){			
+							f.ref('usersNickNames/'+friend_name).once("value",function(snapshot){
+								friendId = snapshot.val()
+								var foo = {};
+								foo[friend_name] = friendId;
+								var bar = {};
+								bar[userInfo.userNickName] = userInfo.uid;
+								f.ref('usersFacebook/'+userInfo.uid+'/friendRequestSent').update(foo);
+								f.ref('usersFacebook/'+friendId+'/friendRequestReceived').update(bar);
+							});
+						}else alert("user "+friend_name+" already is your friend");
+					});
 				
-			}else alert("We could not find "+friend_name);
+				}else alert("We could not find "+friend_name);
+			});
 		});
+
 	});
 
 	//Request amizade
