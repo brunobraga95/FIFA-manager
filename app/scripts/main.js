@@ -273,12 +273,14 @@ $(function(){
 	userInfo.pageInfo.context = 'Resumo';
 	userInfo.pageInfo.mode = 'Geral';
 	let mainHeader, resumo, groupslist, friendslist;
+	let recenteTemplate = null;
 
 
 	let f = this.f = firebase.database();
 	this.user = localStorage.getItem('user');
 	this.userNickName = null;
 	const that = this;
+
 	
 	firebase.auth().onAuthStateChanged(function(user) {
   		if (user) {
@@ -345,11 +347,12 @@ $(function(){
 		mainHeader = MyApp.templates.mainHeader({obj:userInfo});
 		$('.main-header-wrapper').html(mainHeader);
 		
+		console.log(userInfo.pageInfo.context);
 		if(userInfo.pageInfo.context == 'Recente'){
-			if(recente == undefined){	
-				let recente = MyApp.templates.recente({obj:userInfo});
-				Handlebars.registerPartial("recente", recente);
-				$('.main-content').append(recente);
+			if(recenteTemplate == null){
+				recenteTemplate = MyApp.templates.recente({obj:userInfo});
+				Handlebars.registerPartial("recenteTemplate", recenteTemplate);
+				$('.main-content').append(recenteTemplate);
 			}else{
 				$('#recente-content').show();
 			}
