@@ -431,6 +431,7 @@ $(function(){
 	//ADD Nickname
 	$(document).on('click', "#add_nome_usuario", function(e){
 		e.preventDefault();
+		//Code here
 		$.magnificPopup.close();
 	})
 
