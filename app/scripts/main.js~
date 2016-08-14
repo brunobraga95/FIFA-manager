@@ -30,15 +30,15 @@ Handlebars.registerHelper('equal', function(lvalue, rvalue, options) {
 // ===================================================================
 function facebook_login(f, userInfo) {
     this.provider = new firebase.auth.FacebookAuthProvider();
-    this.userInfo = userInfo;
     const that = this;
 
     this.loginFacebook = function() {
         firebase.auth().signInWithPopup(that.provider).then(function(result) {
-  	    that.userInfo.token = result.credential.accessToken;
-            that.userInfo.name = result.user.displayName;
-            that.userInfo.email = result.user.email;
-            that.userInfo.profilePicture = result.user.photoURL;
+  		   that.token = result.credential.accessToken;
+  		    that.user = result.user;
+            that.name = that.user.displayName;
+            that.email = that.user.email;
+            that.profilePicture = that.user.photoURL;
             var today = new Date();
             var dd = today.getDate();
             var mm = today.getMonth()+1;
@@ -50,14 +50,14 @@ function facebook_login(f, userInfo) {
             if(mm<10) {
                 mm='0'+mm;
              }
-            that.userInfo.today = mm+'/'+dd+'/'+yyyy;
+            that.today = mm+'/'+dd+'/'+yyyy;
             firebase.database().ref('usersFacebook').on('value',function(snapshot){
                 if(!snapshot.child(that.user.uid).exists()){
                     firebase.database().ref('usersFacebook/'+that.user.uid).set({
-                        userName: that.userInfo.name,
-                        profilePicture: that.userInfo.profilePicture,
-                        email: that.userInfo.email,
-                        date:that.userInfo.today,
+                        userName: that.name,
+                        profilePicture: that.profilePicture,
+                        email: that.email,
+                        date:that.today,
                     });    
                 }else console.log("user already exists");
             });
