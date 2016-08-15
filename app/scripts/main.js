@@ -653,8 +653,6 @@ $(function(){
 			
 		});
 
-		console.log('oi');
-
 		// I've done this "work around" here to retrieve the friends and update them instantly in the UI, but it takes one more request to Firebase,
 		// please let me know if you have a better idea of how to do that, I've already tried creating new objects but it doesn't work due
 		// the asynchronous nature of the code.
@@ -664,7 +662,7 @@ $(function(){
 			friendslist = MyApp.templates.friendslist({obj:userInfo});
 			console.log(friendslist);
 			$('#friends_list').html(friendslist);
-		}
+		});
 
 		$.magnificPopup.close();
 
