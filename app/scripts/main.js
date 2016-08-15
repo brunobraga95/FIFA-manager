@@ -96,6 +96,7 @@ function open_popup(popup, obj){
 	if (popup == 'navbar_criar_grupo') popup='criar_grupo';
 	if (popup == 'add_partida_circle') popup='add_partida';
 	popup = popup + '_popup';
+	console.log(obj);
 	switch (popup){
 		case 'criar_grupo_popup':
 			let criarGrupoPopup = MyApp.templates.criarGrupoPopup();
@@ -185,16 +186,18 @@ function render_main(userInfo,that){
 			open_popup("nomeUsuario", userInfo);
 		}else userInfo.userNickName = snapshot.val().nickName;
 
-		f.ref('usersFacebook/'+that.user+'/friendRequestReceived').on("value",function(snapshot){
-			var requestArray = snapshot.val();
-			userInfo.friendRequests = requestArray;
-		});
+		if(snapshot.child("friendRequestReceived").exists()){
+			console.log('Has friend Request');
+			userInfo.friendRequests = snapshot.val().friendRequestReceived;
+			console.log(userInfo); 
+		}
 
 		if(snapshot.val()){
 			// POPULATE FRIENDS
 			userInfo.friends = snapshot.val().friends;
 			// POPULATE GROUPS 
-			userInfo.groups = snapshot.val().groups;		
+			userInfo.groups = snapshot.val().groups;
+		
 		}
 		
 		// POPULATE THE USER INFORMATION ABOUT GAMES PLAYED
@@ -226,6 +229,7 @@ function render_main(userInfo,that){
 			userInfo.empatou = 0;
 		}
 
+		//userInfo.friendRequests = snapshot.val().friendRequestReceived
 		userInfo.total = userInfo.perdeu + userInfo.empatou + userInfo.venceu;
 		// ==================== DINAMIC PARTIALS ====================
 		
@@ -625,17 +629,17 @@ $(function(){
 		var id = this.id.substring(24,e.target.id.length);
 		console.log(id);
 		f.ref('usersNickNames/'+id).once("value",function(snapshot){
-			var friendRequestFbUrl = snapshot.val()[Object.keys(snapshot.val())[0]];
-			f.ref('usersFacebook/'+that.user+'/friendRequestReceived/'+id).remove();
-			f.ref('usersFacebook/'+friendRequestFbUrl+'/friendRequestSent/'+that.userNickName).remove();
+			var friendRequestFbUrl = snapshot.val();
+			f.ref('usersFacebook/'+userInfo.uid+'/friendRequestReceived/'+id).remove();
+			f.ref('usersFacebook/'+friendRequestFbUrl+'/friendRequestSent/'+userInfo.userNickName).remove();
 
-			f.ref('usersFacebook/'+that.user+'/friends/'+id).update({
+			f.ref('usersFacebook/'+userInfo.uid+'/friends/'+id).update({
 				venceu:0,
 				perdeu:0,
 				empatou:0	
 			});
 
-			f.ref('usersFacebook/'+friendRequestFbUrl+'/friends/'+that.userNickName).update({
+			f.ref('usersFacebook/'+friendRequestFbUrl+'/friends/'+userInfo.userNickName).update({
 				venceu:0,
 				perdeu:0,
 				empatou:0	
@@ -647,23 +651,23 @@ $(function(){
 	$(document).on('click','#friend_request_list>li>div>.btn:last-of-type',function(e){
 		var id = this.id.substring(25,e.target.id.length);
 		console.log(id);
-		// f.ref('usersNickNames/'+id).once("value",function(snapshot){
-		// 	var friendRequestFbUrl = snapshot.val()[Object.keys(snapshot.val())[0]];
-		// 	f.ref('usersFacebook/'+that.user+'/friendRequestReceived/'+id).remove();
-		// 	f.ref('usersFacebook/'+friendRequestFbUrl+'/friendRequestSent/'+that.userNickName).remove();
+		 f.ref('usersNickNames/'+id).once("value",function(snapshot){
+		 	var friendRequestFbUrl = snapshot.val();
+		 	f.ref('usersFacebook/'+userInfo.uid+'/friendRequestReceived/'+id).remove();
+		 	f.ref('usersFacebook/'+friendRequestFbUrl+'/friendRequestSent/'+userInfo.userNickName).remove();
 
-		// 	f.ref('usersFacebook/'+that.user+'/friends/'+id).update({
-		// 		venceu:0,
-		// 		perdeu:0,
-		// 		empatou:0	
-		// 	});
+		 	f.ref('usersFacebook/'+userInfo.uid+'/friends/'+id).update({
+		 		venceu:0,
+		 		perdeu:0,
+		 		empatou:0	
+		 	});
 
-		// 	f.ref('usersFacebook/'+friendRequestFbUrl+'/friends/'+that.userNickName).update({
-		// 		venceu:0,
-		// 		perdeu:0,
-		// 		empatou:0	
-		// 	});
-		// });
+		 	f.ref('usersFacebook/'+friendRequestFbUrl+'/friends/'+userInfo.userNickName).update({
+		 		venceu:0,
+		 		perdeu:0,
+		 		empatou:0	
+		 	});
+		 });
 	});
 
 });
