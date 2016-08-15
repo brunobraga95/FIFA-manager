@@ -227,23 +227,22 @@ function render_main(userInfo,that){
 		}
 
 		userInfo.total = userInfo.perdeu + userInfo.empatou + userInfo.venceu;
-		// ==================== DINAMIC PARTIALS ====================
 		
+		// ==================== DINAMIC PARTIALS ====================
 		mainHeader = MyApp.templates.mainHeader({obj:userInfo});
-		Handlebars.registerPartial("mainHeader", mainHeader)
+		Handlebars.registerPartial("mainHeader", mainHeader);
 
 		groupslist = MyApp.templates.groupslist({obj:userInfo});
-		Handlebars.registerPartial("groupslist", groupslist)
+		Handlebars.registerPartial("groupslist", groupslist);
 
 		friendslist = MyApp.templates.friendslist({obj:userInfo});
-		Handlebars.registerPartial("friendslist", friendslist)
+		Handlebars.registerPartial("friendslist", friendslist);
 
 		resumo = MyApp.templates.resumo({obj:userInfo});
 		Handlebars.registerPartial("resumo", resumo);
-
-		//criar_grafico(userInfo);
 		// ==========================================================
 
+		//criar_grafico(userInfo);
 		let navbar = MyApp.templates.navbar({name:userInfo.name, pic:userInfo.picture});
 		let main;
 		let isMobile = window.matchMedia("only screen and (max-width: 760px)");
@@ -260,21 +259,27 @@ function render_main(userInfo,that){
 
 
 $(function(){
-	let applicationInfo = {};
+
+	// ========== Initializing variables ===========
 	let userInfo = {};
 	userInfo.pageInfo = {};
 	userInfo.pageInfo.context = 'Resumo';
 	userInfo.pageInfo.mode = 'Geral';
 	let mainHeader, resumo, groupslist, friendslist;
 	let recenteTemplate = null;
+	// =============================================
 
 
+	// initialize firebase
 	let f = this.f = firebase.database();
+	// loads user from localStorage
 	this.user = localStorage.getItem('user');
+	// initialize user's nickname
 	this.userNickName = null;
+	// pass the actual state of the database to that, this way we can refer to it later 
 	const that = this;
 
-	
+	// Verify if user is signed in to decide which template should be loaded
 	firebase.auth().onAuthStateChanged(function(user) {
   		if (user) {
     		// User is signed in.
@@ -289,6 +294,8 @@ $(function(){
 			$('.conteudo').html(home);
   		}
 	});
+	// ======================================================================
+
 
 	// ================ Login and Logout FB =========================
 	$(document).on('click','#fb_login', function(e){
@@ -428,7 +435,6 @@ $(function(){
 	//ADD Nickname
 	$(document).on('click', "#add_nome_usuario", function(e){
 		e.preventDefault();
-		//Code here
 		var nickName = $('#nome_usuario')[0].value
 		var nameValidation = /^[a-zA-Z0-9.\-_$@*!]{3,30}$/.test(nickName)
 		if(nameValidation){
@@ -445,7 +451,7 @@ $(function(){
 			alert("Name does not match");
 		}
 		$.magnificPopup.close();
-	})
+	});
 
 
 	//ADD Partida
@@ -594,7 +600,7 @@ $(function(){
 		var friend_name = $("list-group-item li input").val();
 		$('#lista_adicionar_amigos li input').each(function(i)
 		{
-   			$(this).attr('rel'); // This is your rel value
+   			$(this).attr('rel');
 			var friend_name = $(this)[0].value;					
 			f.ref('usersNickNames').once('value',function(snapshot){
 				if(snapshot.child(friend_name).exists()){
@@ -615,6 +621,7 @@ $(function(){
 				}else alert("We could not find "+friend_name);
 			});
 		});
+		$.magnificPopup.close();
 
 	});
 
@@ -623,7 +630,6 @@ $(function(){
 	//Aceitar
 	$(document).on('click','#friend_request_list>li>div>.btn:first-of-type',function(e){
 		var id = this.id.substring(24,e.target.id.length);
-		console.log(id);
 		f.ref('usersNickNames/'+id).once("value",function(snapshot){
 			var friendRequestFbUrl = snapshot.val()[Object.keys(snapshot.val())[0]];
 			f.ref('usersFacebook/'+that.user+'/friendRequestReceived/'+id).remove();
@@ -640,30 +646,29 @@ $(function(){
 				perdeu:0,
 				empatou:0	
 			});
+			
 		});
+
+		// I've done this "work around" here to retrieve the friends and update them instantly in the UI, but it takes one more request to Firebase,
+		// please let me know if you have a better idea of how to do that, I've already tried creating new objects but it doesn't work due
+		// the asynchronous nature of the code.
+
+		f.ref('usersFacebook/'+userInfo.uid).once('value',function(snapshot){
+			userInfo.friends = snapshot.val().friends;
+			friendslist = MyApp.templates.friendslist({obj:userInfo});
+			$('#friends_list').html(friendslist);
+		}
+		$.magnificPopup.close();
+
 	});
 
 	//Rejeitar
 	$(document).on('click','#friend_request_list>li>div>.btn:last-of-type',function(e){
 		var id = this.id.substring(25,e.target.id.length);
 		console.log(id);
-		// f.ref('usersNickNames/'+id).once("value",function(snapshot){
-		// 	var friendRequestFbUrl = snapshot.val()[Object.keys(snapshot.val())[0]];
-		// 	f.ref('usersFacebook/'+that.user+'/friendRequestReceived/'+id).remove();
-		// 	f.ref('usersFacebook/'+friendRequestFbUrl+'/friendRequestSent/'+that.userNickName).remove();
 
-		// 	f.ref('usersFacebook/'+that.user+'/friends/'+id).update({
-		// 		venceu:0,
-		// 		perdeu:0,
-		// 		empatou:0	
-		// 	});
+		//Basically, get rid of the friend request in both the UI and Firebase
 
-		// 	f.ref('usersFacebook/'+friendRequestFbUrl+'/friends/'+that.userNickName).update({
-		// 		venceu:0,
-		// 		perdeu:0,
-		// 		empatou:0	
-		// 	});
-		// });
 	});
 
 });
