@@ -30,15 +30,15 @@ Handlebars.registerHelper('equal', function(lvalue, rvalue, options) {
 // ===================================================================
 function facebook_login(f, userInfo) {
     this.provider = new firebase.auth.FacebookAuthProvider();
+    this.userInfo = userInfo;
     const that = this;
 
     this.loginFacebook = function() {
         firebase.auth().signInWithPopup(that.provider).then(function(result) {
-  		   that.token = result.credential.accessToken;
-  		    that.user = result.user;
-            that.name = that.user.displayName;
-            that.email = that.user.email;
-            that.profilePicture = that.user.photoURL;
+  	    that.userInfo.token = result.credential.accessToken;
+            that.userInfo.name = result.user.displayName;
+            that.userInfo.email = result.user.email;
+            that.userInfo.profilePicture = result.user.photoURL;
             var today = new Date();
             var dd = today.getDate();
             var mm = today.getMonth()+1;
@@ -50,14 +50,14 @@ function facebook_login(f, userInfo) {
             if(mm<10) {
                 mm='0'+mm;
              }
-            that.today = mm+'/'+dd+'/'+yyyy;
+            that.userInfo.today = mm+'/'+dd+'/'+yyyy;
             firebase.database().ref('usersFacebook').on('value',function(snapshot){
                 if(!snapshot.child(that.user.uid).exists()){
                     firebase.database().ref('usersFacebook/'+that.user.uid).set({
-                        userName: that.name,
-                        profilePicture: that.profilePicture,
-                        email: that.email,
-                        date:that.today,
+                        userName: that.userInfo.name,
+                        profilePicture: that.userInfo.profilePicture,
+                        email: that.userInfo.email,
+                        date:that.userInfo.today,
                     });    
                 }else console.log("user already exists");
             });
@@ -65,7 +65,6 @@ function facebook_login(f, userInfo) {
             userInfo.name = that.name;
             userInfo.picture = that.profilePicture;
             render_main(userInfo);
-
 		}).catch(function(error) {
 			// Handle Errors here.
  			var errorCode = error.code;
@@ -179,7 +178,6 @@ function criar_grafico(userInfo){
 function render_main(userInfo,that){
 	f = firebase.database();
 	f.ref('usersFacebook/'+userInfo.uid).once('value',function(snapshot){
-		console.log('aqui dentro');
 		// NICKNAME
 		if(!snapshot.child("nickName").exists()){
 			//se entrou aqui, usuario ainda nao tem nick name
@@ -187,16 +185,18 @@ function render_main(userInfo,that){
 			open_popup("nomeUsuario", userInfo);
 		}else userInfo.userNickName = snapshot.val().nickName;
 
-		f.ref('usersFacebook/'+that.user+'/friendRequestReceived').on("value",function(snapshot){
-			var requestArray = snapshot.val();
-			userInfo.friendRequests = requestArray;
-		});
+		if(snapshot.child("friendRequestReceived").exists()){
+			console.log('Has friend Request');
+			userInfo.friendRequests = snapshot.val().friendRequestReceived;
+			console.log(userInfo); 
+		}
 
 		if(snapshot.val()){
 			// POPULATE FRIENDS
 			userInfo.friends = snapshot.val().friends;
 			// POPULATE GROUPS 
-			userInfo.groups = snapshot.val().groups;		
+			userInfo.groups = snapshot.val().groups;
+		
 		}
 		
 		// POPULATE THE USER INFORMATION ABOUT GAMES PLAYED
@@ -228,24 +228,24 @@ function render_main(userInfo,that){
 			userInfo.empatou = 0;
 		}
 
+		//userInfo.friendRequests = snapshot.val().friendRequestReceived
 		userInfo.total = userInfo.perdeu + userInfo.empatou + userInfo.venceu;
-		// ==================== DINAMIC PARTIALS ====================
 		
+		// ==================== DINAMIC PARTIALS ====================
 		mainHeader = MyApp.templates.mainHeader({obj:userInfo});
-		Handlebars.registerPartial("mainHeader", mainHeader)
+		Handlebars.registerPartial("mainHeader", mainHeader);
 
 		groupslist = MyApp.templates.groupslist({obj:userInfo});
-		Handlebars.registerPartial("groupslist", groupslist)
+		Handlebars.registerPartial("groupslist", groupslist);
 
 		friendslist = MyApp.templates.friendslist({obj:userInfo});
-		Handlebars.registerPartial("friendslist", friendslist)
+		Handlebars.registerPartial("friendslist", friendslist);
 
 		resumo = MyApp.templates.resumo({obj:userInfo});
 		Handlebars.registerPartial("resumo", resumo);
-
-		//criar_grafico(userInfo);
 		// ==========================================================
 
+		//criar_grafico(userInfo);
 		let navbar = MyApp.templates.navbar({name:userInfo.name, pic:userInfo.picture});
 		let main;
 		let isMobile = window.matchMedia("only screen and (max-width: 760px)");
@@ -254,7 +254,6 @@ function render_main(userInfo,that){
     	}else{
     		main = MyApp.templates.main({obj:userInfo});
     	}
-		console.log('fimteste');
 		$('.conteudo').html(navbar).append(main);
 
 	});	
@@ -263,19 +262,27 @@ function render_main(userInfo,that){
 
 
 $(function(){
-	let applicationInfo = {};
+
+	// ========== Initializing variables ===========
 	let userInfo = {};
 	userInfo.pageInfo = {};
 	userInfo.pageInfo.context = 'Resumo';
 	userInfo.pageInfo.mode = 'Geral';
 	let mainHeader, resumo, groupslist, friendslist;
+	let recenteTemplate = null;
+	// =============================================
 
 
+	// initialize firebase
 	let f = this.f = firebase.database();
+	// loads user from localStorage
 	this.user = localStorage.getItem('user');
+	// initialize user's nickname
 	this.userNickName = null;
+	// pass the actual state of the database to that, this way we can refer to it later 
 	const that = this;
-	
+
+	// Verify if user is signed in to decide which template should be loaded
 	firebase.auth().onAuthStateChanged(function(user) {
   		if (user) {
     		// User is signed in.
@@ -290,6 +297,8 @@ $(function(){
 			$('.conteudo').html(home);
   		}
 	});
+	// ======================================================================
+
 
 	// ================ Login and Logout FB =========================
 	$(document).on('click','#fb_login', function(e){
@@ -341,11 +350,12 @@ $(function(){
 		mainHeader = MyApp.templates.mainHeader({obj:userInfo});
 		$('.main-header-wrapper').html(mainHeader);
 		
+		console.log(userInfo.pageInfo.context);
 		if(userInfo.pageInfo.context == 'Recente'){
-			if(recente == undefined){	
-				let recente = MyApp.templates.recente({obj:userInfo});
-				Handlebars.registerPartial("recente", recente);
-				$('.main-content').append(recente);
+			if(recenteTemplate == null){
+				recenteTemplate = MyApp.templates.recente({obj:userInfo});
+				Handlebars.registerPartial("recenteTemplate", recenteTemplate);
+				$('.main-content').append(recenteTemplate);
 			}else{
 				$('#recente-content').show();
 			}
@@ -428,7 +438,6 @@ $(function(){
 	//ADD Nickname
 	$(document).on('click', "#add_nome_usuario", function(e){
 		e.preventDefault();
-		//Code here
 		var nickName = $('#nome_usuario')[0].value
 		var nameValidation = /^[a-zA-Z0-9.\-_$@*!]{3,30}$/.test(nickName)
 		if(nameValidation){
@@ -445,7 +454,8 @@ $(function(){
 			alert("Name does not match");
 		}
 		$.magnificPopup.close();
-	})
+	});
+
 
 	//ADD Partida
 	$(document).on('click', '#add_nova_partida_btn', function(e){
@@ -548,29 +558,30 @@ $(function(){
 	$(document).on('click', '#add_novo_grupo_btn', function(event){
 		event.preventDefault();
 		var listItems = $("#integrantes_grupo li input");
-		that.f.ref('groups').once('value',function(snapshot){
+		f.ref('groups').once('value',Function(snapshot){
 			var group_name = $("#novo_grupo_nome")[0].value
 			if(!snapshot.child(group_name).exists()){
 				var group_creator = {};
-				group_creator[that.userNickName] = that.user;
-				that.f.ref('groups/'+group_name+'/membros').set(group_creator);
+				group_creator[userInfo.userNickName] = userInfo.uid;
+				f.ref('groups/'+group_name+'/membros').set(group_creator);
 				var group_name_obj = {};
 				group_name_obj[group_name] = group_name;
-				that.f.ref('usersFacebook/'+that.user+'/groups').update(group_name_obj);
+				f.ref('usersFacebook/'+userInfo.uid+'/groups').update(group_name_obj);
 				listItems.each(function(idx, input){
-					var input = $(input);
+				var input = $(input);
     				var friend_name = input[0].value
     				if(friend_name != ''){
     					f.ref('usersNickNames').once('value',function(snapshot){		
     						if(snapshot.child(friend_name).exists()){
 								f.ref('usersNickNames/'+friend_name).once("value",function(snapshot){
-									let friendId = snapshot.val()[Object.keys(snapshot.val())[0]];
+									let friendId = snapshot.val();
+									console.log(friendId);
 									var foo = {};
 									foo[friend_name] = friendId;
 									f.ref('groups/'+group_name+'/membros').update(foo);
 									f.ref('usersFacebook/'+friendId+'/groups').update(group_name_obj);
-								});	
-								userInfo.groups.group_name = group_name;
+								});
+								userInfo.groups[group_name] = group_name;
 								groupslist = MyApp.templates.groupslist({obj:userInfo});
 								$('#groups_list').html(groupslist);
     						}
@@ -590,51 +601,80 @@ $(function(){
 	//ADD New friend
 	$(document).on('click','#add_amigos_btn',function(e){
 		e.preventDefault();
-		var friend_name = $("lista_adicionar_amigos li input").val();
-		f.ref('usersNickNames').once('value',function(snapshot){
-			if(snapshot.child(friend_name).exists()){
-				f.ref('usersFacebook/'+that.user+'/friends').once('value',function(snapshot){
-					if(!snapshot.child(friend_name).exists()){			
-						f.ref('usersNickNames/'+friend_name).once("value",function(snapshot){
-							friendId = snapshot.val()[Object.keys(snapshot.val())[0]];
-							var foo = {};
-							foo[friend_name] = friendId;
-							var bar = {};
-							bar[userNickName] = this.user;
-							f.ref('usersFacebook/'+that.user+'/friendRequestSent').update(foo);
-							f.ref('usersFacebook/'+friendId+'/friendRequestReceived').update(bar);
-						});
-						userInfo.groups.group_name = group_name;
-						groupslist = MyApp.templates.groupslist({obj:userInfo});
-						$('#groups_list').html(groupslist);	
-
-					}else alert("user "+friend_name+" already is your friend");
-				});
+		var friend_name = $("list-group-item li input").val();
+		$('#lista_adicionar_amigos li input').each(function(i)
+		{
+   			$(this).attr('rel');
+			var friend_name = $(this)[0].value;					
+			f.ref('usersNickNames').once('value',function(snapshot){
+				if(snapshot.child(friend_name).exists()){
+					f.ref('usersFacebook/'+userInfo.uid+'/friends').once('value',function(snapshot){
+						if(!snapshot.child(friend_name).exists()){			
+							f.ref('usersNickNames/'+friend_name).once("value",function(snapshot){
+								friendId = snapshot.val()
+								var foo = {};
+								foo[friend_name] = friendId;
+								var bar = {};
+								bar[userInfo.userNickName] = userInfo.uid;
+								f.ref('usersFacebook/'+userInfo.uid+'/friendRequestSent').update(foo);
+								f.ref('usersFacebook/'+friendId+'/friendRequestReceived').update(bar);
+							});
+						}else alert("user "+friend_name+" already is your friend");
+					});
 				
-			}else alert("We could not find "+friend_name);
+				}else alert("We could not find "+friend_name);
+			});
 		});
+		$.magnificPopup.close();
+
 	});
 
 	//Request amizade
-	$(document).on('click','aceitar_convite_amizade',function(e){
-		var id = e.target.id.substring(19,e.target.id.length);
+
+	//Aceitar
+	$(document).on('click','#friend_request_list>li>div>.btn:first-of-type',function(e){
+		var id = this.id.substring(24,e.target.id.length);
 		f.ref('usersNickNames/'+id).once("value",function(snapshot){
-			var friendRequestFbUrl = snapshot.val()[Object.keys(snapshot.val())[0]];
-			f.ref('usersFacebook/'+that.user+'/friendRequestReceived/'+id).remove();
-			f.ref('usersFacebook/'+friendRequestFbUrl+'/friendRequestSent/'+that.userNickName).remove();
+			var friendRequestFbUrl = snapshot.val();
+			f.ref('usersFacebook/'+userInfo.uid+'/friendRequestReceived/'+id).remove();
+			f.ref('usersFacebook/'+friendRequestFbUrl+'/friendRequestSent/'+userInfo.userNickName).remove();
 
-			f.ref('usersFacebook/'+that.user+'/friends/'+id).update({
+			f.ref('usersFacebook/'+userInfo.uid+'/friends/'+id).update({
 				venceu:0,
 				perdeu:0,
 				empatou:0	
 			});
 
-			f.ref('usersFacebook/'+friendRequestFbUrl+'/friends/'+that.userNickName).update({
+			f.ref('usersFacebook/'+friendRequestFbUrl+'/friends/'+userInfo.userNickName).update({
 				venceu:0,
 				perdeu:0,
 				empatou:0	
 			});
+			
 		});
+
+		// I've done this "work around" here to retrieve the friends and update them instantly in the UI, but it takes one more request to Firebase,
+		// please let me know if you have a better idea of how to do that, I've already tried creating new objects but it doesn't work due
+		// the asynchronous nature of the code.
+
+		f.ref('usersFacebook/'+userInfo.uid).once('value',function(snapshot){
+			userInfo.friends = snapshot.val().friends;
+			friendslist = MyApp.templates.friendslist({obj:userInfo});
+			console.log(friendslist);
+			$('#friends_list').html(friendslist);
+		});
+
+		$.magnificPopup.close();
+
+	});
+
+	//Rejeitar
+	$(document).on('click','#friend_request_list>li>div>.btn:last-of-type',function(e){
+		var id = this.id.substring(25,e.target.id.length);
+		console.log(id);
+
+		//Basically, get rid of the friend request in both the UI and Firebase
+
 	});
 
 });

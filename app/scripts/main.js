@@ -96,7 +96,6 @@ function open_popup(popup, obj){
 	if (popup == 'navbar_criar_grupo') popup='criar_grupo';
 	if (popup == 'add_partida_circle') popup='add_partida';
 	popup = popup + '_popup';
-	console.log(obj);
 	switch (popup){
 		case 'criar_grupo_popup':
 			let criarGrupoPopup = MyApp.templates.criarGrupoPopup();
@@ -559,29 +558,32 @@ $(function(){
 	$(document).on('click', '#add_novo_grupo_btn', function(event){
 		event.preventDefault();
 		var listItems = $("#integrantes_grupo li input");
-		that.f.ref('groups').once('value',function(snapshot){
+		f.ref('groups').once('value',function(snapshot){
 			var group_name = $("#novo_grupo_nome")[0].value
 			if(!snapshot.child(group_name).exists()){
+				
 				var group_creator = {};
-				group_creator[that.userNickName] = that.user;
-				that.f.ref('groups/'+group_name+'/membros').set(group_creator);
+				group_creator[userInfo.userNickName] = userInfo.uid;
+				f.ref('groups/'+group_name+'/membros').set(group_creator);
 				var group_name_obj = {};
 				group_name_obj[group_name] = group_name;
-				that.f.ref('usersFacebook/'+that.user+'/groups').update(group_name_obj);
+				f.ref('usersFacebook/'+userInfo.uid+'/groups').update(group_name_obj);
 				listItems.each(function(idx, input){
-					var input = $(input);
+				var input = $(input);
     				var friend_name = input[0].value
     				if(friend_name != ''){
     					f.ref('usersNickNames').once('value',function(snapshot){		
     						if(snapshot.child(friend_name).exists()){
 								f.ref('usersNickNames/'+friend_name).once("value",function(snapshot){
-									let friendId = snapshot.val()[Object.keys(snapshot.val())[0]];
+									let friendId = snapshot.val();
+									console.log(friendId);
 									var foo = {};
 									foo[friend_name] = friendId;
 									f.ref('groups/'+group_name+'/membros').update(foo);
 									f.ref('usersFacebook/'+friendId+'/groups').update(group_name_obj);
-								});	
-								userInfo.groups.group_name = group_name;
+								});
+								if(!userInfo.groups)userInfo.groups = {}
+								userInfo.groups[group_name] = group_name;
 								groupslist = MyApp.templates.groupslist({obj:userInfo});
 								$('#groups_list').html(groupslist);
     						}
@@ -589,10 +591,13 @@ $(function(){
 						});	
     				}else alert("Please do not enter an empty name")	
 				});
+			
 			}
+			
 			else{
 				alert('Group: '+group_name+' already exists');	
 			}
+			
 			
 		});
 		$.magnificPopup.close();
