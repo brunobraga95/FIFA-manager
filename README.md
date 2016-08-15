@@ -1,2 +1,2 @@
 # FIFA-manager
-## Save FIFA games results!!!!
+## Please, go to the branch `fifa_manager-WebApp`.
