@@ -39,6 +39,7 @@ function facebook_login(f, userInfo) {
             that.userInfo.name = result.user.displayName;
             that.userInfo.email = result.user.email;
             that.userInfo.profilePicture = result.user.photoURL;
+            userInfo.uid = result.user.uid
             var today = new Date();
             var dd = today.getDate();
             var mm = today.getMonth()+1;
@@ -52,8 +53,8 @@ function facebook_login(f, userInfo) {
              }
             that.userInfo.today = mm+'/'+dd+'/'+yyyy;
             firebase.database().ref('usersFacebook').on('value',function(snapshot){
-                if(!snapshot.child(that.user.uid).exists()){
-                    firebase.database().ref('usersFacebook/'+that.user.uid).set({
+                if(!snapshot.child(that.userInfo.uid).exists()){
+                    firebase.database().ref('usersFacebook/'+that.userInfo.uid).set({
                         userName: that.userInfo.name,
                         profilePicture: that.userInfo.profilePicture,
                         email: that.userInfo.email,
@@ -61,9 +62,6 @@ function facebook_login(f, userInfo) {
                     });    
                 }else console.log("user already exists");
             });
-            userInfo.uid = user.uid
-            userInfo.name = that.name;
-            userInfo.picture = that.profilePicture;
             render_main(userInfo);
 		}).catch(function(error) {
 			// Handle Errors here.
@@ -108,7 +106,6 @@ function open_popup(popup, obj){
 		case 'add_partida_popup':
 			let addPartidaPopup = MyApp.templates.addPartidaPopup({obj:obj});
 			$('.popup').html(addPartidaPopup);
-			console.log(addPartidaPopup);
 			break;
 		case 'nomeUsuario_popup':
 			let addnomeUsuariopup = MyApp.templates.nomeUsuarioPopup({obj:obj});
@@ -188,7 +185,6 @@ function render_main(userInfo,that){
 		if(snapshot.child("friendRequestReceived").exists()){
 			console.log('Has friend Request');
 			userInfo.friendRequests = snapshot.val().friendRequestReceived;
-			console.log(userInfo); 
 		}
 
 		if(snapshot.val()){
@@ -350,7 +346,6 @@ $(function(){
 		mainHeader = MyApp.templates.mainHeader({obj:userInfo});
 		$('.main-header-wrapper').html(mainHeader);
 		
-		console.log(userInfo.pageInfo.context);
 		if(userInfo.pageInfo.context == 'Recente'){
 			if(recenteTemplate == null){
 				recenteTemplate = MyApp.templates.recente({obj:userInfo});
@@ -576,7 +571,6 @@ $(function(){
     						if(snapshot.child(friend_name).exists()){
 								f.ref('usersNickNames/'+friend_name).once("value",function(snapshot){
 									let friendId = snapshot.val();
-									console.log(friendId);
 									var foo = {};
 									foo[friend_name] = friendId;
 									f.ref('groups/'+group_name+'/membros').update(foo);
@@ -665,7 +659,6 @@ $(function(){
 		f.ref('usersFacebook/'+userInfo.uid).once('value',function(snapshot){
 			userInfo.friends = snapshot.val().friends;
 			friendslist = MyApp.templates.friendslist({obj:userInfo});
-			console.log(friendslist);
 			$('#friends_list').html(friendslist);
 		});
 
@@ -676,8 +669,6 @@ $(function(){
 	//Rejeitar
 	$(document).on('click','#friend_request_list>li>div>.btn:last-of-type',function(e){
 		var id = this.id.substring(25,e.target.id.length);
-		console.log(id);
-
 		//Basically, get rid of the friend request in both the UI and Firebase
 
 	});
