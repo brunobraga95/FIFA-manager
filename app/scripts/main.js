@@ -461,13 +461,13 @@ $(function(){
 		var adversario_time = $('#adversario_time')[0].value
 		var adversario_gols = $('#adversario_gols')[0].value
 		var add_nova_partida_group = $("#add_nova_partida_group option:selected").text();
-		that.f.ref('usersFacebook/'+that.user+'/friends').once('value',function(snapshot){
+		f.ref('usersFacebook/'+userInfo.uid+'/friends').once('value',function(snapshot){
 			if(snapshot.child(adversario_nome).exists()){
 				var usuario_empatou = snapshot.val()[adversario_nome].empatou;
 				var usuario_venceu = snapshot.val()[adversario_nome].venceu;
 				var usuario_perdeu = snapshot.val()[adversario_nome].perdeu;
 				f.ref('usersNickNames/'+adversario_nome).once("value",function(snapshot){
-					let friendId = snapshot.val()[Object.keys(snapshot.val())[0]];
+					let friendId = snapshot.val();
 					if(usuario_time==''){
 						alert('Please enter your team');
 						return;	
@@ -477,13 +477,10 @@ $(function(){
 						return;
 					}
 					
-					that.f.ref('usersFacebook/'+friendId+'/friends/'+that.userNickName).once('value',function(adversario_snapshot){
-						var adversario_empatou = adversario_snapshot.val().empatou;
-						var adversario_venceu = adversario_snapshot.val().venceu;
-						var adversario_perdeu = adversario_snapshot.val().perdeu;
+					f.ref('usersFacebook/'+friendId+'/friends/'+userInfo.userNickName).once('value',function(adversario_snapshot){
 						var nova_partida = {}
     	        		let partida_obj = {
-    	 	   	    		'player1':that.userNickName,	
+    	 	   	    		'player1':userInfo.userNickName,	
 		  	          		'player2':adversario_nome,
    		 	        		'player1Goals':usuario_gols,
     	    	    		'player2Goals':adversario_gols,
@@ -493,48 +490,60 @@ $(function(){
 		            	var time_stamp = Math.floor(Date.now() / 1000); 
    			         	nova_partida[time_stamp] = partida_obj;	
 						if(add_nova_partida_group!='Nenhum'){			
-							that.f.ref('groups/'+add_nova_partida_group+'/jogos').update(nova_partida);
+							f.ref('groups/'+add_nova_partida_group+'/jogos').update(nova_partida);
 						}
 						nova_partida[time_stamp].group = add_nova_partida_group;
-						that.f.ref('usersFacebook/'+that.user+'/friends/'+adversario_nome+'/jogos').update(nova_partida);
-						that.f.ref('usersFacebook/'+friendId+'/friends/'+that.userNickName+'/jogos').update(nova_partida);
+						f.ref('usersFacebook/'+userInfo.uid+'/friends/'+adversario_nome+'/jogos').update(nova_partida);
+						f.ref('usersFacebook/'+friendId+'/friends/'+userInfo.userNickName+'/jogos').update(nova_partida);
 						if(usuario_gols > adversario_gols){
 							userInfo.venceu++;
-							that.f.ref('usersFacebook/'+that.user+'/venceu').transaction(function(venceu){
+							f.ref('usersFacebook/'+userInfo.uid+'/venceu').transaction(function(venceu){
 	    						return (+venceu+1);
 							});
-							that.f.ref('usersFacebook/'+friendId+'/perdeu').transaction(function(perdeu){
+							f.ref('usersFacebook/'+friendId+'/perdeu').transaction(function(perdeu){
 	    						return (+perdeu+1);
 							});
-							that.f.ref('usersFacebook/'+that.user+'/friends/'+adversario_nome+'/venceu').set(usuario_venceu+1);
-							that.f.ref('usersFacebook/'+friendId+'/friends/'+that.userNickName+'/perdeu').set(adversario_perdeu+1);
-						}
+							f.ref('usersFacebook/'+userInfo.uid+'/friends/'+adversario_nome+'/venceu').transaction(function(venceu){
+								return (+venceu+1)
+							})
+							f.ref('usersFacebook/'+friendId+'/friends/'+userInfo.userNickName+'/perdeu').transaction(function(perdeu){
+								return (+perdeu+1)
+							})						}
 						else if(usuario_gols < adversario_gols){
 							userInfo.perdeu++;
-							that.f.ref('usersFacebook/'+that.user+'/perdeu').transaction(function(perdeu){
+							f.ref('usersFacebook/'+userInfo.uid+'/perdeu').transaction(function(perdeu){
 	    						return (+perdeu+1);
 							});
-							that.f.ref('usersFacebook/'+friendId+'/venceu').transaction(function(venceu){
+							f.ref('usersFacebook/'+friendId+'/venceu').transaction(function(venceu){
 	    						return (+venceu+1);
 							});
-							that.f.ref('usersFacebook/'+that.user+'/friends/'+adversario_nome+'/perdeu').set(usuario_perdeu+1);
-							that.f.ref('usersFacebook/'+friendId+'/friends/'+that.userNickName+'/venceu').set(adversario_venceu+1);		
+							f.ref('usersFacebook/'+userInfo.uid+'/friends/'+adversario_nome+'/perdeu')..transaction(function(perdeu){
+								return (+perdeu+1)
+							})
+							f.ref('usersFacebook/'+friendId+'/friends/'+userInfo.userNickName+'/venceu')..transaction(function(venceu){
+								return (+venceu+1)
+							})		
 						}else{
 							userInfo.empatou++;
-							that.f.ref('usersFacebook/'+that.user+'/empatou').transaction(function(empatou){
+							f.ref('usersFacebook/'+userInfo.uid+'/empatou').transaction(function(empatou){
 	    						return (+empatou+1);
 							});
-							that.f.ref('usersFacebook/'+friendId+'/empatou').transaction(function(empatou){
+							f.ref('usersFacebook/'+friendId+'/empatou').transaction(function(empatou){
 	    						return (+empatou+1);
 							});
-							that.f.ref('usersFacebook/'+that.user+'/friends/'+adversario_nome+'/empatou').set(usuario_empatou+1);
-							that.f.ref('usersFacebook/'+friendId+'/friends/'+that.userNickName+'/empatou').set(adversario_empatou+1);		
+							f.ref('usersFacebook/'+userInfo.uid+'/friends/'+adversario_nome+'/empatou')..transaction(function(empatou){
+								return (+empatou+1)
+							})
+							f.ref('usersFacebook/'+friendId+'/friends/'+userInfo.userNickName+'/empatou')..transaction(function(empatou){
+								return (+empatou+1)
+							})		
 
 						}
 						userInfo.total = userInfo.venceu + userInfo.empatou + userInfo.perdeu;						
 
-						graficoResumo.data.datasets[0].data = [userInfo.venceu, userInfo.empatou, userInfo.perdeu];
-						graficoResumo.update();
+						// The two next lines that are commented do not work for some reason, they crash the code saying that data is not defined
+						//graficoResumo.data.datasets[0].data = [userInfo.venceu, userInfo.empatou, userInfo.perdeu];
+						//graficoResumo.update();
 
 						mainHeader = MyApp.templates.mainHeader({obj:userInfo});						
 						$('.main-header-wrapper').html(mainHeader);
@@ -547,6 +556,7 @@ $(function(){
 				
 			}else alert("We could not find "+adversario_nome);			
 		});
+
 	});
 
 	//ADD novo grupo
