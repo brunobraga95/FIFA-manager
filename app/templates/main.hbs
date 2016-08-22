@@ -20,7 +20,16 @@
 	</div>
 	<div class="clearfix main col-xs-12 col-sm-9">
 		<div class="main-header-wrapper clearfix">
-			{{>mainHeader}}
+			<div class="main-header">
+				<h1>{{obj.pageInfo.context}}<small>{{obj.pageInfo.mode.text}} </small></h1>
+				<button id="add_partida" class="btn btn-success btn-lg">Adicionar nova partida</button>
+			</div>
+
+			<div class="display-jogos" style="height:25px;">
+				<div class="col-xs-4">Venceu: {{obj.venceu}}</div>
+				<div class="col-xs-4">Perdeu: {{obj.perdeu}}</div>
+				<div class="col-xs-4">Empatou: {{obj.empatou}}</div>
+			</div>
 		</div>
 		<div class="main-content">
 			{{>geralResumoTemplate}}
