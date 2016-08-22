@@ -242,8 +242,10 @@ function render_main(userInfo,that){
 		userInfo.total = userInfo.perdeu + userInfo.empatou + userInfo.venceu;
 		console.log(userInfo);
 
-
 		// ==================== DINAMIC PARTIALS ====================
+		mainHeader = MyApp.templates.mainHeader({obj:userInfo});
+		Handlebars.registerPartial("mainHeader", mainHeader);
+
 		groupslistTemplate = MyApp.templates.groupslistTemplate({obj:userInfo});
 		Handlebars.registerPartial("groupslistTemplate", groupslistTemplate);
 
@@ -386,7 +388,7 @@ $(function(){
 
 			userInfo.pageInfo.context = 'Recente';
 			mainHeader = MyApp.templates.mainHeader({obj:userInfo});
-			$('.main-header-wrapper').html(mainHeader);
+			$('.main-header').html(mainHeader);
 			$(this).addClass('active');
 			$(this).siblings().removeClass('active');
 		}	
@@ -412,7 +414,7 @@ $(function(){
 
 			userInfo.pageInfo.context = 'Resumo';
 			mainHeader = MyApp.templates.mainHeader({obj:userInfo});
-			$('.main-header-wrapper').html(mainHeader);
+			$('.main-header').html(mainHeader);
 			$(this).addClass('active');
 			$(this).siblings().removeClass('active');
 		}
@@ -440,7 +442,7 @@ $(function(){
 			
 			//change main header
 			mainHeader = MyApp.templates.mainHeader({obj:userInfo});
-			$('.main-header-wrapper').html(mainHeader)
+			$('.main-header').html(mainHeader)
 
 		}
 
@@ -479,7 +481,7 @@ $(function(){
 		userInfo.pageInfo.mode.status = 'Grupo';
 		userInfo.pageInfo.mode.text = htmlText;
 		mainHeader = MyApp.templates.mainHeader({obj:userInfo});
-		$('.main-header-wrapper').html(mainHeader);
+		$('.main-header').html(mainHeader);
 
 	});
 
@@ -512,7 +514,7 @@ $(function(){
 		userInfo.pageInfo.mode.status = 'Amigo';
 		userInfo.pageInfo.mode.text = htmlText;
 		mainHeader = MyApp.templates.mainHeader({obj:userInfo});
-		$('.main-header-wrapper').html(mainHeader);
+		$('.main-header').html(mainHeader);
 
 		//change resumo
 		// graficoResumo.data.datasets[0].data = [userInfo.venceu, userInfo.empatou, userInfo.perdeu];
@@ -639,7 +641,7 @@ $(function(){
 						//graficoResumo.update();
 
 						mainHeader = MyApp.templates.mainHeader({obj:userInfo});						
-						$('.main-header-wrapper').html(mainHeader);
+						$('.main-header').html(mainHeader);
 
 						$.magnificPopup.close();
 					
