@@ -7,23 +7,31 @@
 		</div>
 		
 		<ul class="list-group" id="geral">
-			<a class="list-group-item active">Geral</a>
+			<li class="list-group-item active">Geral</li>
 		</ul>
 		
 		<ul class="list-group" id="groups_list">
-			{{>groupslist}}
+			{{>groupslistTemplate}}
 		</ul>
 		
 		<ul class="list-group" id="friends_list">
-			{{>friendslist}}
+			{{>friendslistTemplate}}
 		</ul>
 	</div>
 	<div class="clearfix main col-xs-12 col-sm-9">
 		<div class="main-header-wrapper clearfix">
-			{{>mainHeader}}
+			<div class="main-header">
+				{{>mainHeader}}
+			</div>
+
+			<div class="display-jogos" style="height:25px;">
+				<div class="col-xs-4">Venceu: {{obj.venceu}}</div>
+				<div class="col-xs-4">Perdeu: {{obj.perdeu}}</div>
+				<div class="col-xs-4">Empatou: {{obj.empatou}}</div>
+			</div>
 		</div>
 		<div class="main-content">
-			{{>resumo}}
+			{{>geralResumoTemplate}}
 		</div>
 	</div>
 	
