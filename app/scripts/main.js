@@ -224,21 +224,36 @@ function render_main(userInfo,that){
 			userInfo.empatou = 0;
 		}
 
-		//userInfo.friendRequests = snapshot.val().friendRequestReceived
+		userInfo.friendRequests = snapshot.val().friendRequestReceived
 		userInfo.total = userInfo.perdeu + userInfo.empatou + userInfo.venceu;
 		
 		// ==================== DINAMIC PARTIALS ====================
 		mainHeader = MyApp.templates.mainHeader({obj:userInfo});
 		Handlebars.registerPartial("mainHeader", mainHeader);
 
-		groupslist = MyApp.templates.groupslist({obj:userInfo});
-		Handlebars.registerPartial("groupslist", groupslist);
+		groupslistTemplate = MyApp.templates.groupslistTemplate({obj:userInfo});
+		Handlebars.registerPartial("groupslistTemplate", groupslistTemplate);
 
-		friendslist = MyApp.templates.friendslist({obj:userInfo});
-		Handlebars.registerPartial("friendslist", friendslist);
+		friendslistTemplate = MyApp.templates.friendslistTemplate({obj:userInfo});
+		Handlebars.registerPartial("friendslistTemplate", friendslistTemplate);
 
-		resumo = MyApp.templates.resumo({obj:userInfo});
-		Handlebars.registerPartial("resumo", resumo);
+		geralResumoTemplate = MyApp.templates.geralResumoTemplate({obj:userInfo});
+		Handlebars.registerPartial("geralResumoTemplate", geralResumoTemplate);
+
+		geralRecenteTemplate = MyApp.templates.geralRecenteTemplate({obj:userInfo});
+		Handlebars.registerPartial("geralRecenteTemplate", geralRecenteTemplate);
+
+		amigoRecenteTemplate = MyApp.templates.amigoRecenteTemplate({obj:userInfo});
+		Handlebars.registerPartial("amigoRecenteTemplate", amigoRecenteTemplate);
+
+		grupoRecenteTemplate = MyApp.templates.grupoRecenteTemplate({obj:userInfo});
+		Handlebars.registerPartial("grupoRecenteTemplate", grupoRecenteTemplate);
+
+		amigoResumoTemplate = MyApp.templates.amigoResumoTemplate({obj:userInfo});
+		Handlebars.registerPartial("amigoResumoTemplate", amigoResumoTemplate);
+
+		grupoResumoTemplate = MyApp.templates.grupoResumoTemplate({obj:userInfo});
+		Handlebars.registerPartial("grupoResumoTemplate", grupoResumoTemplate);
 		// ==========================================================
 
 		//criar_grafico(userInfo);
@@ -259,17 +274,17 @@ function render_main(userInfo,that){
 
 $(function(){
 
-	// ========== Initializing variables ===========
-	let userInfo = {};
-	userInfo.pageInfo = {};
-	userInfo.pageInfo.context = 'Resumo';
-	userInfo.pageInfo.mode = 'Geral';
-	let mainHeader, resumo, groupslist, friendslist;
-	let recenteTemplate = null;
-	// =============================================
-
-
-	// initialize firebase
+	// initializes userInfo
+	let userInfo = {
+		pageInfo: {
+			context: 'Resumo',
+			mode: {
+				status: 'Geral',
+				text: 'Geral'
+			}
+		}
+	}
+	// initializes firebase
 	let f = this.f = firebase.database();
 	// loads user from localStorage
 	this.user = localStorage.getItem('user');
@@ -293,10 +308,9 @@ $(function(){
 			$('.conteudo').html(home);
   		}
 	});
-	// ======================================================================
 
 
-	// ================ Login and Logout FB =========================
+	// ================ Login and Logout FB ========================
 	$(document).on('click','#fb_login', function(e){
 		let facebookLogin = new facebook_login(f, userInfo);
 		facebookLogin.loginFacebook();
@@ -306,11 +320,11 @@ $(function(){
 		var fb_login = new facebook_login(f, userInfo);
 		fb_login.logout();
 	});
-	// ==============================================================
+	// =============================================================
 
 
 
-	// =================== FRONTEND LISTENERS =======================
+	// =================== FRONTEND LISTENERS ======================
 
 	// Popups
 	$(document).on('click', '#criar_grupo, #convidar_amigos, #add_partida, #navbar_criar_grupo, #navbar_convite_amizade, #add_partida_circle', function(e){
@@ -339,54 +353,105 @@ $(function(){
 		$.magnificPopup.close();
 	});	
 
-	// Recente - Resumo
-	$(document).on('click', '#resumo, #recente', function(){		
-		this.id == 'resumo' ? userInfo.pageInfo.context = 'Resumo' : userInfo.pageInfo.context = 'Recente';
-		
-		mainHeader = MyApp.templates.mainHeader({obj:userInfo});
-		$('.main-header-wrapper').html(mainHeader);
-		
-		if(userInfo.pageInfo.context == 'Recente'){
-			if(recenteTemplate == null){
-				recenteTemplate = MyApp.templates.recente({obj:userInfo});
-				Handlebars.registerPartial("recenteTemplate", recenteTemplate);
-				$('.main-content').append(recenteTemplate);
-			}else{
-				$('#recente-content').show();
+	// Recente
+	$(document).on('click', '#recente', function(){	
+		if(userInfo.pageInfo.context == 'Resumo'){
+			switch (userInfo.pageInfo.mode.status){
+				case 'Geral':
+					geralRecenteTemplate = MyApp.templates.geralRecenteTemplate({obj:userInfo});
+					$('.main-content').html(geralRecenteTemplate);
+					break;
+				case 'Amigo':
+					amigoRecenteTemplate = MyApp.templates.amigoRecenteTemplate({obj:userInfo});
+					$('.main-content').html(amigoRecenteTemplate);
+					break;
+				case 'Grupo':
+					grupoRecenteTemplate = MyApp.templates.grupoRecenteTemplate({obj:userInfo});
+					$('.main-content').html(grupoRecenteTemplate);
+					break;
 			}
-			$('#resumo-content').hide();			
-		}else{
-			$('#resumo-content').show();
-			$('#recente-content').hide()
-		}
 
-		
-		$(this).addClass('active');
-		$(this).siblings().removeClass('active');
+			userInfo.pageInfo.context = 'Recente';
+			mainHeader = MyApp.templates.mainHeader({obj:userInfo});
+			$('.main-header-wrapper').html(mainHeader);
+			$(this).addClass('active');
+			$(this).siblings().removeClass('active');
+		}	
 	});
 
-	//Geral Click
-	$(document).on('click', '#geral>a', function(){
-		$('#friends_list a').removeClass('active');
-		$('#groups_list a').removeClass('active');
-		$(this).addClass('active');
-		userInfo.pageInfo.mode = $(this).text();
-		
+	// Resumo
+	$(document).on('click', '#resumo', function(){
+		if(userInfo.pageInfo.context == 'Recente'){
+			switch (userInfo.pageInfo.mode.status){
+				case 'Geral':
+					geralResumoTemplate = MyApp.templates.geralResumoTemplate({obj:userInfo});
+					$('.main-content').html(geralResumoTemplate);
+					break;
+				case 'Amigo':
+					amigoResumoTemplate = MyApp.templates.amigoResumoTemplate({obj:userInfo});
+					$('.main-content').html(amigoResumoTemplate);
+					break;
+				case 'Grupo':
+					grupoResumoTemplate = MyApp.templates.grupoResumoTemplate({obj:userInfo});
+					$('.main-content').html(grupoResumoTemplate);
+					break;
+			}
 
-		//change main header
-		mainHeader = MyApp.templates.mainHeader({obj:userInfo});
-		$('.main-header-wrapper').html(mainHeader)
+			userInfo.pageInfo.context = 'Resumo';
+			mainHeader = MyApp.templates.mainHeader({obj:userInfo});
+			$('.main-header-wrapper').html(mainHeader);
+			$(this).addClass('active');
+			$(this).siblings().removeClass('active');
+		}
+	});
+
+	// Geral
+	$(document).on('click', '#geral>li', function(){
+		if(userInfo.pageInfo.mode.status != 'Geral'){
+			switch (userInfo.pageInfo.context){
+				case 'Recente':
+					geralRecenteTemplate = MyApp.templates.geralRecenteTemplate({obj:userInfo});
+					$('.main-content').html(geralRecenteTemplate);
+					break;
+				case 'Resumo':
+					geralResumoTemplate = MyApp.templates.geralResumoTemplate({obj:userInfo});
+					$('.main-content').html(geralResumoTemplate);
+					break;
+			}
+
+			$('#friends_list>li').removeClass('active');
+			$('#groups_list>li').removeClass('active');
+			$(this).addClass('active');
+			userInfo.pageInfo.mode.status = 'Geral';
+			userInfo.pageInfo.mode.text = $(this).text();
+			
+			//change main header
+			mainHeader = MyApp.templates.mainHeader({obj:userInfo});
+			$('.main-header-wrapper').html(mainHeader)
+
+		}
 
 	});
 
 	//Group Click
-	$(document).on('click', '#groups_list>a', function(){
+	$(document).on('click', '#groups_list>li:not(:first)', function(){	
 		let htmlText = '' + $(this).text();
+
+		switch (userInfo.pageInfo.context){
+			case 'Recente':
+				grupoRecenteTemplate = MyApp.templates.grupoRecenteTemplate({obj:userInfo});
+				$('.main-content').html(grupoRecenteTemplate);
+				break;
+			case 'Resumo':
+				grupoResumoTemplate = MyApp.templates.grupoResumoTemplate({obj:userInfo});
+				$('.main-content').html(grupoResumoTemplate);
+				break;
+		}
 
 		$(this).addClass('active');
 		$(this).siblings().removeClass('active');
-		$('#friends_list a').removeClass('active');
-		$('#geral').removeClass('active');
+		$('#friends_list>li').removeClass('active');
+		$('#geral>li').removeClass('active');
 		
 		
 		that.f.ref('groups').once('value', function(snapshot){
@@ -396,22 +461,34 @@ $(function(){
 			groupObj = groupsObj[htmlText];
 			
 		});
-		
+
 		//change main header
-		userInfo.pageInfo.mode = htmlText;
+		userInfo.pageInfo.mode.status = 'Grupo';
+		userInfo.pageInfo.mode.text = htmlText;
 		mainHeader = MyApp.templates.mainHeader({obj:userInfo});
 		$('.main-header-wrapper').html(mainHeader);
 
 	});
 
 	//Friends Click
-	$(document).on('click', '#friends_list>a', function(){
+	$(document).on('click', '#friends_list>li:not(:first)', function(){
 		let htmlText = '' + $(this).text();
 
+		switch (userInfo.pageInfo.context){
+			case 'Recente':
+				amigoRecenteTemplate = MyApp.templates.amigoRecenteTemplate({obj:userInfo});
+				$('.main-content').html(amigoRecenteTemplate);
+				break;
+			case 'Resumo':
+				amigoResumoTemplate = MyApp.templates.amigoResumoTemplate({obj:userInfo});
+				$('.main-content').html(amigoResumoTemplate);
+				break;
+		}
+
 		$(this).addClass('active');
-		$('#groups_list a').removeClass('active');
+		$('#groups_list>li').removeClass('active');
 		$(this).siblings().removeClass('active');
-		$('#geral').removeClass('active');
+		$('#geral>li').removeClass('active');
 
 		let friendObj = userInfo.friends[htmlText];
 		userInfo.venceu = friendObj.venceu;
@@ -419,13 +496,14 @@ $(function(){
 		userInfo.empatou = friendObj.empatou;
 
 		//change main header
-		userInfo.pageInfo.mode = htmlText;
+		userInfo.pageInfo.mode.status = 'Amigo';
+		userInfo.pageInfo.mode.text = htmlText;
 		mainHeader = MyApp.templates.mainHeader({obj:userInfo});
 		$('.main-header-wrapper').html(mainHeader);
 
 		//change resumo
-		graficoResumo.data.datasets[0].data = [userInfo.venceu, userInfo.empatou, userInfo.perdeu];
-		graficoResumo.update();
+		// graficoResumo.data.datasets[0].data = [userInfo.venceu, userInfo.empatou, userInfo.perdeu];
+		// graficoResumo.update();
 		
 
 	});
@@ -533,8 +611,8 @@ $(function(){
 						}
 						userInfo.total = userInfo.venceu + userInfo.empatou + userInfo.perdeu;						
 
-						graficoResumo.data.datasets[0].data = [userInfo.venceu, userInfo.empatou, userInfo.perdeu];
-						graficoResumo.update();
+						// graficoResumo.data.datasets[0].data = [userInfo.venceu, userInfo.empatou, userInfo.perdeu];
+						// graficoResumo.update();
 
 						mainHeader = MyApp.templates.mainHeader({obj:userInfo});						
 						$('.main-header-wrapper').html(mainHeader);
@@ -578,8 +656,8 @@ $(function(){
 								});
 								if(!userInfo.groups)userInfo.groups = {}
 								userInfo.groups[group_name] = group_name;
-								groupslist = MyApp.templates.groupslist({obj:userInfo});
-								$('#groups_list').html(groupslist);
+								groupslistTemplate = MyApp.templates.groupslistTemplate({obj:userInfo});
+								$('#groups_list').html(groupslistTemplate);
     						}
     						else alert("We could not find "+friend_name);
 						});	
@@ -658,8 +736,8 @@ $(function(){
 
 		f.ref('usersFacebook/'+userInfo.uid).once('value',function(snapshot){
 			userInfo.friends = snapshot.val().friends;
-			friendslist = MyApp.templates.friendslist({obj:userInfo});
-			$('#friends_list').html(friendslist);
+			friendslistTemplate = MyApp.templates.friendslistTemplate({obj:userInfo});
+			$('#friends_list').html(friendslistTemplate);
 		});
 
 		$.magnificPopup.close();
