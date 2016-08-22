@@ -94,6 +94,7 @@ function open_popup(popup, obj){
 	if (popup == 'navbar_criar_grupo') popup='criar_grupo';
 	if (popup == 'add_partida_circle') popup='add_partida';
 	popup = popup + '_popup';
+	console.log(obj);
 	switch (popup){
 		case 'criar_grupo_popup':
 			let criarGrupoPopup = MyApp.templates.criarGrupoPopup();
@@ -224,9 +225,27 @@ function render_main(userInfo,that){
 			userInfo.empatou = 0;
 		}
 
+<<<<<<< HEAD
 		userInfo.friendRequests = snapshot.val().friendRequestReceived
+=======
+		//userInfo.teamsList = [['Argentina Primeira Divisão','Argentinos Jrs.','Bahía Blanca','Banfield','Belgrano','Boca Juniors','Estudiantes','Fl. Varela','G. La Plata','Godoy Cruz','Independiente','Junín','Lanús','Mar del Plata','Mataderos','Newells','Parque Patricios','Posadas','Quilmes','Racing Club','Rafaela','River Plate','Rosario Central','San Juan','San Lorenzo','Santa Fe','Sarandí','Temperley','Tigre','Unión','Vélez Sarsfield'],['Australia Hyundai A-League','Adelaide United','Brisbane Roar','Central Coast','Melb. Victory','Melbourne City','Newcastle Jets','Perth Glory','Sydney FC','Well. Phoenix','WS Wanderers'],['Austria  Ö. Bundesliga','Admira Wacker','Austria Wien','RB Salzburg','SCR Altach','SK Rapid Wien','SK Sturm Graz','SV Grödig','SV Mattersburg','SV Ried','Wolfsberger AC'],['Belgium Pro League','Club Brugge','KAA Gent','KRC Genk','KV Kortrijk','KV Mechelen','KV Oostende','KVC Westerlo','OH Leuven','Royal Mouscron','RSC Anderlecht','Sint-Truiden','Sp. Charleroi','Sport. Lokeren','Standard Liège','Waasl. Beveren','Zulte-Waregem'],['Chile Camp. Scotiabank','Audax Italiano','CD Antofagasta','CD Cobresal','CD Huachipato','CD OHiggins','CD Palestino','Colo-Colo','Depor. Iquique','San Luis','San Marcos','Uni. Católica','Uni. Concepción','Uni. de Chile','Unión Española','Unión La Calera','Wanderers'],['Colombia Liga Dimayor','Águilas Doradas','Al. Petrolera','Atl. Nacional','Atlético Huila','Boyacá Chicó','Cortuluá','Cúcuta Depor.','Deportes Tolima','Deportivo Cali','Deportivo Pasto','Envigado','Ind. Santa Fe','Indep. Medellín','Jaguares','Junior','La Equidad','Millonarios','Once Caldas','Patriotas','Uniautónoma'],['Denmark Alka Superliga','Aalborg BK','Aarhus GF','Brøndby IF','Esbjerg fB','FC København','FC Midtjylland','FC Nordsjælland','Hobro IK','Odense BK','Randers FC','SønderjyskE','Viborg FF'],['England Barclays Premier League','Arsenal','Aston Villa','Bournemouth','Chelsea','Crystal Palace','Everton','Leicester City','Liverpool','Manchester City','Manchester Utd','Newcastle Utd','Norwich','Southampton','Spurs','Stoke City','Sunderland','Swansea City','Watford','West Brom','West Ham'],['England Football League Championship','Birmingham City','Blackburn Rovers','Bolton','Brentford','Brighton','Bristol City','Burnley','Cardiff City','Charlton Ath','Derby County','Fulham','Huddersfield','Hull City','Ipswich','Leeds United','Middlesbrough','MK Dons','Nottm Forest','Preston','QPR','Reading','Rotherham Utd','Sheffield Wed','Wolves'],['England Football League 1','Barnsley','Blackpool','Bradford City','Burton Albion','Bury','Chesterfield','Colchester','Coventry City','Crewe Alexandra','Doncaster','Fleetwood Town','Gillingham','Millwall','Oldham Athletic','Peterborough','Port Vale','Rochdale','Scunthorpe Utd','Sheffield Utd','Shrewsbury','Southend United','Swindon Town','Walsall','Wigan Athletic'],['England Football League 2','Accrington','AFC Wimbledon','Barnet','Bristol Rovers','Cambridge Utd','Carlisle United','Crawley Town','Dag & Red','Exeter City','Hartlepool','Leyton Orient','Luton Town','Mansfield Town','Morecambe','Newport County','Northampton','Notts County','Oxford United','Plymouth Argyle','Portsmouth','Stevenage','Wycombe','Yeovil Town','York City'],['France Ligue 1','Angers SCO','AS Monaco','AS Saint-Étienne','EA Guingamp','ES Troyes AC','FC Lorient','FC Nantes','GFC Ajaccio','Giron. Bordeaux','LOSC Lille','Montpellier HSC','OGC Nice','Olym. Lyonnais','Olym. Marseille','PSG','SC Bastia','SM Caen','Stade de Reims','Stade Rennais','Toulouse FC'],['France Ligue 2','AC Ajaccio','AJ Auxerre','AS Nancy','Bourg-Péronnas','Cham. Niortais','Clermont Foot','Dijon FCO','Évian TG','FC Metz','FC Sochaux','Le Havre AC','Nîmes Olympique','Paris FC','RC Lens','Red Star FC','Stade Brestois','Stade Lavallois','Tours FC','US Créteil','Valenciennes FC'],['Germany Bundesliga','1. FC Köln','1. FSV Mainz 05','1899 Hoffenheim','Bayer 04','Bor. Dortmund','Bor. Mgladbach','Eint. Frankfurt','FC Augsburg','FC Bayern','FC Ingolstadt','FC Schalke 04','Hamburger SV','Hannover 96','Hertha BSC','SV Darmstadt','VfB Stuttgart','VfL Wolfsburg','Werder Bremen'],['Germany Bundesliga 2','1. FC Heidenheim','1. FC Nürnberg','1860 München','Arminia Bielefeld','Braunschweig','F. Düsseldorf','FC St. Pauli','FSV Frankfurt','Greuther Fürth','Kaiserslautern','Karlsruher SC','MSV Duisburg','RB Leipzig','SC Freiburg','SC Paderborn','SV Sandhausen','Union Berlin','VfL Bochum'],['Italy Serie A TIM','Atalanta','Bologna','Carpi','Chievo Verona','Empoli','Fiorentina','Frosinone','Genoa','Hellas Verona','Inter','Juventus','Lazio','Milan','Napoli','Palermo','Roma','Sampdoria','Sassuolo','Torino','Udinese'],['Italy Serie B','Ascoli**','Avellino*','Bari*','Brescia*','Cagliari','Cesena','Chiavari**','Como*','Crotone*','La Spezia*','Lanciano*','Latina*','Livorno*','Modena*','Novara*','Perugia*','Pescara*','Salerno*','Terni*','Trapani*','Vercelli*','Vicenza*'],['Korea K LEAGUE Classic','Busan IPark','Daejeon Citizen','FC Seoul','GwangJu FC','Incheon United','Jeju United','Jeonbuk Hyundai','Jeonnam Dragons','Pohang Steelers','Seongnam FC','Suwon Bluewings','Ulsan Hyundai'],['Mexico Liga Bancomer MX','América','Atlas','Chiapas','Cruz Azul','Dorados','Guadalajara','León','Monarcas Morelia','Monterrey','Pachuca','Puebla','Querétaro','Santos Laguna','Tigres','Tijuana','Toluca','U.N.A.M.','Veracruz'],['Holland Eredivisie','ADO Den Haag','Ajax','AZ','De Graafschap','Excelsior','FC Groningen','FC Twente','FC Utrecht','Feyenoord','Heracles Almelo','N.E.C.','PEC Zwolle','PSV','Roda JC','SC Cambuur','SC Heerenveen','Vitesse','Willem II'],['Norway Tippeligaen','Aalesunds FK','FK Bodø/Glimt','FK Haugesund','IK Start','Lillestrøm SK','Mjøndalen IF','Molde FK','Odds BK','Rosenborg BK','Sandefjord','Sarpsborg 08 FF','Stabæk Fotball','Strømsgodset IF','Tromsø IL','Vålerenga Fotball','Viking FK'],['Poland Ekstraklasa','Cracovia','Górnik Łęczna','Górnik Zabrze','Jagiellonia','Korona Kielce','Lech Poznań','Lechia Gdańsk','Legia Warszawa','Piast Gliwice','Podbeskidzie','Pogoń Szczecin','Ruch Chorzów','Śląsk Wrocław','Termalica','Wisła Kraków','Zagłębie Lubin'],['Portugal Liga NOS','Académica','Arouca','Belenenses','Boavista','Estoril Praia','FC Porto','Madeira*','Marítimo','Moreirense','Nacional','Paços Ferreira','Rio Ave','SC Braga','SL Benfica','Sporting CP','Tondela*','V. Guimarães','V. Setúbal'],['Rep. Ireland SSE Airtricity League','Bohemian FC','Bray Wanderers','Cork City','Derry City','Drogheda Utd','Dundalk','Galway United','Limerick','Longford Town','Shamrock Rovers','Sligo Rovers','St. Pats'],['Rest of World ','adidas All-Star','Atlético Mineiro**','Atl. Paranaense**','Avaí**','Classic XI','Chapecoense**','Coritiba**','Cruzeiro**','Figueirense**','Fluminense**','Grêmio**','Joinville**','Internacional**','Kaizer Chiefs','MLS All Stars','Olympiakos CFP','Orlando Pirates','Palmeiras**','Panathinaikos','PAOK','Ponte Preta**','Santos**','São Paulo**','Shakhtar Donetsk','Vasco da Gama**','World XI'],['Russia Russian League','Amkar Perm','Anzhi Makhachkala','CSKA Moscow','Dinamo Moscow','FC Krasnodar','FC Rostov','FC Ufa','FC Ural','Krylya Sovetov','Kuban Krasnodar','Lokomotiv Moscow','Mordovia Saransk','Rubin Kazan','Spartak Moscow','Terek Grozny','Zenit'],['Saudi ALJ League','Al Ahli','Al Faisaly','Al Fateh','Al Hilal','Al Ittihad','Al Khaleej','Al Nassr','Al Qadisiyah','Al Raed','Al Shabab','Al Taawoun','Al Wehda','Hajer','Najran'],['Scotland Scottish Premiership','Aberdeen','Celtic','Dundee FC','Dundee United','Hamilton','Hearts','Inverness CT','Kilmarnock','Motherwell','Partick Thistle','Ross County','St. Johnstone'],['Spain Liga BBVA','Athletic Bilbao','Atlético Madrid','Celta Vigo','FC Barcelona','Getafe CF','Granada CF','Levante UD','Málaga CF','Rayo Vallecano','RC Deportivo','RCD Espanyol','Real Betis','Real Madrid','Real Sociedad','SD Eibar','Sevilla FC','Sporting Gijón','UD Las Palmas','Valencia CF','Villarreal CF'],['Spain Liga Adelante','AD Alcorcón','Albacete','Bilbao Athletic','CA Osasuna','CD Leganés','CD Lugo','CD Mirandés','CD Numancia','CD Tenerife','Córdoba CF','Deport. Alavés','Elche CF','Gimnàstic','Girona CF','RCD Mallorca','Real Oviedo','Real Valladolid','Real Zaragoza','SD Huesca','SD Ponferradina','UD Almería','UE Llagostera'],['Sweden Allsvenskan','AIK','Åtvidabergs FF','BK Häcken','Djurgårdens IF','Falkenbergs FF','Gefle IF','GIF Sundsvall','Halmstads BK','Hammarby','Helsingborgs IF','IF Elfsborg','IFK Göteborg','IFK Norrköping','Kalmar FF','Malmö FF','Örebro SK'],['Switzerland Raffeisen SL','BSC Young Boys','FC Basel','FC Lugano','FC Luzern','FC Sion','FC St. Gallen','FC Thun','FC Vaduz','FC Zürich','Grasshopper'],['Turkey Süper Lig','Akhisarspor','Antalyaspor','Beşiktaş','Bursaspor','Çaykur Rizespor','Eskişehirspor','Fenerbahçe','Galatasaray','Gaziantepspor','Gençlerbirliği','Kasimpaşa','Kayserispor','Konyaspor','Medipol Başakşehir','Mersin','Osmanlıspor','Sivasspor','Trabzonspor'],['USA MLS','Chicago Fire','Colorado Rapids','Columbus Crew SC','D.C. United','FC Dallas','Houston Dynamo','LA Galaxy','Montreal Impact','New England','NY Red Bulls','NYCFC','Orlando City','Philadelphia','Portland','Real Salt Lake','SJ Earthquakes','Sounders FC','Sporting KC','Toronto FC','Whitecaps FC'],['Men’s National ','Argentina','Australia','Austria','Belgium*','Bolivia*','Brazil','Bulgaria*','Cameroon*','Canada','Chile*','China PR','Colombia*','Côte dIvoire*','Czech Republic','Denmark','Ecuador','Egypt*','England','Finland*','France','Germany','Greece','Hungary*','India*','Ireland','Italy','Mexico','Netherlands','New Zealand*','Northern Ireland','Norway*','Paraguay*','Peru*','Poland','Portugal*','Romania*','Russia*','Scotland','Slovenia*','South Africa*','Spain','Sweden','Switzerland*','Turkey','United States','Uruguay*','Venezuela*','Wales'],['Women’s National ','Australia','Brazil','Canada','China PR','England','France','Germany','Italy','Mexico','Spain','Sweden','United States']];
+
+		teamsList = [['Argentina Primeira Divisão','Argentinos Jrs.','Bahía Blanca','Banfield','Belgrano','Boca Juniors','Estudiantes','Fl. Varela','G. La Plata','Godoy Cruz','Independiente','Junín','Lanús','Mar del Plata','Mataderos','Newells','Parque Patricios','Posadas','Quilmes','Racing Club','Rafaela','River Plate','Rosario Central','San Juan','San Lorenzo','Santa Fe','Sarandí','Temperley','Tigre','Unión','Vélez Sarsfield'],['Australia Hyundai A-League','Adelaide United','Brisbane Roar','Central Coast','Melb. Victory','Melbourne City','Newcastle Jets','Perth Glory','Sydney FC','Well. Phoenix','WS Wanderers'],['Austria  Ö. Bundesliga','Admira Wacker','Austria Wien','RB Salzburg','SCR Altach','SK Rapid Wien','SK Sturm Graz','SV Grödig','SV Mattersburg','SV Ried','Wolfsberger AC'],['Belgium Pro League','Club Brugge','KAA Gent','KRC Genk','KV Kortrijk','KV Mechelen','KV Oostende','KVC Westerlo','OH Leuven','Royal Mouscron','RSC Anderlecht','Sint-Truiden','Sp. Charleroi','Sport. Lokeren','Standard Liège','Waasl. Beveren','Zulte-Waregem'],['Chile Camp. Scotiabank','Audax Italiano','CD Antofagasta','CD Cobresal','CD Huachipato','CD OHiggins','CD Palestino','Colo-Colo','Depor. Iquique','San Luis','San Marcos','Uni. Católica','Uni. Concepción','Uni. de Chile','Unión Española','Unión La Calera','Wanderers'],['Colombia Liga Dimayor','Águilas Doradas','Al. Petrolera','Atl. Nacional','Atlético Huila','Boyacá Chicó','Cortuluá','Cúcuta Depor.','Deportes Tolima','Deportivo Cali','Deportivo Pasto','Envigado','Ind. Santa Fe','Indep. Medellín','Jaguares','Junior','La Equidad','Millonarios','Once Caldas','Patriotas','Uniautónoma'],['Denmark Alka Superliga','Aalborg BK','Aarhus GF','Brøndby IF','Esbjerg fB','FC København','FC Midtjylland','FC Nordsjælland','Hobro IK','Odense BK','Randers FC','SønderjyskE','Viborg FF'],['England Barclays Premier League','Arsenal','Aston Villa','Bournemouth','Chelsea','Crystal Palace','Everton','Leicester City','Liverpool','Manchester City','Manchester Utd','Newcastle Utd','Norwich','Southampton','Spurs','Stoke City','Sunderland','Swansea City','Watford','West Brom','West Ham'],['England Football League Championship','Birmingham City','Blackburn Rovers','Bolton','Brentford','Brighton','Bristol City','Burnley','Cardiff City','Charlton Ath','Derby County','Fulham','Huddersfield','Hull City','Ipswich','Leeds United','Middlesbrough','MK Dons','Nottm Forest','Preston','QPR','Reading','Rotherham Utd','Sheffield Wed','Wolves'],['England Football League 1','Barnsley','Blackpool','Bradford City','Burton Albion','Bury','Chesterfield','Colchester','Coventry City','Crewe Alexandra','Doncaster','Fleetwood Town','Gillingham','Millwall','Oldham Athletic','Peterborough','Port Vale','Rochdale','Scunthorpe Utd','Sheffield Utd','Shrewsbury','Southend United','Swindon Town','Walsall','Wigan Athletic'],['England Football League 2','Accrington','AFC Wimbledon','Barnet','Bristol Rovers','Cambridge Utd','Carlisle United','Crawley Town','Dag & Red','Exeter City','Hartlepool','Leyton Orient','Luton Town','Mansfield Town','Morecambe','Newport County','Northampton','Notts County','Oxford United','Plymouth Argyle','Portsmouth','Stevenage','Wycombe','Yeovil Town','York City'],['France Ligue 1','Angers SCO','AS Monaco','AS Saint-Étienne','EA Guingamp','ES Troyes AC','FC Lorient','FC Nantes','GFC Ajaccio','Giron. Bordeaux','LOSC Lille','Montpellier HSC','OGC Nice','Olym. Lyonnais','Olym. Marseille','PSG','SC Bastia','SM Caen','Stade de Reims','Stade Rennais','Toulouse FC'],['France Ligue 2','AC Ajaccio','AJ Auxerre','AS Nancy','Bourg-Péronnas','Cham. Niortais','Clermont Foot','Dijon FCO','Évian TG','FC Metz','FC Sochaux','Le Havre AC','Nîmes Olympique','Paris FC','RC Lens','Red Star FC','Stade Brestois','Stade Lavallois','Tours FC','US Créteil','Valenciennes FC'],['Germany Bundesliga','1. FC Köln','1. FSV Mainz 05','1899 Hoffenheim','Bayer 04','Bor. Dortmund','Bor. Mgladbach','Eint. Frankfurt','FC Augsburg','FC Bayern','FC Ingolstadt','FC Schalke 04','Hamburger SV','Hannover 96','Hertha BSC','SV Darmstadt','VfB Stuttgart','VfL Wolfsburg','Werder Bremen'],['Germany Bundesliga 2','1. FC Heidenheim','1. FC Nürnberg','1860 München','Arminia Bielefeld','Braunschweig','F. Düsseldorf','FC St. Pauli','FSV Frankfurt','Greuther Fürth','Kaiserslautern','Karlsruher SC','MSV Duisburg','RB Leipzig','SC Freiburg','SC Paderborn','SV Sandhausen','Union Berlin','VfL Bochum'],['Italy Serie A TIM','Atalanta','Bologna','Carpi','Chievo Verona','Empoli','Fiorentina','Frosinone','Genoa','Hellas Verona','Inter','Juventus','Lazio','Milan','Napoli','Palermo','Roma','Sampdoria','Sassuolo','Torino','Udinese'],['Italy Serie B','Ascoli**','Avellino*','Bari*','Brescia*','Cagliari','Cesena','Chiavari**','Como*','Crotone*','La Spezia*','Lanciano*','Latina*','Livorno*','Modena*','Novara*','Perugia*','Pescara*','Salerno*','Terni*','Trapani*','Vercelli*','Vicenza*'],['Korea K LEAGUE Classic','Busan IPark','Daejeon Citizen','FC Seoul','GwangJu FC','Incheon United','Jeju United','Jeonbuk Hyundai','Jeonnam Dragons','Pohang Steelers','Seongnam FC','Suwon Bluewings','Ulsan Hyundai'],['Mexico Liga Bancomer MX','América','Atlas','Chiapas','Cruz Azul','Dorados','Guadalajara','León','Monarcas Morelia','Monterrey','Pachuca','Puebla','Querétaro','Santos Laguna','Tigres','Tijuana','Toluca','U.N.A.M.','Veracruz'],['Holland Eredivisie','ADO Den Haag','Ajax','AZ','De Graafschap','Excelsior','FC Groningen','FC Twente','FC Utrecht','Feyenoord','Heracles Almelo','N.E.C.','PEC Zwolle','PSV','Roda JC','SC Cambuur','SC Heerenveen','Vitesse','Willem II'],['Norway Tippeligaen','Aalesunds FK','FK Bodø/Glimt','FK Haugesund','IK Start','Lillestrøm SK','Mjøndalen IF','Molde FK','Odds BK','Rosenborg BK','Sandefjord','Sarpsborg 08 FF','Stabæk Fotball','Strømsgodset IF','Tromsø IL','Vålerenga Fotball','Viking FK'],['Poland Ekstraklasa','Cracovia','Górnik Łęczna','Górnik Zabrze','Jagiellonia','Korona Kielce','Lech Poznań','Lechia Gdańsk','Legia Warszawa','Piast Gliwice','Podbeskidzie','Pogoń Szczecin','Ruch Chorzów','Śląsk Wrocław','Termalica','Wisła Kraków','Zagłębie Lubin'],['Portugal Liga NOS','Académica','Arouca','Belenenses','Boavista','Estoril Praia','FC Porto','Madeira*','Marítimo','Moreirense','Nacional','Paços Ferreira','Rio Ave','SC Braga','SL Benfica','Sporting CP','Tondela*','V. Guimarães','V. Setúbal'],['Rep. Ireland SSE Airtricity League','Bohemian FC','Bray Wanderers','Cork City','Derry City','Drogheda Utd','Dundalk','Galway United','Limerick','Longford Town','Shamrock Rovers','Sligo Rovers','St. Pats'],['Rest of World ','adidas All-Star','Atlético Mineiro**','Atl. Paranaense**','Avaí**','Classic XI','Chapecoense**','Coritiba**','Cruzeiro**','Figueirense**','Fluminense**','Grêmio**','Joinville**','Internacional**','Kaizer Chiefs','MLS All Stars','Olympiakos CFP','Orlando Pirates','Palmeiras**','Panathinaikos','PAOK','Ponte Preta**','Santos**','São Paulo**','Shakhtar Donetsk','Vasco da Gama**','World XI'],['Russia Russian League','Amkar Perm','Anzhi Makhachkala','CSKA Moscow','Dinamo Moscow','FC Krasnodar','FC Rostov','FC Ufa','FC Ural','Krylya Sovetov','Kuban Krasnodar','Lokomotiv Moscow','Mordovia Saransk','Rubin Kazan','Spartak Moscow','Terek Grozny','Zenit'],['Saudi ALJ League','Al Ahli','Al Faisaly','Al Fateh','Al Hilal','Al Ittihad','Al Khaleej','Al Nassr','Al Qadisiyah','Al Raed','Al Shabab','Al Taawoun','Al Wehda','Hajer','Najran'],['Scotland Scottish Premiership','Aberdeen','Celtic','Dundee FC','Dundee United','Hamilton','Hearts','Inverness CT','Kilmarnock','Motherwell','Partick Thistle','Ross County','St. Johnstone'],['Spain Liga BBVA','Athletic Bilbao','Atlético Madrid','Celta Vigo','FC Barcelona','Getafe CF','Granada CF','Levante UD','Málaga CF','Rayo Vallecano','RC Deportivo','RCD Espanyol','Real Betis','Real Madrid','Real Sociedad','SD Eibar','Sevilla FC','Sporting Gijón','UD Las Palmas','Valencia CF','Villarreal CF'],['Spain Liga Adelante','AD Alcorcón','Albacete','Bilbao Athletic','CA Osasuna','CD Leganés','CD Lugo','CD Mirandés','CD Numancia','CD Tenerife','Córdoba CF','Deport. Alavés','Elche CF','Gimnàstic','Girona CF','RCD Mallorca','Real Oviedo','Real Valladolid','Real Zaragoza','SD Huesca','SD Ponferradina','UD Almería','UE Llagostera'],['Sweden Allsvenskan','AIK','Åtvidabergs FF','BK Häcken','Djurgårdens IF','Falkenbergs FF','Gefle IF','GIF Sundsvall','Halmstads BK','Hammarby','Helsingborgs IF','IF Elfsborg','IFK Göteborg','IFK Norrköping','Kalmar FF','Malmö FF','Örebro SK'],['Switzerland Raffeisen SL','BSC Young Boys','FC Basel','FC Lugano','FC Luzern','FC Sion','FC St. Gallen','FC Thun','FC Vaduz','FC Zürich','Grasshopper'],['Turkey Süper Lig','Akhisarspor','Antalyaspor','Beşiktaş','Bursaspor','Çaykur Rizespor','Eskişehirspor','Fenerbahçe','Galatasaray','Gaziantepspor','Gençlerbirliği','Kasimpaşa','Kayserispor','Konyaspor','Medipol Başakşehir','Mersin','Osmanlıspor','Sivasspor','Trabzonspor'],['USA MLS','Chicago Fire','Colorado Rapids','Columbus Crew SC','D.C. United','FC Dallas','Houston Dynamo','LA Galaxy','Montreal Impact','New England','NY Red Bulls','NYCFC','Orlando City','Philadelphia','Portland','Real Salt Lake','SJ Earthquakes','Sounders FC','Sporting KC','Toronto FC','Whitecaps FC'],['Men’s National ','Argentina','Australia','Austria','Belgium*','Bolivia*','Brazil','Bulgaria*','Cameroon*','Canada','Chile*','China PR','Colombia*','Côte dIvoire*','Czech Republic','Denmark','Ecuador','Egypt*','England','Finland*','France','Germany','Greece','Hungary*','India*','Ireland','Italy','Mexico','Netherlands','New Zealand*','Northern Ireland','Norway*','Paraguay*','Peru*','Poland','Portugal*','Romania*','Russia*','Scotland','Slovenia*','South Africa*','Spain','Sweden','Switzerland*','Turkey','United States','Uruguay*','Venezuela*','Wales'],['Women’s National ','Australia','Brazil','Canada','China PR','England','France','Germany','Italy','Mexico','Spain','Sweden','United States']];
+
+		userInfo.teamsList = {}
+		for(var i = 0;i < teamsList.length;i++){
+			teams = [];
+			for(var j = 1;j<teamsList[i].length;j++){
+				teams.push(teamsList[i][j]);
+			}
+			userInfo.teamsList[teamsList[i][0]] = teams;
+		}
+		console.log(userInfo);
+		//userInfo.friendRequests = snapshot.val().friendRequestReceived
+>>>>>>> ed2df5a9a3709b2efeda7564e61d2bb03228b263
 		userInfo.total = userInfo.perdeu + userInfo.empatou + userInfo.venceu;
-		
+		console.log(userInfo);
+
 		// ==================== DINAMIC PARTIALS ====================
 		mainHeader = MyApp.templates.mainHeader({obj:userInfo});
 		Handlebars.registerPartial("mainHeader", mainHeader);
@@ -531,6 +550,7 @@ $(function(){
 
 
 	//ADD Partida
+	
 	$(document).on('click', '#add_nova_partida_btn', function(e){
 		e.preventDefault();
 		var adversario_nome = $("#adversario_nome option:selected").text();
@@ -539,13 +559,13 @@ $(function(){
 		var adversario_time = $('#adversario_time')[0].value
 		var adversario_gols = $('#adversario_gols')[0].value
 		var add_nova_partida_group = $("#add_nova_partida_group option:selected").text();
-		that.f.ref('usersFacebook/'+that.user+'/friends').once('value',function(snapshot){
+		f.ref('usersFacebook/'+userInfo.uid+'/friends').once('value',function(snapshot){		
 			if(snapshot.child(adversario_nome).exists()){
 				var usuario_empatou = snapshot.val()[adversario_nome].empatou;
 				var usuario_venceu = snapshot.val()[adversario_nome].venceu;
 				var usuario_perdeu = snapshot.val()[adversario_nome].perdeu;
 				f.ref('usersNickNames/'+adversario_nome).once("value",function(snapshot){
-					let friendId = snapshot.val()[Object.keys(snapshot.val())[0]];
+					let friendId = snapshot.val();
 					if(usuario_time==''){
 						alert('Please enter your team');
 						return;	
@@ -555,13 +575,10 @@ $(function(){
 						return;
 					}
 					
-					that.f.ref('usersFacebook/'+friendId+'/friends/'+that.userNickName).once('value',function(adversario_snapshot){
-						var adversario_empatou = adversario_snapshot.val().empatou;
-						var adversario_venceu = adversario_snapshot.val().venceu;
-						var adversario_perdeu = adversario_snapshot.val().perdeu;
+					f.ref('usersFacebook/'+friendId+'/friends/'+userInfo.userNickName).once('value',function(adversario_snapshot){
 						var nova_partida = {}
     	        		let partida_obj = {
-    	 	   	    		'player1':that.userNickName,	
+    	 	   	    		'player1':userInfo.userNickName,	
 		  	          		'player2':adversario_nome,
    		 	        		'player1Goals':usuario_gols,
     	    	    		'player2Goals':adversario_gols,
@@ -571,62 +588,77 @@ $(function(){
 		            	var time_stamp = Math.floor(Date.now() / 1000); 
    			         	nova_partida[time_stamp] = partida_obj;	
 						if(add_nova_partida_group!='Nenhum'){			
-							that.f.ref('groups/'+add_nova_partida_group+'/jogos').update(nova_partida);
+							f.ref('groups/'+add_nova_partida_group+'/jogos').update(nova_partida);
 						}
 						nova_partida[time_stamp].group = add_nova_partida_group;
-						that.f.ref('usersFacebook/'+that.user+'/friends/'+adversario_nome+'/jogos').update(nova_partida);
-						that.f.ref('usersFacebook/'+friendId+'/friends/'+that.userNickName+'/jogos').update(nova_partida);
+						f.ref('usersFacebook/'+userInfo.uid+'/friends/'+adversario_nome+'/jogos').update(nova_partida);
+						f.ref('usersFacebook/'+friendId+'/friends/'+userInfo.userNickName+'/jogos').update(nova_partida);
 						if(usuario_gols > adversario_gols){
 							userInfo.venceu++;
-							that.f.ref('usersFacebook/'+that.user+'/venceu').transaction(function(venceu){
+							f.ref('usersFacebook/'+userInfo.uid+'/venceu').transaction(function(venceu){
 	    						return (+venceu+1);
 							});
-							that.f.ref('usersFacebook/'+friendId+'/perdeu').transaction(function(perdeu){
+							f.ref('usersFacebook/'+friendId+'/perdeu').transaction(function(perdeu){
 	    						return (+perdeu+1);
 							});
-							that.f.ref('usersFacebook/'+that.user+'/friends/'+adversario_nome+'/venceu').set(usuario_venceu+1);
-							that.f.ref('usersFacebook/'+friendId+'/friends/'+that.userNickName+'/perdeu').set(adversario_perdeu+1);
+							f.ref('usersFacebook/'+userInfo.uid+'/friends/'+adversario_nome+'/venceu').transaction(function(venceu){
+								return (+venceu+1)
+							})
+							f.ref('usersFacebook/'+friendId+'/friends/'+userInfo.userNickName+'/perdeu').transaction(function(perdeu){
+								return (+perdeu+1)
+							});						
 						}
 						else if(usuario_gols < adversario_gols){
 							userInfo.perdeu++;
-							that.f.ref('usersFacebook/'+that.user+'/perdeu').transaction(function(perdeu){
+							f.ref('usersFacebook/'+userInfo.uid+'/perdeu').transaction(function(perdeu){
 	    						return (+perdeu+1);
 							});
-							that.f.ref('usersFacebook/'+friendId+'/venceu').transaction(function(venceu){
+							f.ref('usersFacebook/'+friendId+'/venceu').transaction(function(venceu){
 	    						return (+venceu+1);
 							});
-							that.f.ref('usersFacebook/'+that.user+'/friends/'+adversario_nome+'/perdeu').set(usuario_perdeu+1);
-							that.f.ref('usersFacebook/'+friendId+'/friends/'+that.userNickName+'/venceu').set(adversario_venceu+1);		
+							f.ref('usersFacebook/'+userInfo.uid+'/friends/'+adversario_nome+'/perdeu').transaction(function(perdeu){
+								return (+perdeu+1)
+							})
+							f.ref('usersFacebook/'+friendId+'/friends/'+userInfo.userNickName+'/venceu').transaction(function(venceu){
+								return (+venceu+1)
+							});		
 						}else{
 							userInfo.empatou++;
-							that.f.ref('usersFacebook/'+that.user+'/empatou').transaction(function(empatou){
+							f.ref('usersFacebook/'+userInfo.uid+'/empatou').transaction(function(empatou){
 	    						return (+empatou+1);
 							});
-							that.f.ref('usersFacebook/'+friendId+'/empatou').transaction(function(empatou){
+							f.ref('usersFacebook/'+friendId+'/empatou').transaction(function(empatou){
 	    						return (+empatou+1);
 							});
-							that.f.ref('usersFacebook/'+that.user+'/friends/'+adversario_nome+'/empatou').set(usuario_empatou+1);
-							that.f.ref('usersFacebook/'+friendId+'/friends/'+that.userNickName+'/empatou').set(adversario_empatou+1);		
+							f.ref('usersFacebook/'+userInfo.uid+'/friends/'+adversario_nome+'/empatou').transaction(function(empatou){
+								return (+empatou+1)
+							});
+							f.ref('usersFacebook/'+friendId+'/friends/'+userInfo.userNickName+'/empatou').transaction(function(empatou){
+								return (+empatou+1)
+							});		
 
 						}
 						userInfo.total = userInfo.venceu + userInfo.empatou + userInfo.perdeu;						
-
-						// graficoResumo.data.datasets[0].data = [userInfo.venceu, userInfo.empatou, userInfo.perdeu];
-						// graficoResumo.update();
+						
+						//The two next lines that are commented do not work for some reason, they crash the code saying that data is not defined
+						//graficoResumo.data.datasets[0].data = [userInfo.venceu, userInfo.empatou, userInfo.perdeu];
+						//graficoResumo.update();
 
 						mainHeader = MyApp.templates.mainHeader({obj:userInfo});						
 						$('.main-header-wrapper').html(mainHeader);
 
 						$.magnificPopup.close();
+					
 					});
 				
-
 				});	
-				
-			}else alert("We could not find "+adversario_nome);			
-		});
-	});
+			
+			}else alert("We could not find "+adversario_nome);	
 
+		});
+
+	});
+	
 	//ADD novo grupo
 	$(document).on('click', '#add_novo_grupo_btn', function(event){
 		event.preventDefault();
