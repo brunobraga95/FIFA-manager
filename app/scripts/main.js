@@ -112,12 +112,10 @@ function open_popup(popup, obj){
 			$('.popup').html(addnomeUsuariopup);
 			break;
 		case 'navbar_convite_amizade_popup':
-			console.log(popup);
 			let conviteAmizadePopup = MyApp.templates.conviteAmizadePopup({obj:obj});
 			$('.popup').html(conviteAmizadePopup); 
 			break;
 		case 'add_novo_membro_popup':
-			console.log(MyApp.templates);
 			let addFriendToGroup = MyApp.templates.addFriendToGroupPopup({obj:obj});
 			$('.popup').html(addFriendToGroup);
 			break;
@@ -555,6 +553,36 @@ $(function(){
 
 	//ADD Partida
 	
+	$(document).on('click','#add_amigos_grupo_btn',function(e){
+		e.preventDefault();
+		var friend_name = $("#amigo_grupo_nome option:selected").text();
+		var group = userInfo.pageInfo.mode.text;
+		f.ref('usersNickNames').once('value',function(snapshot){
+			if(snapshot.child(friend_name).exists()){
+				f.ref('groups/'+group+'/membros').once('value',function(snapshot){
+					if(!snapshot.child(friend_name).exists()){
+						console.log(friend_name);
+						console.log(group);
+						f.ref('usersNickNames/'+friend_name).once("value",function(snapshot){
+							let friendId = snapshot.val();
+							var group_name_obj = {};
+							group_name_obj[group] = group;
+							f.ref('usersFacebook/'+friendId+'/groups').update(group_name_obj);
+							var foo = {};
+							foo[friend_name] = friendId;
+							f.ref('groups/'+group+'/membros').update(foo);
+
+						});		
+						$.magnificPopup.close();
+					}
+					else alert("User "+friend_name+" already is in group "+group);
+				});
+
+			}else alert("We could not find "+adversario_nome);
+		});
+
+	});
+
 	$(document).on('click', '#add_nova_partida_btn', function(e){
 		e.preventDefault();
 		var adversario_nome = $("#adversario_nome option:selected").text();
