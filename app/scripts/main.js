@@ -94,7 +94,6 @@ function open_popup(popup, obj){
 	if (popup == 'navbar_criar_grupo') popup='criar_grupo';
 	if (popup == 'add_partida_circle') popup='add_partida';
 	popup = popup + '_popup';
-	console.log(obj);
 	switch (popup){
 		case 'criar_grupo_popup':
 			let criarGrupoPopup = MyApp.templates.criarGrupoPopup();
@@ -113,8 +112,14 @@ function open_popup(popup, obj){
 			$('.popup').html(addnomeUsuariopup);
 			break;
 		case 'navbar_convite_amizade_popup':
+			console.log(popup);
 			let conviteAmizadePopup = MyApp.templates.conviteAmizadePopup({obj:obj});
 			$('.popup').html(conviteAmizadePopup); 
+			break;
+		case 'add_novo_membro_popup':
+			console.log(MyApp.templates);
+			let addFriendToGroup = MyApp.templates.addFriendToGroupPopup({obj:obj});
+			$('.popup').html(addFriendToGroup);
 			break;
 
 	}
@@ -342,7 +347,7 @@ $(function(){
 	// =================== FRONTEND LISTENERS ======================
 
 	// Popups
-	$(document).on('click', '#criar_grupo, #convidar_amigos, #add_partida, #navbar_criar_grupo, #navbar_convite_amizade, #add_partida_circle', function(e){
+	$(document).on('click', '#criar_grupo, #convidar_amigos, #add_partida, #navbar_criar_grupo, #navbar_convite_amizade, #add_partida_circle, #add_novo_membro', function(e){
 		open_popup(this.id, userInfo);
 
 		//ADD one more member input on criar grupo popup
@@ -356,7 +361,10 @@ $(function(){
 			$('#lista_adicionar_amigos').append(newmemberinput);
 		});
 
-		
+		$('#add_amigos_to_group_input').click(function(){
+			let newmemberinput = "<li class='list-group-item'><input class='form-control' type='text' placeholder='Nome'></li>"
+			$('#lista_adicionar_amigos').append(newmemberinput);
+		});				
 
 	});
 
