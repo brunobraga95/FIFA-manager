@@ -116,8 +116,8 @@ function open_popup(popup, obj){
 			$('.popup').html(conviteAmizadePopup); 
 			break;
 		case 'add_novo_membro_popup':
-			let addFriendToGroup = MyApp.templates.addFriendToGroupPopup({obj:obj});
-			$('.popup').html(addFriendToGroup);
+			let addAmigoGrupoPopup = MyApp.templates.addAmigoGrupoPopup({obj:obj});
+			$('.popup').html(addAmigoGrupoPopup);
 			break;
 
 	}
