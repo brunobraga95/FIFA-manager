@@ -1,25 +1,10 @@
 {{#if obj.total}}
 	<div class="col-sm-offset-3 col-sm-6">
-		<div>
-			<h3 style="text-align:center">Venceu</h3>
-			<h4 style="text-align:center">Player 1 <small>Time1</small> 2 x 1 <small>Time2</small> Player 2</h4>
-		</div>
-		<div>
-			<h3 style="text-align:center">Venceu</h3>
-			<h4 style="text-align:center">Player 1 <small>Time1</small> 2 x 1 <small>Time2</small> Player 2</h4>
-		</div>
-		<div>
-			<h3 style="text-align:center">Venceu</h3>
-			<h4 style="text-align:center">Player 1 <small>Time1</small> 2 x 1 <small>Time2</small> Player 2</h4>
-		</div>
-		<div>
-			<h3 style="text-align:center">Venceu</h3>
-			<h4 style="text-align:center">Player 1 <small>Time1</small> 2 x 1 <small>Time2</small> Player 2</h4>
-		</div>
-		<div>
-			<h3 style="text-align:center">Venceu</h3>
-			<h4 style="text-align:center">Player 1 <small>Time1</small> 2 x 1 <small>Time2</small> Player 2</h4>
-		</div>
+		{{#each obj.friends.friendObj.jogos}}
+			<div>
+				<h4 style="text-align:center">{{this.player1}}<small> {{this.player1Team}}</small> {{this.player1Goals}} x {{this.player2Goals}} <small>{{this.player2Team}}</small> {{this.player2}}</h4>
+			</div>
+		{{/each}}
 	</div>
 {{else}}
 	<div class="nenhuma-partida">

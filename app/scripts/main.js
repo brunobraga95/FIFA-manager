@@ -246,6 +246,14 @@ function render_main(userInfo,that){
 		userInfo.total = userInfo.perdeu + userInfo.empatou + userInfo.venceu;
 		console.log(userInfo);
 
+		userInfo.historicoJogos = [];
+		
+		$.each(userInfo.friends, function(key, value){
+			$.each(value.jogos, function(key, value){
+				userInfo.historicoJogos.push(value);
+			});
+		});
+
 		// ==================== DINAMIC PARTIALS ====================
 		mainHeader = MyApp.templates.mainHeader({obj:userInfo});
 		Handlebars.registerPartial("mainHeader", mainHeader);
@@ -275,7 +283,7 @@ function render_main(userInfo,that){
 		Handlebars.registerPartial("grupoResumoTemplate", grupoResumoTemplate);
 		// ==========================================================
 
-		//criar_grafico(userInfo);
+		
 		let navbar = MyApp.templates.navbar({name:userInfo.name, pic:userInfo.picture});
 		let main;
 		let isMobile = window.matchMedia("only screen and (max-width: 760px)");
@@ -285,6 +293,7 @@ function render_main(userInfo,that){
     		main = MyApp.templates.main({obj:userInfo});
     	}
 		$('.conteudo').html(navbar).append(main);
+		criar_grafico(userInfo);
 
 	});	
 	
@@ -408,6 +417,7 @@ $(function(){
 				case 'Geral':
 					geralResumoTemplate = MyApp.templates.geralResumoTemplate({obj:userInfo});
 					$('.main-content').html(geralResumoTemplate);
+					criar_grafico(userInfo);
 					break;
 				case 'Amigo':
 					amigoResumoTemplate = MyApp.templates.amigoResumoTemplate({obj:userInfo});
@@ -416,6 +426,7 @@ $(function(){
 				case 'Grupo':
 					grupoResumoTemplate = MyApp.templates.grupoResumoTemplate({obj:userInfo});
 					$('.main-content').html(grupoResumoTemplate);
+					// criar_grafico(userInfo.groups.groupObj);
 					break;
 			}
 
@@ -438,6 +449,7 @@ $(function(){
 				case 'Resumo':
 					geralResumoTemplate = MyApp.templates.geralResumoTemplate({obj:userInfo});
 					$('.main-content').html(geralResumoTemplate);
+					criar_grafico(userInfo);
 					break;
 			}
 
@@ -459,30 +471,33 @@ $(function(){
 	$(document).on('click', '#groups_list>li:not(:first)', function(){	
 		let htmlText = '' + $(this).text();
 
-		switch (userInfo.pageInfo.context){
-			case 'Recente':
-				grupoRecenteTemplate = MyApp.templates.grupoRecenteTemplate({obj:userInfo});
-				$('.main-content').html(grupoRecenteTemplate);
-				break;
-			case 'Resumo':
-				grupoResumoTemplate = MyApp.templates.grupoResumoTemplate({obj:userInfo});
-				$('.main-content').html(grupoResumoTemplate);
-				break;
-		}
+		that.f.ref('groups').once('value', function(snapshot){
+			let groupsObj;
+			let groupObj;
+			groupsObj = snapshot.val();
+			groupObj = groupsObj[htmlText];
+			userInfo.groups.groupObj = groupObj;
+
+			switch (userInfo.pageInfo.context){
+				case 'Recente':
+					grupoRecenteTemplate = MyApp.templates.grupoRecenteTemplate({obj:userInfo});
+					$('.main-content').html(grupoRecenteTemplate);
+					break;
+				case 'Resumo':
+					grupoResumoTemplate = MyApp.templates.grupoResumoTemplate({obj:userInfo});
+					$('.main-content').html(grupoResumoTemplate);
+					break;
+			}
+		});
+
+		
 
 		$(this).addClass('active');
 		$(this).siblings().removeClass('active');
 		$('#friends_list>li').removeClass('active');
 		$('#geral>li').removeClass('active');
 		
-		
-		that.f.ref('groups').once('value', function(snapshot){
-			let groupsObj;
-			let groupObj;
-			groupsObj = snapshot.val();
-			groupObj = groupsObj[htmlText];
-			
-		});
+
 
 		//change main header
 		userInfo.pageInfo.mode.status = 'Grupo';
@@ -495,6 +510,9 @@ $(function(){
 	//Friends Click
 	$(document).on('click', '#friends_list>li:not(:first)', function(){
 		let htmlText = '' + $(this).text();
+
+		let friendObj = userInfo.friends[htmlText];
+		userInfo.friends.friendObj = friendObj;
 
 		switch (userInfo.pageInfo.context){
 			case 'Recente':
@@ -512,11 +530,7 @@ $(function(){
 		$(this).siblings().removeClass('active');
 		$('#geral>li').removeClass('active');
 
-		let friendObj = userInfo.friends[htmlText];
-		userInfo.venceu = friendObj.venceu;
-		userInfo.perdeu = friendObj.perdeu;
-		userInfo.empatou = friendObj.empatou;
-
+	
 		//change main header
 		userInfo.pageInfo.mode.status = 'Amigo';
 		userInfo.pageInfo.mode.text = htmlText;
