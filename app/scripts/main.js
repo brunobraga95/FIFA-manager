@@ -347,7 +347,6 @@ $(function(){
   		}
 	});
 
-
 	// ================ Login and Logout FB ========================
 	$(document).on('click','#fb_login', function(e){
 		let facebookLogin = new facebook_login(f, userInfo);
@@ -614,9 +613,17 @@ $(function(){
  	  	  		       	}	   		         	
 		            	var time_stamp = Math.floor(Date.now() / 1000); 
    			         	nova_partida[time_stamp] = partida_obj;	
+   			         	
 						if(add_nova_partida_group!='Nenhum'){			
 							f.ref('groups/'+add_nova_partida_group+'/jogos').update(nova_partida);
+							f.ref('usersFacebook/'+userInfo.uid+'/groups/'+add_nova_partida_group).transaction(function(group_matches){
+								return ('' + group_matches+ '' + time_stamp+ '/')
+							});
+							f.ref('usersFacebook/'+friendId+'/groups/'+add_nova_partida_group).transaction(function(group_matches){
+								return ('' + group_matches+ '' + time_stamp+ '/')
+							})
 						}
+
 						nova_partida[time_stamp].group = add_nova_partida_group;
 						f.ref('usersFacebook/'+userInfo.uid+'/friends/'+adversario_nome+'/jogos').update(nova_partida);
 						f.ref('usersFacebook/'+friendId+'/friends/'+userInfo.userNickName+'/jogos').update(nova_partida);
@@ -698,7 +705,7 @@ $(function(){
 				group_creator[userInfo.userNickName] = userInfo.uid;
 				f.ref('groups/'+group_name+'/membros').set(group_creator);
 				var group_name_obj = {};
-				group_name_obj[group_name] = group_name;
+				group_name_obj[group_name] = '/';
 				f.ref('usersFacebook/'+userInfo.uid+'/groups').update(group_name_obj);
 				listItems.each(function(idx, input){
 				var input = $(input);
