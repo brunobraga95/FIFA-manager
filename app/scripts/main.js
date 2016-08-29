@@ -607,10 +607,10 @@ $(function(){
 						if(add_nova_partida_group!='Nenhum'){			
 							f.ref('groups/'+add_nova_partida_group+'/jogos').update(nova_partida);
 							f.ref('usersFacebook/'+userInfo.uid+'/groups/'+add_nova_partida_group).transaction(function(group_matches){
-								return (' ' + group_matches+ '' + time_stamp+ '/')
+								return ('' + group_matches+ '' + time_stamp+ '/')
 							});
 							f.ref('usersFacebook/'+friendId+'/groups/'+add_nova_partida_group).transaction(function(group_matches){
-								return (' ' + group_matches+ '' + time_stamp+ '/')
+								return ('' + group_matches+ '' + time_stamp+ '/')
 							})
 						}
 
