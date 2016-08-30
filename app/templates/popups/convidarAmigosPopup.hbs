@@ -1,21 +1,35 @@
 <div>
 	<h3>Convidar Amigo</h3>
 </div>
-<div>
-	<form class="form-group">
+<div class="clearfix">
 
-		<ul style="margin-top:20px;margin-bottom:5px;" id="lista_adicionar_amigos" class="list-group">
-			<li class="list-group-item">
-				<input class="form-control" type="text" placeholder="Nome">
-			</li>
-		</ul>
+	<div class="col-xs-8 col-xs-offset-2" style="padding:25px;">
+		<form class="form-group">
 
-		<a href="#" id="add_amigos_input"><i class="fa fa-plus" aria-hidden="true"></i> Um Amigo</a>
+			{{!-- <ul style="margin-top:20px;margin-bottom:5px;" id="lista_adicionar_amigos" class="list-group">
+				<li class="list-group-item">
+					<input class="form-control" type="text" placeholder="Nome">
+				</li>
+			</ul> --}}
 
-		<div class="botao-wrapper">
-			<button class="btn btn-default cancelar">Cancelar</button>
-			<button class="btn btn-success" id="add_amigos_btn">Enviar</button>
-		</div>
+			<span class="input-group">
+				<input type="text" name="nomeAmigo" class="form-control" id="nome_amigo" placeholder="Informe o nickname do seu amigo ...">
+				<span class="input-group-btn">
+					<button class="btn btn-success" id="add_amigo">Add</button>
+				</span>
+			</span>
+		</form>
+	</div>
 
-	</form>
+	<div class="clearfix col-xs-12" id="amigos_wrapper" style="height: 135px; overflow-y:scroll;">
+		
+	</div>
+
+{{!-- 		<a href="#" id="add_amigos_input"><i class="fa fa-plus" aria-hidden="true"></i> Um Amigo</a>
+ --}}
+	<div class="botao-wrapper col-xs-12" style="padding:15px 0;">
+		<button class="btn btn-default cancelar">Cancelar</button>
+		<button class="btn btn-success" id="add_amigos_btn">Enviar</button>
+	</div>
+	
 </div>

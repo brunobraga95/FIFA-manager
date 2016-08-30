@@ -354,7 +354,7 @@ $(function(){
 	});
 
 	$(document).on('click', '#fb_logout', function(e){
-		var fb_login = new facebook_login(f, userInfo);
+		let fb_login = new facebook_login(f, userInfo);
 		fb_login.logout();
 	});
 	// =============================================================
@@ -767,6 +767,19 @@ $(function(){
 		});
 		$.magnificPopup.close();
 	});
+
+	$(document).on('click', '#add_amigo', function(e){
+		e.preventDefault();
+		let nome = $('#nome_amigo').val();
+		let amigoAdicionado = MyApp.templates.amigoAdicionado({nome: nome});
+		console.log(amigoAdicionado);
+		$('#amigos_wrapper').append(amigoAdicionado);
+	});
+
+	$(document).on('click', '.remove-amigo', function(e){
+		e.preventDefault();
+		$(this).parent().parent().parent().remove();
+	})
 
 	//ADD New friend
 	$(document).on('click','#add_amigos_btn',function(e){

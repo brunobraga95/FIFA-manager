@@ -86,6 +86,14 @@ textarea {
   max-width: 1050px;
 }
 
+//Crop Class
+.crop { 
+  overflow:hidden; 
+  white-space:nowrap; 
+  text-overflow:ellipsis;
+  width: 80px !important; 
+}​
+
 // Home
 .home{
   padding: 50px;
@@ -239,7 +247,7 @@ textarea {
   padding: 10px 15px 5px 15px;
   width: auto;
   margin: auto;
-  max-width: 500px;
+  max-width: 600px;
   border-radius: $border_radius;
   div{
     h3{
