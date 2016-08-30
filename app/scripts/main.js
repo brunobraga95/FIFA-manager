@@ -431,6 +431,7 @@ $(function(){
 				case 'Amigo':
 					amigoResumoTemplate = MyApp.templates.amigoResumoTemplate({obj:userInfo});
 					$('.main-content').html(amigoResumoTemplate);
+					if (userInfo.friendObj.total != 0) criar_grafico(userInfo.friendObj);
 					break;
 				case 'Grupo':
 					grupoResumoTemplate = MyApp.templates.grupoResumoTemplate({obj:userInfo});
@@ -485,7 +486,29 @@ $(function(){
 			let groupObj;
 			groupsObj = snapshot.val();
 			groupObj = groupsObj[htmlText];
-			userInfo.groups.groupObj = groupObj;
+
+			groupObj.venceu = 0;
+			groupObj.empatou = 0;
+			groupObj.perdeu = 0;
+
+			jogosNoGrupo = userInfo.groups[htmlText].split('/');
+
+			for(var i=1; i<jogosNoGrupo.length - 1; i++){ //two trash itens in array
+				jogoObj = groupObj.jogos[jogosNoGrupo[i]];
+				if(jogoObj.player1 == userInfo.userNickName){
+					if (jogoObj.player1Goals > jogoObj.player2Goals) groupObj.venceu++;
+					if (jogoObj.player1Goals < jogoObj.player2Goals) groupObj.perdeu++;
+				}else{
+					if (jogoObj.player2Goals > jogoObj.player1Goals) groupObj.venceu++;
+					if (jogoObj.player2Goals < jogoObj.player1Goals) groupObj.perdeu++;
+				}
+				if (jogoObj.player2Goals == jogoObj.player1Goals) groupObj.empatou++;
+			}
+
+			groupObj.total = jogosNoGrupo.length - 2; //two trash itens in array
+			userInfo.groupObj = groupObj;
+
+			console.log(userInfo);
 
 			switch (userInfo.pageInfo.context){
 				case 'Recente':
@@ -495,6 +518,7 @@ $(function(){
 				case 'Resumo':
 					grupoResumoTemplate = MyApp.templates.grupoResumoTemplate({obj:userInfo});
 					$('.main-content').html(grupoResumoTemplate);
+					if (userInfo.groupObj.total != 0) criar_grafico(userInfo.groupObj);
 					break;
 			}
 		});
@@ -521,7 +545,9 @@ $(function(){
 		let htmlText = '' + $(this).text();
 
 		let friendObj = userInfo.friends[htmlText];
-		userInfo.friends.friendObj = friendObj;
+		friendObj.total = friendObj.venceu + friendObj.empatou + friendObj.perdeu;
+		userInfo.friendObj = friendObj;
+
 
 		switch (userInfo.pageInfo.context){
 			case 'Recente':
@@ -531,6 +557,7 @@ $(function(){
 			case 'Resumo':
 				amigoResumoTemplate = MyApp.templates.amigoResumoTemplate({obj:userInfo});
 				$('.main-content').html(amigoResumoTemplate);
+				if (userInfo.friendObj.total != 0) criar_grafico(userInfo.friendObj);
 				break;
 		}
 
