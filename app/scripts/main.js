@@ -108,7 +108,7 @@ function open_popup(popup, obj){
 	
 	switch (popup){
 		case 'criar_grupo_popup':
-			let criarGrupoPopup = MyApp.templates.criarGrupoPopup();
+			let criarGrupoPopup = MyApp.templates.criarGrupoPopup({obj:obj});
 			$('.popup').html(criarGrupoPopup);
 			break;
 		case 'convidar_amigos_popup':

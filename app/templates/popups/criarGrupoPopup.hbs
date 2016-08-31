@@ -8,9 +8,12 @@
 		<input class="form-control" id='novo_grupo_nome' type="text" name="grupoNome" placeholder="Entre o nome do seu grupo">
 		
 		<h4>Membros:</h4>
-		<ul class="list-group" id="integrantes_grupo" style="margin-bottom:5px">
-			<li class="list-group-item"><input class="form-control" type="text" placeholder="Nome"></li>
-		</ul>
+		{{log this}}
+		<select class="form-control">
+			{{#each obj.friends}}
+				<option>{{@key}}</option>	
+			{{/each}}
+		</select>
 		
 		<a href="#" id="add_membros_input"><i class="fa fa-plus" aria-hidden="true"></i> Um Membro</a>
 		
