@@ -10,21 +10,27 @@
 			<option>{{@key}}</option>	
 		{{/each}}
 		</select>
-		
-		<label for="adversario">Seu Time: </label>
-		<select class="form-control" id = "adversario_nome">
-		{{#each obj.teamsList}}
-			<option>{{@key}}</option>
-			{{teste}}
-		{{/each}}
-		</select>
+		<div id="usuario-selecao-times">	
+			<label for="adversario">Seu Time: </label>
+			<select class="form-control" id = "usuario_liga">
+				{{#each obj.teamsList}}
+					<option>{{@key}}</option>
+				{{/each}}
+			</select>
+		</div>
 
-		<label for="timeUsuario">Seu time:</label>
-		<input class="form-control" type="text" name="timeUsuario" id="usuario_time" placeholder="Opcional">
 		<label for="timeUsuarioGols">Gols:</label>
 		<input class="form-control" type="text" name="timeUsuarioGols" id="usuario_gols" placeholder="Opcional">
-		<label for="timeAdversario">Time do seu amigo:</label>
-		<input class="form-control" type="text" name="timeAdversario" id="adversario_time" placeholder="Opcional">
+		
+		<div id="adversario-selecao-times">
+			<label for="adversario">Time do seu Amigo: </label>
+			<select class="form-control" id = "adversario_liga">
+				{{#each obj.teamsList}}
+					<option>{{@key}}</option>
+				{{/each}}
+			</select>
+		</div>
+
 		<label for="timeAdversarioGols">Gols:</label>
 		<input class="form-control" type="text" name="timeAdversarioGols" id="adversario_gols" placeholder="Opcional">
 		<label for="grupo">Grupo:</label>

@@ -105,6 +105,7 @@ function open_popup(popup, obj){
 	if (popup == 'navbar_criar_grupo') popup='criar_grupo';
 	if (popup == 'add_partida_circle') popup='add_partida';
 	popup = popup + '_popup';
+	
 	switch (popup){
 		case 'criar_grupo_popup':
 			let criarGrupoPopup = MyApp.templates.criarGrupoPopup();
@@ -117,13 +118,22 @@ function open_popup(popup, obj){
 		case 'add_partida_popup':
 			let addPartidaPopup = MyApp.templates.addPartidaPopup({obj:obj});
 			$('.popup').html(addPartidaPopup);
+
+			$('#usuario-selecao-times').append("<select class=\"form-control\" id = \"usuario_liga_time\"></select>");		
+			for(i = 0;i<obj.teamsList['Argentina Primeira Divisão'].length;i++){
+				$('#usuario_liga_time').append("<option>"+obj.teamsList['Argentina Primeira Divisão'][i]+"</option>");		
+			}	
+
+			$('#adversario-selecao-times').append("<select class=\"form-control\" id = \"adversario_liga_time\"></select>");		
+			for(i = 0;i<obj.teamsList['Argentina Primeira Divisão'].length;i++){
+				$('#adversario_liga_time').append("<option>"+obj.teamsList['Argentina Primeira Divisão'][i]+"</option>");		
+			}
 			break;
 		case 'nomeUsuario_popup':
 			let addnomeUsuariopup = MyApp.templates.nomeUsuarioPopup({obj:obj});
 			$('.popup').html(addnomeUsuariopup);
 			break;
 		case 'navbar_convite_amizade_popup':
-			console.log(popup);
 			let conviteAmizadePopup = MyApp.templates.conviteAmizadePopup({obj:obj});
 			$('.popup').html(conviteAmizadePopup); 
 			break;
@@ -254,8 +264,6 @@ function render_main(userInfo,that){
 		}
 
 		userInfo.total = userInfo.perdeu + userInfo.empatou + userInfo.venceu;
-		console.log(userInfo);
-
 		userInfo.historicoJogos = [];
 		
 		$.each(userInfo.friends, function(key, value){
@@ -618,16 +626,15 @@ $(function(){
 	$(document).on('click', '#add_nova_partida_btn', function(e){
 		e.preventDefault();
 		var adversario_nome = $("#adversario_nome option:selected").text();
-		var usuario_time = $('#usuario_time')[0].value
+		var usuario_time = $('#usuario_liga_time option:selected')[0].value
 		var usuario_gols = $('#usuario_gols')[0].value
-		var adversario_time = $('#adversario_time')[0].value
+		var adversario_time = $('#adversario_liga_time option:selected')[0].value
 		var adversario_gols = $('#adversario_gols')[0].value
 		var add_nova_partida_group = $("#add_nova_partida_group option:selected").text();
+		console.log(usuario_time);
+		console.log(adversario_time);
 		f.ref('usersFacebook/'+userInfo.uid+'/friends').once('value',function(snapshot){		
 			if(snapshot.child(adversario_nome).exists()){
-				var usuario_empatou = snapshot.val()[adversario_nome].empatou;
-				var usuario_venceu = snapshot.val()[adversario_nome].venceu;
-				var usuario_perdeu = snapshot.val()[adversario_nome].perdeu;
 				f.ref('usersNickNames/'+adversario_nome).once("value",function(snapshot){
 					let friendId = snapshot.val();
 					if(usuario_time==''){
@@ -648,7 +655,8 @@ $(function(){
     	    	    		'player2Goals':adversario_gols,
 	    	        		'player1Team':usuario_time,
  	  	    	     		'player2Team':adversario_time
- 	  	  		       	}	   		         	
+ 	  	  		       	}
+ 	  	  		       	console.log(partida_obj);	   		         	
 		            	var time_stamp = Math.floor(Date.now() / 1000); 
    			         	nova_partida[time_stamp] = partida_obj;	
    			         	
@@ -663,8 +671,14 @@ $(function(){
 						}
 
 						nova_partida[time_stamp].group = add_nova_partida_group;
+						console.log(nova_partida);
+						console.log(userInfo.uid);
+						console.log(adversario_nome);
+						console.log(friendId);
+						console.log(userInfo.userNickName);
 						f.ref('usersFacebook/'+userInfo.uid+'/friends/'+adversario_nome+'/jogos').update(nova_partida);
 						f.ref('usersFacebook/'+friendId+'/friends/'+userInfo.userNickName+'/jogos').update(nova_partida);
+						console.log('aqui');
 						if(usuario_gols > adversario_gols){
 							userInfo.venceu++;
 							f.ref('usersFacebook/'+userInfo.uid+'/venceu').transaction(function(venceu){
@@ -724,7 +738,7 @@ $(function(){
 			}else alert("We could not find "+adversario_nome);	
 
 		});
-
+		console.log("saiu aqui");
 	});
 	
 	//ADD novo grupo
@@ -867,8 +881,29 @@ $(function(){
 
 	});
 
-});
+	$(document).on('change','#usuario_liga', function (e) {
+		console.log('entrou usuario')
+    	var liga = add_nova_partida_group = $("#usuario_liga option:selected").text();
+    	$('#usuario_liga_time').empty()
+		for(i = 0;i<userInfo.teamsList[liga].length;i++){
+			$('#usuario_liga_time').append("<option>"+userInfo.teamsList[liga][i]+"</option>");		
+		}	
+		
+	});
 
+
+	$(document).on('change','#adversario_liga', function (e) {
+		console.log("entrou adversario");
+    	var liga = add_nova_partida_group = $("#adversario_liga option:selected").text();
+    	$('#adversario_liga_time').empty()
+			for(i = 0;i<userInfo.teamsList[liga].length;i++){
+				$('#adversario_liga_time').append("<option>"+userInfo.teamsList[liga][i]+"</option>");		
+		}	
+		
+	});
+
+
+	});
 
 
 
