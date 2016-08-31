@@ -1,4 +1,4 @@
-{{#if obj.total}}
+{{#if obj.friendObj.total}}
 	<div class="col-sm-offset-3 col-sm-6">
 		{{#each obj.friendObj.jogos}}
 			<div>
@@ -8,6 +8,6 @@
 	</div>
 {{else}}
 	<div class="nenhuma-partida">
-		<h3><small>Recente </small>Você ainda nao jogou nenhuma partida!</h3>
+		<h3>Você ainda nao jogou nenhuma partida contra {{obj.friendObj.amigoNome}}!</h3>
 	</div>
 {{/if}}

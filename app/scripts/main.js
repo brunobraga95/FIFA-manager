@@ -291,6 +291,9 @@ function render_main(userInfo,that){
 
 		grupoResumoTemplate = MyApp.templates.grupoResumoTemplate({obj:userInfo});
 		Handlebars.registerPartial("grupoResumoTemplate", grupoResumoTemplate);
+
+		resumoPartidas = MyApp.templates.resumoPartidas({obj:userInfo});
+		Handlebars.registerPartial("resumoPartidas", resumoPartidas);
 		// ==========================================================
 
 		
@@ -436,7 +439,7 @@ $(function(){
 				case 'Grupo':
 					grupoResumoTemplate = MyApp.templates.grupoResumoTemplate({obj:userInfo});
 					$('.main-content').html(grupoResumoTemplate);
-					// criar_grafico(userInfo.groups.groupObj);
+					if (userInfo.groupObj.total != 0) criar_grafico(userInfo.groupObj);
 					break;
 			}
 
@@ -462,6 +465,10 @@ $(function(){
 					if (userInfo.total != 0) criar_grafico(userInfo);
 					break;
 			}
+			
+			//change partidas header
+			resumoPartidas = MyApp.templates.resumoPartidas({obj:userInfo});
+			$('.display-jogos').html(resumoPartidas);
 
 			$('#friends_list>li').removeClass('active');
 			$('#groups_list>li').removeClass('active');
@@ -510,6 +517,7 @@ $(function(){
 
 			console.log(userInfo);
 
+
 			switch (userInfo.pageInfo.context){
 				case 'Recente':
 					grupoRecenteTemplate = MyApp.templates.grupoRecenteTemplate({obj:userInfo});
@@ -521,6 +529,10 @@ $(function(){
 					if (userInfo.groupObj.total != 0) criar_grafico(userInfo.groupObj);
 					break;
 			}
+
+			//change partidas header
+			resumoPartidas = MyApp.templates.resumoPartidas({obj:userInfo.groupObj});
+			$('.display-jogos').html(resumoPartidas);
 		});
 
 		
@@ -545,6 +557,7 @@ $(function(){
 		let htmlText = '' + $(this).text();
 
 		let friendObj = userInfo.friends[htmlText];
+		friendObj.amigoNome = htmlText;
 		friendObj.total = friendObj.venceu + friendObj.empatou + friendObj.perdeu;
 		userInfo.friendObj = friendObj;
 
@@ -566,17 +579,15 @@ $(function(){
 		$(this).siblings().removeClass('active');
 		$('#geral>li').removeClass('active');
 
+		//change partidas header
+		resumoPartidas = MyApp.templates.resumoPartidas({obj:userInfo.friendObj});
+		$('.display-jogos').html(resumoPartidas);
 	
 		//change main header
 		userInfo.pageInfo.mode.status = 'Amigo';
 		userInfo.pageInfo.mode.text = htmlText;
 		mainHeader = MyApp.templates.mainHeader({obj:userInfo});
 		$('.main-header').html(mainHeader);
-
-		//change resumo
-		// graficoResumo.data.datasets[0].data = [userInfo.venceu, userInfo.empatou, userInfo.perdeu];
-		// graficoResumo.update();
-		
 
 	});
 
@@ -700,10 +711,6 @@ $(function(){
 
 						}
 						userInfo.total = userInfo.venceu + userInfo.empatou + userInfo.perdeu;						
-
-						//The two next lines that are commented do not work for some reason, they crash the code saying that data is not defined
-						//graficoResumo.data.datasets[0].data = [userInfo.venceu, userInfo.empatou, userInfo.perdeu];
-						//graficoResumo.update();
 
 						mainHeader = MyApp.templates.mainHeader({obj:userInfo});						
 						$('.main-header').html(mainHeader);
