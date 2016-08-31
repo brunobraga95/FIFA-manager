@@ -496,8 +496,10 @@ $(function(){
 	$(document).on('click', '#groups_list>li:not(:first)', function(){	
 		let htmlText = '' + $(this).text();
 
+
 		that.f.ref('groups').once('value', function(snapshot){
 			let groupsObj;
+			console.log(groupsObj);
 			let groupObj;
 			groupsObj = snapshot.val();
 			groupObj = groupsObj[htmlText];
@@ -507,9 +509,15 @@ $(function(){
 			groupObj.perdeu = 0;
 
 			jogosNoGrupo = userInfo.groups[htmlText].split('/');
+			for(var i = jogosNoGrupo.length - 1; i >= 0; i--) {
+			    if(jogosNoGrupo[i] === "") {
+			       jogosNoGrupo.splice(i, 1);
+			    }
+			}
 
-			for(var i=1; i<jogosNoGrupo.length - 1; i++){ //two trash itens in array
+			for(var i=0; i<jogosNoGrupo.length; i++){ //two trash itens in array
 				jogoObj = groupObj.jogos[jogosNoGrupo[i]];
+				console.log(jogoObj);
 				if(jogoObj.player1 == userInfo.userNickName){
 					if (jogoObj.player1Goals > jogoObj.player2Goals) groupObj.venceu++;
 					if (jogoObj.player1Goals < jogoObj.player2Goals) groupObj.perdeu++;
@@ -520,9 +528,9 @@ $(function(){
 				if (jogoObj.player2Goals == jogoObj.player1Goals) groupObj.empatou++;
 			}
 
-			groupObj.total = jogosNoGrupo.length - 2; //two trash itens in array
+			groupObj.total = groupObj.venceu + groupObj.perdeu + groupObj.empatou; //two trash itens in array
 			userInfo.groupObj = groupObj;
-
+	
 			console.log(userInfo);
 
 
@@ -768,8 +776,8 @@ $(function(){
 									f.ref('groups/'+group_name+'/membros').update(foo);
 									f.ref('usersFacebook/'+friendId+'/groups').update(group_name_obj);
 								});
-								if(!userInfo.groups)userInfo.groups = {}
-								userInfo.groups[group_name] = group_name;
+								if(!userInfo.groups)userInfo.groups = {};
+								userInfo.groups[group_name] = '/';
 								groupslistTemplate = MyApp.templates.groupslistTemplate({obj:userInfo});
 								$('#groups_list').html(groupslistTemplate);
     						}
@@ -793,7 +801,6 @@ $(function(){
 		e.preventDefault();
 		let nome = $('#nome_amigo').val();
 		let amigoAdicionado = MyApp.templates.amigoAdicionado({nome: nome});
-		console.log(amigoAdicionado);
 		$('#amigos_wrapper').append(amigoAdicionado);
 	});
 
