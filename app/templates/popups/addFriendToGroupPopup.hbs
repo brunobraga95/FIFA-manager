@@ -1,13 +1,22 @@
 <div>
-	<h3>Convidar Amigo Para Grupo {{obj.pageInfo.mode.text}} </h3>
+	<h3>Convidar Amigos para {{obj.pageInfo.mode.text}} </h3>
 </div>
 <div>
 	<form class="form-group">
-		<select class="form-control">
-			{{#each obj.friends}}
-				<option>{{@key}}</option>	
+		<div class="dropdown">
+		  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownAmigos2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    Amigos
+		    <span class="caret"></span>
+		  </button>
+		  <ul class="dropdown-menu lista-amigos-convite" aria-labelledby="dropdownAmigos2">
+		    {{#each obj.friends}}
+				<li><a href="#">{{@key}}</a></li>	
 			{{/each}}
-		</select>
+		  </ul>
+		</div>
+
+		<div class="clearfix col-xs-12" id="novos_membros_wrapper" style="height: 135px; margin-top:15px; overflow-y:scroll;"></div>
+				
 		<div class="botao-wrapper">
 			<button class="btn btn-default cancelar">Cancelar</button>
 			<button class="btn btn-success" id="add_amigos_btn">Enviar</button>

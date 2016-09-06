@@ -8,15 +8,20 @@
 		<input class="form-control" id='novo_grupo_nome' type="text" name="grupoNome" placeholder="Entre o nome do seu grupo">
 		
 		<h4>Membros:</h4>
-		{{log this}}
-		<select class="form-control">
-			{{#each obj.friends}}
-				<option>{{@key}}</option>	
+		<div class="dropdown">
+		  <button class="btn btn-default dropdown-toggle" type="button" id="dropdownAmigos" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		    Amigos
+		    <span class="caret"></span>
+		  </button>
+		  <ul class="dropdown-menu lista-amigos" aria-labelledby="dropdownAmigos">
+		    {{#each obj.friends}}
+				<li><a href="#">{{@key}}</a></li>	
 			{{/each}}
-		</select>
-		
-		<a href="#" id="add_membros_input"><i class="fa fa-plus" aria-hidden="true"></i> Um Membro</a>
-		
+		  </ul>
+		</div>
+
+		<div class="clearfix col-xs-12" id="membros_wrapper" style="height: 135px; margin-top:15px; overflow-y:scroll;"></div>
+				
 		<div class="botao-wrapper">
 			<button class="btn btn-default cancelar">Cancelar</button>
 			<button class="btn btn-success" id="add_novo_grupo_btn">Criar</button>
