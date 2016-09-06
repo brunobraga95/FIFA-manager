@@ -679,11 +679,6 @@ $(function(){
 						}
 
 						nova_partida[time_stamp].group = add_nova_partida_group;
-						console.log(nova_partida);
-						console.log(userInfo.uid);
-						console.log(adversario_nome);
-						console.log(friendId);
-						console.log(userInfo.userNickName);
 						f.ref('usersFacebook/'+userInfo.uid+'/friends/'+adversario_nome+'/jogos').update(nova_partida);
 						f.ref('usersFacebook/'+friendId+'/friends/'+userInfo.userNickName+'/jogos').update(nova_partida);
 						console.log('aqui');
@@ -747,6 +742,7 @@ $(function(){
 
 		});
 		console.log('saiu aqui');
+
 	});
 	
 	//ADD novo grupo
@@ -826,11 +822,11 @@ $(function(){
 	//ADD New friend
 	$(document).on('click','#add_amigos_btn',function(e){
 		e.preventDefault();
-		var friend_name = $('list-group-item li input').val();
-		$('#lista_adicionar_amigos li input').each(function(i)
+// 		var friend_name = $('list-group-item li input').val();
+// 		$('#lista_adicionar_amigos li input').each(function(i)
+		$('.lista-nomes-amigos').each(function(i)
 		{
-   			$(this).attr('rel');
-			var friend_name = $(this)[0].value;					
+			var friend_name = $(this)[0].textContent;					
 			f.ref('usersNickNames').once('value',function(snapshot){
 				if(snapshot.child(friend_name).exists()){
 					f.ref('usersFacebook/'+userInfo.uid+'/friends').once('value',function(snapshot){
@@ -885,7 +881,6 @@ $(function(){
 		f.ref('usersFacebook/'+userInfo.uid).once('value',function(snapshot){
 			userInfo.friends = snapshot.val().friends;
 			delete userInfo.friendRequests[id];
-			console.log(userInfo);
 			friendslistTemplate = MyApp.templates.friendslistTemplate({obj:userInfo});
 			$('#friends_list').html(friendslistTemplate);
 			$('.navegacao').html(MyApp.templates.navbar({obj:userInfo}));
@@ -924,7 +919,7 @@ $(function(){
 	});
 
 
-	});
+});
 
 
 
