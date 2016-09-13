@@ -152,8 +152,6 @@ function open_popup(popup, obj){
 		callbacks: {
 		    open: function() {
 		      $.magnificPopup.instance.close = function() {
-        		$('#integrantes_grupo li:not(:first)').remove();
-				$('#lista_adicionar_amigos li:not(:first)').remove();
 		        $.magnificPopup.proto.close.call(this);
 		      };
 		    }
@@ -170,27 +168,28 @@ function criar_grafico(userInfo){
 	let graficoContainer = $('#myChart');
 	
 	graficoResumo = new Chart(graficoContainer, {
-	    type: 'pie',
+	    type: 'doughnut',
 	    data: {
 	        labels: ['Venceu', 'Empatou', 'Perdeu'],
 	        datasets: [{
 	            label: 'numero de partidas',
 	            data: [userInfo.venceu, userInfo.empatou, userInfo.perdeu],
 	            backgroundColor: [
+	                '#5cb85c',
+	                '#337ab7',
+	                '#d9534f'
+	            ],
+	            hoverBackgroundColor: [
 	                'green',
 	                'blue',
 	                'red'
-	            ],
-	            hoverBackgroundColor: [
-	                'darkgreen',
-	                'darkblue',
-	                'darkred'
 	            ]
 	        }]
 	    },
 	    options: {
 	        
 	    }
+
 	});
 	
 }
