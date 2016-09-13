@@ -1,9 +1,9 @@
 // Initialize Firebase
 firebase.initializeApp({
-  apiKey: "AIzaSyBH8HTsYQBLPwnh9KfWVhDKxCW6fGgZVUM",
-  authDomain: "fifa-manager-4b146.firebaseapp.com",
-  databaseURL: "https://fifa-manager-4b146.firebaseio.com",
-  storageBucket: ""
+  apiKey: 'AIzaSyBH8HTsYQBLPwnh9KfWVhDKxCW6fGgZVUM',
+  authDomain: 'fifa-manager-4b146.firebaseapp.com',
+  databaseURL: 'https://fifa-manager-4b146.firebaseio.com',
+  storageBucket: ''
 });
 
 // ==================== GLOBAL VARIABLES =============================
@@ -14,7 +14,7 @@ let graficoResumo;
 // ===================== HANDLEBARS HELPERS ==========================
 Handlebars.registerHelper('equal', function(lvalue, rvalue, options) {
     if (arguments.length < 3)
-        throw new Error("Handlebars Helper equal needs 2 parameters");
+        throw new Error('Handlebars Helper equal needs 2 parameters');
     if(lvalue!=rvalue ) {
         return options.inverse(this);
     } else {
@@ -25,7 +25,7 @@ Handlebars.registerHelper('equal', function(lvalue, rvalue, options) {
 Handlebars.registerHelper('size', function(obj) {
 	// prerequisite
 	if ($.isEmptyObject(obj)) return;
-	if( typeof obj != "object" ) return;
+	if( typeof obj != 'object' ) return;
 	var size = 0, key;
 	for (key in obj) {
 		if (obj.hasOwnProperty(key)) size++;
@@ -71,7 +71,7 @@ function facebook_login(f, userInfo) {
                         email: that.userInfo.email,
                         date:that.userInfo.today,
                     });    
-                }else console.log("user already exists");
+                }else console.log('user already exists');
             });
             render_main(userInfo);
 		}).catch(function(error) {
@@ -108,7 +108,7 @@ function open_popup(popup, obj){
 	
 	switch (popup){
 		case 'criar_grupo_popup':
-			let criarGrupoPopup = MyApp.templates.criarGrupoPopup();
+			let criarGrupoPopup = MyApp.templates.criarGrupoPopup({obj:obj});
 			$('.popup').html(criarGrupoPopup);
 			break;
 		case 'convidar_amigos_popup':
@@ -119,14 +119,14 @@ function open_popup(popup, obj){
 			let addPartidaPopup = MyApp.templates.addPartidaPopup({obj:obj});
 			$('.popup').html(addPartidaPopup);
 
-			$('#usuario-selecao-times').append("<select class=\"form-control\" id = \"usuario_liga_time\"></select>");		
+			$('#usuario-selecao-times').append('<select class="form-control" id = "usuario_liga_time"></select>');		
 			for(i = 0;i<obj.teamsList['Argentina Primeira Divisão'].length;i++){
-				$('#usuario_liga_time').append("<option>"+obj.teamsList['Argentina Primeira Divisão'][i]+"</option>");		
+				$('#usuario_liga_time').append('<option>'+obj.teamsList['Argentina Primeira Divisão'][i]+'</option>');		
 			}	
 
-			$('#adversario-selecao-times').append("<select class=\"form-control\" id = \"adversario_liga_time\"></select>");		
+			$('#adversario-selecao-times').append('<select class="form-control" id = "adversario_liga_time"></select>');		
 			for(i = 0;i<obj.teamsList['Argentina Primeira Divisão'].length;i++){
-				$('#adversario_liga_time').append("<option>"+obj.teamsList['Argentina Primeira Divisão'][i]+"</option>");		
+				$('#adversario_liga_time').append('<option>'+obj.teamsList['Argentina Primeira Divisão'][i]+'</option>');		
 			}
 			break;
 		case 'nomeUsuario_popup':
@@ -152,8 +152,6 @@ function open_popup(popup, obj){
 		callbacks: {
 		    open: function() {
 		      $.magnificPopup.instance.close = function() {
-        		$('#integrantes_grupo li:not(:first)').remove();
-				$('#lista_adicionar_amigos li:not(:first)').remove();
 		        $.magnificPopup.proto.close.call(this);
 		      };
 		    }
@@ -167,30 +165,31 @@ function open_popup(popup, obj){
 // ======== of a player in a group, against a friend or overall ======
 // ===================================================================
 function criar_grafico(userInfo){
-	let graficoContainer = $("#myChart");
+	let graficoContainer = $('#myChart');
 	
 	graficoResumo = new Chart(graficoContainer, {
-	    type: 'pie',
+	    type: 'doughnut',
 	    data: {
-	        labels: ["Venceu", "Empatou", "Perdeu"],
+	        labels: ['Venceu', 'Empatou', 'Perdeu'],
 	        datasets: [{
 	            label: 'numero de partidas',
 	            data: [userInfo.venceu, userInfo.empatou, userInfo.perdeu],
 	            backgroundColor: [
-	                "green",
-	                "blue",
-	                "red"
+	                '#5cb85c',
+	                '#337ab7',
+	                '#d9534f'
 	            ],
 	            hoverBackgroundColor: [
-	                "darkgreen",
-	                "darkblue",
-	                "darkred"
+	                'green',
+	                'blue',
+	                'red'
 	            ]
 	        }]
 	    },
 	    options: {
 	        
 	    }
+
 	});
 	
 }
@@ -202,13 +201,13 @@ function render_main(userInfo,that){
 	f = firebase.database();
 	f.ref('usersFacebook/'+userInfo.uid).once('value',function(snapshot){
 		// NICKNAME
-		if(!snapshot.child("nickName").exists()){
+		if(!snapshot.child('nickName').exists()){
 			//se entrou aqui, usuario ainda nao tem nick name
 			console.log('doesnt have nickName');
-			open_popup("nomeUsuario", userInfo);
+			open_popup('nomeUsuario', userInfo);
 		}else userInfo.userNickName = snapshot.val().nickName;
 
-		if(snapshot.child("friendRequestReceived").exists()){
+		if(snapshot.child('friendRequestReceived').exists()){
 			console.log('Has friend Request');
 			userInfo.friendRequests = snapshot.val().friendRequestReceived;
 		}
@@ -222,7 +221,7 @@ function render_main(userInfo,that){
 		}
 		
 		// POPULATE THE USER INFORMATION ABOUT GAMES PLAYED
-		if(snapshot.child("venceu").exists()){
+		if(snapshot.child('venceu').exists()){
 			userInfo.venceu = snapshot.val().venceu;
 		}else{
 			firebase.database().ref('usersFacebook/' + userInfo.uid).update({
@@ -231,7 +230,7 @@ function render_main(userInfo,that){
 			userInfo.venceu = 0;
 		}	
 
-		if(snapshot.child("perdeu").exists()){
+		if(snapshot.child('perdeu').exists()){
 			userInfo.perdeu = snapshot.val().perdeu;	
 		}else{
 			firebase.database().ref('usersFacebook/' + userInfo.uid).update({
@@ -240,7 +239,7 @@ function render_main(userInfo,that){
 			userInfo.perdeu = 0;
 		}
 
-		if(snapshot.child("empatou").exists()){
+		if(snapshot.child('empatou').exists()){
 			userInfo.empatou = snapshot.val().empatou;
 
 		}else{
@@ -274,40 +273,40 @@ function render_main(userInfo,that){
 
 		// ==================== DINAMIC PARTIALS ====================
 		mainHeader = MyApp.templates.mainHeader({obj:userInfo});
-		Handlebars.registerPartial("mainHeader", mainHeader);
+		Handlebars.registerPartial('mainHeader', mainHeader);
 
 		groupslistTemplate = MyApp.templates.groupslistTemplate({obj:userInfo});
-		Handlebars.registerPartial("groupslistTemplate", groupslistTemplate);
+		Handlebars.registerPartial('groupslistTemplate', groupslistTemplate);
 
 		friendslistTemplate = MyApp.templates.friendslistTemplate({obj:userInfo});
-		Handlebars.registerPartial("friendslistTemplate", friendslistTemplate);
+		Handlebars.registerPartial('friendslistTemplate', friendslistTemplate);
 
 		geralResumoTemplate = MyApp.templates.geralResumoTemplate({obj:userInfo});
-		Handlebars.registerPartial("geralResumoTemplate", geralResumoTemplate);
+		Handlebars.registerPartial('geralResumoTemplate', geralResumoTemplate);
 
 		geralRecenteTemplate = MyApp.templates.geralRecenteTemplate({obj:userInfo});
-		Handlebars.registerPartial("geralRecenteTemplate", geralRecenteTemplate);
+		Handlebars.registerPartial('geralRecenteTemplate', geralRecenteTemplate);
 
 		amigoRecenteTemplate = MyApp.templates.amigoRecenteTemplate({obj:userInfo});
-		Handlebars.registerPartial("amigoRecenteTemplate", amigoRecenteTemplate);
+		Handlebars.registerPartial('amigoRecenteTemplate', amigoRecenteTemplate);
 
 		grupoRecenteTemplate = MyApp.templates.grupoRecenteTemplate({obj:userInfo});
-		Handlebars.registerPartial("grupoRecenteTemplate", grupoRecenteTemplate);
+		Handlebars.registerPartial('grupoRecenteTemplate', grupoRecenteTemplate);
 
 		amigoResumoTemplate = MyApp.templates.amigoResumoTemplate({obj:userInfo});
-		Handlebars.registerPartial("amigoResumoTemplate", amigoResumoTemplate);
+		Handlebars.registerPartial('amigoResumoTemplate', amigoResumoTemplate);
 
 		grupoResumoTemplate = MyApp.templates.grupoResumoTemplate({obj:userInfo});
-		Handlebars.registerPartial("grupoResumoTemplate", grupoResumoTemplate);
+		Handlebars.registerPartial('grupoResumoTemplate', grupoResumoTemplate);
 
 		resumoPartidas = MyApp.templates.resumoPartidas({obj:userInfo});
-		Handlebars.registerPartial("resumoPartidas", resumoPartidas);
+		Handlebars.registerPartial('resumoPartidas', resumoPartidas);
 		// ==========================================================
 
 		
 		let navbar = MyApp.templates.navbar({obj:userInfo});
 		let main;
-		let isMobile = window.matchMedia("only screen and (max-width: 760px)");
+		let isMobile = window.matchMedia('only screen and (max-width: 760px)');
 		if (isMobile.matches) {
     		main = MyApp.templates.mainMobile({obj:userInfo});
     	}else{
@@ -380,17 +379,17 @@ $(function(){
 
 		//ADD one more member input on criar grupo popup
 		$('#add_membros_input').click(function(){
-			let newmemberinput = "<li class='list-group-item'><input class='form-control' type='text' placeholder='Nome'></li>"
+			let newmemberinput = '<li class=\'list-group-item\'><input class=\'form-control\' type=\'text\' placeholder=\'Nome\'></li>'
 			$('#integrantes_grupo').append(newmemberinput);
 		});
 
 		$('#add_amigos_input').click(function(){
-			let newmemberinput = "<li class='list-group-item'><input class='form-control' type='text' placeholder='Nome'></li>"
+			let newmemberinput = '<li class=\'list-group-item\'><input class=\'form-control\' type=\'text\' placeholder=\'Nome\'></li>'
 			$('#lista_adicionar_amigos').append(newmemberinput);
 		});
 
 		$('#add_amigos_to_group_input').click(function(){
-			let newmemberinput = "<li class='list-group-item'><input class='form-control' type='text' placeholder='Nome'></li>"
+			let newmemberinput = '<li class=\'list-group-item\'><input class=\'form-control\' type=\'text\' placeholder=\'Nome\'></li>'
 			$('#lista_adicionar_amigos').append(newmemberinput);
 		});				
 
@@ -510,7 +509,7 @@ $(function(){
 
 			jogosNoGrupo = userInfo.groups[htmlText].split('/');
 			for(var i = jogosNoGrupo.length - 1; i >= 0; i--) {
-			    if(jogosNoGrupo[i] === "") {
+			    if(jogosNoGrupo[i] === '') {
 			       jogosNoGrupo.splice(i, 1);
 			    }
 			}
@@ -608,7 +607,7 @@ $(function(){
 	});
 
 	//ADD Nickname
-	$(document).on('click', "#add_nome_usuario", function(e){
+	$(document).on('click', '#add_nome_usuario', function(e){
 		e.preventDefault();
 		var nickName = $('#nome_usuario')[0].value
 		var nameValidation = /^[a-zA-Z0-9.\-_$@*!]{3,30}$/.test(nickName)
@@ -620,10 +619,10 @@ $(function(){
 					userInfo.userNickName = nickName;
 					$.magnificPopup.close();
 					return;
-				}else alert("User with this nickname already exists");
+				}else alert('User with this nickname already exists');
 			});
 		}else{
-			alert("Name does not match");
+			alert('Name does not match');
 		}
 		$.magnificPopup.close();
 	});
@@ -633,17 +632,17 @@ $(function(){
 	
 	$(document).on('click', '#add_nova_partida_btn', function(e){
 		e.preventDefault();
-		var adversario_nome = $("#adversario_nome option:selected").text();
+		var adversario_nome = $('#adversario_nome option:selected').text();
 		var usuario_time = $('#usuario_liga_time option:selected')[0].value
 		var usuario_gols = $('#usuario_gols')[0].value
 		var adversario_time = $('#adversario_liga_time option:selected')[0].value
 		var adversario_gols = $('#adversario_gols')[0].value
-		var add_nova_partida_group = $("#add_nova_partida_group option:selected").text();
+		var add_nova_partida_group = $('#add_nova_partida_group option:selected').text();
 		console.log(usuario_time);
 		console.log(adversario_time);
 		f.ref('usersFacebook/'+userInfo.uid+'/friends').once('value',function(snapshot){		
 			if(snapshot.child(adversario_nome).exists()){
-				f.ref('usersNickNames/'+adversario_nome).once("value",function(snapshot){
+				f.ref('usersNickNames/'+adversario_nome).once('value',function(snapshot){
 					let friendId = snapshot.val();
 					if(usuario_time==''){
 						alert('Please enter your team');
@@ -738,17 +737,19 @@ $(function(){
 				
 				});	
 			
-			}else alert("We could not find "+adversario_nome);	
+			}else alert('We could not find '+adversario_nome);	
 
 		});
+		console.log('saiu aqui');
+
 	});
 	
 	//ADD novo grupo
 	$(document).on('click', '#add_novo_grupo_btn', function(event){
 		event.preventDefault();
-		var listItems = $("#integrantes_grupo li input");
+		var listItems = $('#integrantes_grupo li input');
 		f.ref('groups').once('value',function(snapshot){
-			var group_name = $("#novo_grupo_nome")[0].value
+			var group_name = $('#novo_grupo_nome')[0].value
 			if(!snapshot.child(group_name).exists()){
 				
 				var group_creator = {};
@@ -763,7 +764,7 @@ $(function(){
     				if(friend_name != ''){
     					f.ref('usersNickNames').once('value',function(snapshot){		
     						if(snapshot.child(friend_name).exists()){
-								f.ref('usersNickNames/'+friend_name).once("value",function(snapshot){
+								f.ref('usersNickNames/'+friend_name).once('value',function(snapshot){
 									let friendId = snapshot.val();
 									var foo = {};
 									foo[friend_name] = friendId;
@@ -775,9 +776,9 @@ $(function(){
 								groupslistTemplate = MyApp.templates.groupslistTemplate({obj:userInfo});
 								$('#groups_list').html(groupslistTemplate);
     						}
-    						else alert("We could not find "+friend_name);
+    						else alert('We could not find '+friend_name);
 						});	
-    				}else alert("Please do not enter an empty name")	
+    				}else alert('Please do not enter an empty name')	
 				});
 			
 			}
@@ -798,14 +799,30 @@ $(function(){
 		$('#amigos_wrapper').append(amigoAdicionado);
 	});
 
+	$(document).on('click', '.lista-amigos li a', function(e){
+		e.preventDefault();
+		let nome = $(this).html();
+		let amigoAdicionado = MyApp.templates.amigoAdicionado({nome: nome});
+		$('#membros_wrapper').append(amigoAdicionado);
+	});
+
+	$(document).on('click', '.lista-amigos-convite li a', function(e){
+		e.preventDefault();
+		let nome = $(this).html();
+		let amigoAdicionado = MyApp.templates.amigoAdicionado({nome: nome});
+		$('#novos_membros_wrapper').append(amigoAdicionado);
+	});
+
 	$(document).on('click', '.remove-amigo', function(e){
 		e.preventDefault();
 		$(this).parent().parent().parent().remove();
-	})
+	});
 
 	//ADD New friend
 	$(document).on('click','#add_amigos_btn',function(e){
 		e.preventDefault();
+// 		var friend_name = $('list-group-item li input').val();
+// 		$('#lista_adicionar_amigos li input').each(function(i)
 		$('.lista-nomes-amigos').each(function(i)
 		{
 			var friend_name = $(this)[0].textContent;					
@@ -813,7 +830,7 @@ $(function(){
 				if(snapshot.child(friend_name).exists()){
 					f.ref('usersFacebook/'+userInfo.uid+'/friends').once('value',function(snapshot){
 						if(!snapshot.child(friend_name).exists()){			
-							f.ref('usersNickNames/'+friend_name).once("value",function(snapshot){
+							f.ref('usersNickNames/'+friend_name).once('value',function(snapshot){
 								friendId = snapshot.val()
 								var foo = {};
 								foo[friend_name] = friendId;
@@ -822,10 +839,10 @@ $(function(){
 								f.ref('usersFacebook/'+userInfo.uid+'/friendRequestSent').update(foo);
 								f.ref('usersFacebook/'+friendId+'/friendRequestReceived').update(bar);
 							});
-						}else alert("user "+friend_name+" already is your friend");
+						}else alert('user '+friend_name+' already is your friend');
 					});
 				
-				}else alert("We could not find "+friend_name);
+				}else alert('We could not find '+friend_name);
 			});
 		});
 		$.magnificPopup.close();
@@ -837,7 +854,7 @@ $(function(){
 	//Aceitar
 	$(document).on('click','#friend_request_list>li>div>.btn:first-of-type',function(e){
 		var id = this.id.substring(24,e.target.id.length);
-		f.ref('usersNickNames/'+id).once("value",function(snapshot){
+		f.ref('usersNickNames/'+id).once('value',function(snapshot){
 			var friendRequestFbUrl = snapshot.val();
 			f.ref('usersFacebook/'+userInfo.uid+'/friendRequestReceived/'+id).remove();
 			f.ref('usersFacebook/'+friendRequestFbUrl+'/friendRequestSent/'+userInfo.userNickName).remove();
@@ -881,21 +898,21 @@ $(function(){
 
 	$(document).on('change','#usuario_liga', function (e) {
 		console.log('entrou usuario')
-    	var liga = add_nova_partida_group = $("#usuario_liga option:selected").text();
+    	var liga = add_nova_partida_group = $('#usuario_liga option:selected').text();
     	$('#usuario_liga_time').empty()
 		for(i = 0;i<userInfo.teamsList[liga].length;i++){
-			$('#usuario_liga_time').append("<option>"+userInfo.teamsList[liga][i]+"</option>");		
+			$('#usuario_liga_time').append('<option>'+userInfo.teamsList[liga][i]+'</option>');		
 		}	
 		
 	});
 
 
 	$(document).on('change','#adversario_liga', function (e) {
-		console.log("entrou adversario");
-    	var liga = add_nova_partida_group = $("#adversario_liga option:selected").text();
+		console.log('entrou adversario');
+    	var liga = add_nova_partida_group = $('#adversario_liga option:selected').text();
     	$('#adversario_liga_time').empty()
 			for(i = 0;i<userInfo.teamsList[liga].length;i++){
-				$('#adversario_liga_time').append("<option>"+userInfo.teamsList[liga][i]+"</option>");		
+				$('#adversario_liga_time').append('<option>'+userInfo.teamsList[liga][i]+'</option>');		
 		}	
 		
 	});

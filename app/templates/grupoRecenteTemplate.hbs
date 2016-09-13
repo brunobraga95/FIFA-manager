@@ -1,5 +1,5 @@
 {{#if obj.groupObj.total}}
-	<button class="btn btn-primary" id="add_novo_membro" style="float:right;">Add novo membro</button>
+	<button class="btn btn-primary" id="add_novo_membro" style="float:right;">Add novos membros</button>
 	<div class="col-sm-offset-3 col-sm-6">
 		{{#each obj.groupObj.jogos}}
 			<div>
@@ -10,5 +10,6 @@
 {{else}}
 	<div class="nenhuma-partida">
 		<h3>Você ainda nao jogou nenhuma partida nesse grupo!</h3>
+		<button class="btn btn-primary btn-lg" id="add_novo_membro" style="margin:10px auto;">Add novos membros</button>
 	</div>
 {{/if}}

@@ -2,17 +2,9 @@ $icon-font-path: '../fonts/';
 
 // bower:scss
 @import "bower_components/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
+@import "_variables";
 // endbower
 
-
-
-// Variables
-
-// colors
-$fb_blue: rgba(59, 89, 152,1);
-$home_letter_spacing: 1px;
-$main_letter_spacing: $home_letter_spacing * 0.75;
-$border_radius: 5px;
 
 
 html {
@@ -86,14 +78,6 @@ textarea {
   max-width: 1050px;
 }
 
-//Crop Class
-.crop { 
-  overflow:hidden; 
-  white-space:nowrap; 
-  text-overflow:ellipsis;
-  width: 80px !important; 
-}​
-
 // Home
 .home{
   padding: 50px;
@@ -115,6 +99,15 @@ textarea {
     }
   }
 }
+
+//Crop Class
+.crop { 
+  overflow:hidden; 
+  white-space:nowrap; 
+  text-overflow:ellipsis;
+  width: 80px !important; 
+}​
+
 
 // Navbar
 .navbar-default{
@@ -261,6 +254,28 @@ textarea {
       margin-left: 5px;
     }
   }
+  .popup-content-wrapper{
+    width: 90%;
+    margin: 0 auto;
+  }
+
+  label{
+    margin-bottom: 5px;
+  }
+
+  .input-wrapper{
+    padding: 7px 0px;
+  }
+
+  .popup-title{
+    h4{
+      margin-top:0px;
+    }
+  }
+
+  .membros-selection{
+    text-align: center;
+  }
 }
 
 //Convite Amizade
@@ -270,11 +285,6 @@ textarea {
     justify-content: space-between;
   }
 }
-
-
-
-
-
 
 
 

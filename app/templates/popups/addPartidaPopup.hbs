@@ -1,50 +1,61 @@
-<div>
-	<h3>Adicionar Partida</h3>
+<div class="popup-title">
+	<h4>Adicionar Partida</h4>
 </div>
 <div>
-	<form class="form-group">
+	<div class="popup-content-wrapper">
+		<form class="form-group">
 
-		<label for="adversario">Contra: </label>
-		<select class="form-control" id = "adversario_nome">
-		{{#each obj.friends}}
-			<option>{{@key}}</option>	
-		{{/each}}
-		</select>
-		<div id="usuario-selecao-times">	
-			<label for="adversario">Seu Time: </label>
-			<select class="form-control" id = "usuario_liga">
-				{{#each obj.teamsList}}
-					<option>{{@key}}</option>
+			<div class="input-wrapper">
+				<label for="adversario">Contra: </label>
+				<select class="form-control custom-select" id = "adversario_nome">
+				{{#each obj.friends}}
+					<option>{{@key}}</option>	
 				{{/each}}
-			</select>
-		</div>
+				</select>
+			</div>
 
-		<label for="timeUsuarioGols">Gols:</label>
-		<input class="form-control" type="text" name="timeUsuarioGols" id="usuario_gols" placeholder="Opcional">
-		
-		<div id="adversario-selecao-times">
-			<label for="adversario">Time do seu Amigo: </label>
-			<select class="form-control" id = "adversario_liga">
-				{{#each obj.teamsList}}
-					<option>{{@key}}</option>
-				{{/each}}
-			</select>
-		</div>
+			<div id="usuario-selecao-times" class="input-wrapper">	
+				<label for="adversario">Seu Time: </label>
+				<select class="form-control" id = "usuario_liga">
+					{{#each obj.teamsList}}
+						<option>{{@key}}</option>
+					{{/each}}
+				</select>
+			</div>
 
-		<label for="timeAdversarioGols">Gols:</label>
-		<input class="form-control" type="text" name="timeAdversarioGols" id="adversario_gols" placeholder="Opcional">
-		<label for="grupo">Grupo:</label>
-		<select class="form-control" id = "add_nova_partida_group">
-			<option>Nenhum</option>
-			{{#each obj.groups}}
-				<option>{{@key}}</option>
-			{{/each}}
-		</select>
-		
-		<div class="botao-wrapper">
-			<button class="btn btn-default cancelar">Cancelar</button>
-			<button class="btn btn-success" id="add_nova_partida_btn">Adicionar</button>
-		</div>
+			<div class="input-wrapper">
+				<label for="timeUsuarioGols">Gols:</label>
+				<input class="form-control" type="text" name="timeUsuarioGols" id="usuario_gols">
+			</div>
+			
+			<div id="adversario-selecao-times" class="input-wrapper">
+				<label for="adversario">Time do seu Amigo: </label>
+				<select class="form-control" id = "adversario_liga">
+					{{#each obj.teamsList}}
+						<option>{{@key}}</option>
+					{{/each}}
+				</select>
+			</div>
 
-	</form>
+			<div class="input-wrapper">
+				<label for="timeAdversarioGols">Gols:</label>
+				<input class="form-control" type="text" name="timeAdversarioGols" id="adversario_gols">
+			</div>
+
+			<div class="input-wrapper">
+				<label for="grupo">Grupo:</label>
+				<select class="form-control" id = "add_nova_partida_group">
+					<option>Nenhum</option>
+					{{#each obj.groups}}
+						<option>{{@key}}</option>
+					{{/each}}
+				</select>
+			</div>
+			
+			<div class="botao-wrapper">
+				<button class="btn btn-default cancelar">Cancelar</button>
+				<button class="btn btn-success" id="add_nova_partida_btn">Adicionar</button>
+			</div>
+		</form>
+	</div>
 </div>
